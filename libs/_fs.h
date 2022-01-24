@@ -14,14 +14,14 @@ typedef struct
 } Image;
 
 /* Image manipulation methods */
-Image* createImage(int width, int height, int default_brightness){}
+// Image* createImage(int width, int height, int default_brightness){}
 
-void freeImage(Image* img_pointer){}
+// void freeImage(Image* img_pointer){}
 
-Image* copyImage(Image* img_pointer){}
+// Image* copyImage(Image* img_pointer){}
 
-Image* loadImage(char datei_name[]){}
+// Image* loadImage(char datei_name[]){}
 
-int saveImage(char datei_name[], Image* img_pointer){}
+// int saveImage(char datei_name[], Image* img_pointer){}
 
 #endif
