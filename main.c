@@ -1,6 +1,6 @@
-#include <stdio.h>
+#include "libs/image.h"
 
 int main(void){
-  printf("Test\n");
+  test();
   return 0;
 }
