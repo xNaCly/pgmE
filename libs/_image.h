@@ -1,5 +1,5 @@
-#ifndef IMAGE_H_INCLUDED
-#define IMAGE_H_INCLUDED
+#ifndef _IMAGE_H_INCLUDED
+#define _IMAGE_H_INCLUDED
 
 #include <stdio.h>
 

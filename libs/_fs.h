@@ -1,6 +1,9 @@
-/* fs.h handles everything regarding images in the . */
-#ifndef FS_H_INCLUDED
-#define FS_H_INCLUDED
+/*
+fs.h handles everything regarding images in the .pgm standard
+http://netpbm.sourceforge.net/doc/pgm.html (Plain PGM)
+*/
+#ifndef _FS_H_INCLUDED
+#define _FS_H_INCLUDED
 
 
 typedef struct
