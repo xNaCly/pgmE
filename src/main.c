@@ -1,7 +1,6 @@
-#include "libs/fs/_fs.h"
+#include "libs/pgm/_pgm.h"
 #include "libs/image/_image.h"
 
-int main(void)
-{
-  return 0;
+int main(void) {
+  createImage(25,25,255);
 }
