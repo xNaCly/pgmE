@@ -3,22 +3,26 @@
 #include <stdio.h>
 
 Image *createImage(int width, int height, int default_brightness){
-  Image *img = malloc(sizeof *img);
-  int **data[height][width];
+  Image *img;
+  img = malloc(sizeof *img);
 
   img->width = width;
   img->height = height;
 
-  for(int i = 0; i < height; i++) {
-	for(int ii = 0; ii < width; ii++){
-	  data[i][ii] = default_brightness;
-	}
-  }
+  img->data = (int **) malloc(width*sizeof(int *));
 
-  img->data = data;
+
+
+  for(int i = 0; i < width; i++){
+    img->data[i] = (int *) malloc(height*sizeof(int));
+    for(int ii = 0; ii < height; ii++){
+      img->data[i][ii] = default_brightness;
+    }
+  }
 
   return img;
 }
+
 void freeImage(Image *img_pointer);
 Image *copyImage(Image *img_pointer);
 Image *loadImage(char file_name[]);
