@@ -1,5 +1,5 @@
 /*
- * _fs.h handles everything regarding images in the .pgm standard
+ * _pgm.h handles everything regarding images in the .pgm standard
  * http://netpbm.sourceforge.net/doc/pgm.html (Plain PGM)
  */
 #ifndef _PGM_H_INCLUDED

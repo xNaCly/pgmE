@@ -6,6 +6,6 @@
 
 #include "../pgm/_pgm.h"
 
-void print_image_data(Image *img, int print_pixels);
+void print_image(Image *img, int print_pixels);
 
 #endif
