@@ -3,3 +3,4 @@ main:
 	build/main.out
 clean:
 	rm ./build/*
+	rm test.pgm
