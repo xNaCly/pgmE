@@ -1,6 +1,7 @@
 #include "_pgm.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 Image *createImage(int width, int height, int default_brightness) {
   Image *img;
@@ -35,7 +36,7 @@ void freeImage(Image *img_pointer) {
 Image *copyImage(Image *img_pointer) {
   int width = img_pointer->width;
   int height = img_pointer->height;
-  Image *cpImage = createImage(width, height, 255); // create empty image
+  Image *cpImage = createImage(width, height, 1); // create empty image
 
   // loop over columns
   for (int i = 0; i < width; i++) {
@@ -51,5 +52,46 @@ Image *copyImage(Image *img_pointer) {
 
 // TODO: needs implementing
 Image *loadImage(char file_name[]);
-// TODO: needs implementing
-int saveImage(char file_name[], Image *img_pointer);
+
+int saveImage(char file_name[], Image *img_pointer) {
+  // allocates the string in a big enough size
+  char *PGM_content = (char *)malloc((img_pointer->height * img_pointer->width)*sizeof(int) + (3 * sizeof(int)) + (sizeof(char) * 3));
+  //char *PGM_content = (char *)malloc((3 * sizeof(int)) + (sizeof(char) * 3));
+
+  // saves string in the specified format in PGM_content
+  if (0 > sprintf(PGM_content, "P2\n%d %d\n%d\n", img_pointer->width, img_pointer->height, MAX_BRIGHT))
+	return 0;
+
+  // TODO: this slows the app humongosly down
+  // loops over every pixel and appends the pixel value as a string to PGM_content
+  for(int i = 0; i < img_pointer->width; i++){
+	for(int ii = 0; ii < img_pointer->height; ii++){
+	  // allocate temp string
+	  char t[(sizeof(int) + sizeof(char)) * 4];
+
+	  // convert to string
+	  if(0> sprintf(t, "%d\n", img_pointer->data[i][ii])){
+		return 0;
+	  }
+
+	  // append string
+	  strcat(PGM_content, t);
+	}
+  }
+
+  FILE *file;
+  // open file with given name
+  file = fopen(file_name, "w");
+
+  // return 0 if file couldnt be created
+  if (file == NULL) {
+	return 0;
+  }
+
+  // insert content into file
+  fputs(PGM_content, file);
+
+  // free content
+  free(PGM_content);
+  return 1;
+}

@@ -5,10 +5,11 @@
 
 int main(void) {
   Image *img = createImage(25, 25, 255);
-  print_image(img, 0);
 
-  Image *img2 = copyImage(img);
-  print_image(img2, 0);
+  //Image *img2 = copyImage(img);
+  //print_image(img2, 0);
+
+  saveImage("test.pgm", img);
 
   freeImage(img);
   return 0;
