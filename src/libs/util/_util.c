@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "_util.h"
 
-// TODO: is missing documentation
 void print_image(Image *img, int print_pixels) {
   printf("height: %d, width: %d\n", img->width, img->width);
 
