@@ -1,7 +1,4 @@
-#include <stdio.h>
 #include "libs/pgm/_pgm.h"
-#include "libs/image/_image.h"
-#include "libs/util/_util.h"
 
 int main(void) {
   Image *img = createImage(1920, 1080, 255);
