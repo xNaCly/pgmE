@@ -58,25 +58,29 @@ int saveImage(char file_name[], Image *img_pointer) {
   char *PGM_content = (char *)malloc((img_pointer->height * img_pointer->width)*sizeof(int) + (3 * sizeof(int)) + (sizeof(char) * 3));
   //char *PGM_content = (char *)malloc((3 * sizeof(int)) + (sizeof(char) * 3));
 
-  // saves string in the specified format in PGM_content
-  if (0 > sprintf(PGM_content, "P2\n%d %d\n%d\n", img_pointer->width, img_pointer->height, MAX_BRIGHT))
-	return 0;
+ int offset = sprintf(PGM_content, "P2\n%d %d\n%d\n", img_pointer->width, img_pointer->height, MAX_BRIGHT);
+
+  if (0 > offset)
+    return 0;
 
   // TODO: this slows the app humongosly down
   // loops over every pixel and appends the pixel value as a string to PGM_content
-  for(int i = 0; i < img_pointer->width; i++){
-	for(int ii = 0; ii < img_pointer->height; ii++){
-	  // allocate temp string
-	  char t[(sizeof(int) + sizeof(char)) * 4];
+  for (int i = 0; i < img_pointer->width; i++) {
+    for (int ii = 0; ii < img_pointer->height; ii++) {
+      // allocate temp string
+      char t[5];
 
-	  // convert to string
-	  if(0> sprintf(t, "%d\n", img_pointer->data[i][ii])){
-		return 0;
-	  }
+      // convert to string
+      int size = sprintf(t, "%d\n", img_pointer->data[i][ii]);
+      if (0 > size) {
+        return 0;
+      }
+      memcpy(PGM_content + offset, t, size);
 
-	  // append string
-	  strcat(PGM_content, t);
-	}
+      offset += size;
+      // append string
+      // strcat(PGM_content, t);
+    }
   }
 
   FILE *file;
