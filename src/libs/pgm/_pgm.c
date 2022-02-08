@@ -9,13 +9,18 @@ Image *createImage(int width, int height, int default_brightness) {
   img->width = width;
   img->height = height;
 
-  img->data = (int **)malloc(width * sizeof(int *)); // allocate double pointer to contain pixel data
+  // allocate double pointer to contain pixel data
+  img->data = (int **)malloc(width * sizeof(int *));
 
-  for (int i = 0; i < width; i++) { // loop over columns
-	img->data[i] = (int *)malloc(height * sizeof(int)); // allocate rows
+  // loop over columns
+  for (int i = 0; i < width; i++) {
+	// allocate rows
+	img->data[i] = (int *)malloc(height * sizeof(int));
 
-	for (int ii = 0; ii < height; ii++) { 	// loop over row items
-	  img->data[i][ii] = default_brightness; // assign default value to every pixel
+	// loop over row items
+	for (int ii = 0; ii < height; ii++) {
+	  // assign default value to every pixel
+	  img->data[i][ii] = default_brightness;
 	}
   }
 
@@ -28,10 +33,23 @@ void freeImage(Image *img_pointer) {
 }
 
 Image *copyImage(Image *img_pointer) {
-  Image *copiedImage = img_pointer; // easiest way to copy a pointer is by passing its value to a new pointer
+  int width = img_pointer->width;
+  int height = img_pointer->height;
+  Image *cpImage = createImage(width, height, 255); // create empty image
 
-  return copiedImage;
+  // loop over columns
+  for (int i = 0; i < width; i++) {
+	// loop over row items
+	for (int ii = 0; ii < height; ii++) {
+	  // deep copy values
+	  cpImage->data[i][ii] = img_pointer->data[i][ii];
+	}
+  }
+
+  return cpImage;
 }
 
+// TODO: needs implementing
 Image *loadImage(char file_name[]);
+// TODO: needs implementing
 int saveImage(char file_name[], Image *img_pointer);
