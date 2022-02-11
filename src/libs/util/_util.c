@@ -4,7 +4,7 @@
 void print_image(Image *img, int print_pixels) {
   if(img == NULL) return;
 
-  printf("height: %d, width: %d\n", img->width, img->width);
+  printf("width: %d, height: %d\n", img->width, img->height);
 
   if (print_pixels) {
 	for (int i = 0; i < img->width; i++) {
