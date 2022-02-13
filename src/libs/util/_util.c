@@ -26,11 +26,12 @@ void throw_error(char text[]) {
 
 void selection_handler(int selection) {
   if (selection == 0) {
-	char *dateiname;
+	char *dateiname = "";
 
 	printf("Dateiname (with .pgm): ");
-	scanf("%s", &dateiname);
+	scanf("%s", dateiname);
 
+	printf("%s\n", dateiname);
 	img = loadImage(dateiname);
 
 	if (img == NULL) {
@@ -43,10 +44,10 @@ void selection_handler(int selection) {
   else if (selection == 5) {}
   else if (selection == 6) {}
   else if (selection == 7) {
-	char *dateiname;
+	char *dateiname = "";
 
 	printf("Dateiname (with .pgm): ");
-	scanf("%s", &dateiname);
+	scanf("%s", dateiname);
 
 	int feedback = saveImage(dateiname, img);
 
