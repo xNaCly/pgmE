@@ -42,6 +42,7 @@ void scale(Image *img, int width, int height);
  * Rotates the Image to the given angle
  * @param img
  * @param angle
+ * @param brigthness
  */
-void rotate(Image *img, double angle);
+void rotate(Image *img, double angle, int brigthness);
 #endif
