@@ -2,7 +2,7 @@
 #include "libs/util/_util.h"
 
 int main(void) {
-  print_home();
+  main_menu_handler();
 
   return 0;
 }

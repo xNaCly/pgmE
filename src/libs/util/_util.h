@@ -6,20 +6,23 @@
 
 #include "../pgm/_pgm.h"
 
-extern const char *MAIN_OPTIONS[];
 
-extern const char *EDIT_OPTIONS[];
+#define ANSI_COLOR_RED "\x1b[91m"
+#define ANSI_COLOR_GREEN "\x1b[92m"
+#define ANSI_STYLE_BOLD "\x1b[1m"
+#define ANSI_RESET "\x1b[0m"
+
+const char *MAIN_OPTIONS[];
 
 /**
- *
- * @param img Image pointer created with createImage()
- * @param print_pixels flag if pixel values should be printed
+ * exits the program and prints the given text highlighted
+ * @param text
  */
-void print_image(Image *img, int print_pixels);
+void throw_error(char text[]);
 
 /**
  * Prints the main (home) selection menu
  */
-void print_home(void);
+void main_menu_handler();
 
 #endif
