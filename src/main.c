@@ -2,8 +2,7 @@
 #include "libs/util/_util.h"
 
 int main(void) {
-  Image *img = loadImage("cat.pgm");
-  saveImage("test.pgm", img);
+  print_home();
 
   return 0;
 }
