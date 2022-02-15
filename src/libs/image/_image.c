@@ -13,9 +13,10 @@ void laplace(Image *img);
    for (int j = 0; j <= img->heigth ; j++){
    bi,j = bi−1,j−1 + bi,j−1 + bi+1,j−1 + bi−1,j − 8bi,j + bi+1,j + bi−1,j+1 + bi,j+1 + bi+1,j+1*/
 void threshold(Image *img, int threshold){
-    for (int i = 0; i < img->width ;i++){
-    for (int j = 0; j <= img->height ; j++){
-    &img[i,j]< threshold ? 0 : 255;}}}
+    //for (int i = 0; i < img->width ;i++){
+    //for (int j = 0; j <= img->height ; j++){
+    //&img[i,j]< threshold ? 0 : 255;}}
+	}
 void scale(Image *img, int width, int height);
     /*createImage(width, heigth, brigthness);
     for (int i = 0; i < img->width ;i++){
