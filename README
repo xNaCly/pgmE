@@ -4,7 +4,7 @@ PGM-Editor
 Small Image editor which only supports the .pgm standard.
     (http://netpbm.sourceforge.net/doc/pgm.html)
     
-It features a simple tui to load and save images as well as selecting what filter or modification to apply to the loaded image.
+It features a simple TUI to load and save images as well as selecting what filter or modification to apply to the loaded image.
 The following image manipulation methods have been implemented:
     - median filter
     - gauss filter
@@ -13,7 +13,7 @@ The following image manipulation methods have been implemented:
     - scaling
     - rotating
 
-Try localy:
+Try locally:
 
     make pre
     make main
