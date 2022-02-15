@@ -26,7 +26,7 @@ void throw_error(char text[]) {
 
 void selection_handler(int selection) {
   if (selection == 0) {
-	char *dateiname = "";
+	char dateiname[255] = "";
 
 	printf("Dateiname (with .pgm): ");
 	scanf("%s", dateiname);
@@ -44,7 +44,7 @@ void selection_handler(int selection) {
   else if (selection == 5) {}
   else if (selection == 6) {}
   else if (selection == 7) {
-	char *dateiname = "";
+	char dateiname[255];
 
 	printf("Dateiname (with .pgm): ");
 	scanf("%s", dateiname);
