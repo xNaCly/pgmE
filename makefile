@@ -3,6 +3,6 @@ main:
 	build/main.out
 clean:
 	rm -r build/
-	rm *.pgm
+	rm test.pgm
 pre:
 	mkdir build/
