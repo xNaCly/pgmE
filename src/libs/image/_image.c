@@ -4,30 +4,31 @@
 #include <stdlib.h>
 
 Image *median(Image *img);
-/*Rand soll nicht bearbeitet werden (if AnzahlPixel < 9) + sind Randpixel
-enthalten? Image *imgCpy = copyImage(img); qsort (imgCpy, sizeof(Image *),
-compare); int n =; (AnzahlFeldElemente % 2) == 0 ? x[n/2] : x[(n-1)/2];*/
+  /*Rand soll nicht bearbeitet werden (if AnzahlPixel < 9) + sind Randpixel
+  enthalten? Image *imgCpy = copyImage(img); qsort (imgCpy, sizeof(Image *),
+  compare); int n =; (AnzahlFeldElemente % 2) == 0 ? x[n/2] : x[(n-1)/2];*/
 
 Image *gauss(Image *img){
-Image *imgCpy = copyImage(img);
-for (int i = 0; i < imgCpy->width ; i++){
+  Image *imgCpy = copyImage(img);
+  for (int i = 0; i < imgCpy->width ; i++){
   for (int j = 0; j < imgCpy->height ; j++){
-    imgCpy->data[i][j] = (imgCpy->data[i-1][j-1] + 2*imgCpy->data[i][j-1] + imgCpy->data[i+1][j-1] + 2*imgCpy->data[i-1][j] + 4*imgCpy->data[i][j] + 2*imgCpy->data[i+1][j] + imgCpy->data[i-1][j+1] + 2*imgCpy->data[i][j+1] + imgCpy->data[i+1][j+1])/16;
+    imgCpy->data[i][j] = (imgCpy->data[i-1][j-1] + 2*imgCpy->data[i][j-1] + imgCpy->data[i+1][j-1] + 2*imgCpy->data[i-1][j] + 
+    4*imgCpy->data[i][j] + 2*imgCpy->data[i+1][j] + imgCpy->data[i-1][j+1] + 2*imgCpy->data[i][j+1] + imgCpy->data[i+1][j+1])/16;
   }
-}
-return imgCpy;
+  }
+  return imgCpy;
 }
 
 Image *laplace(Image *img){
-  //Extrahieren von Kanten
-Image *imgCpy = copyImage(img);
-for (int i = 0; i < imgCpy->width ; i++){
+    //Extrahieren von Kanten
+  Image *imgCpy = copyImage(img);
+  for (int i = 0; i < imgCpy->width ; i++){
   for (int j = 0; j < imgCpy->height ; j++){
     imgCpy->data[i][j] = imgCpy->data[i-1][j-1] + imgCpy->data[i][j-1] + imgCpy->data[i+1][j-1] + imgCpy->data[i-1][j]
      -8 * imgCpy->data[i][j] + imgCpy->data[i+1][j] + imgCpy->data[i-1][j+1] + imgCpy->data[i][j+1] + imgCpy->data[i+1][j+1];
   }
-}
-return imgCpy;
+  }
+  return imgCpy;
 }
 
 Image *threshold(Image *img, int threshold) {
@@ -51,12 +52,12 @@ Image *threshold(Image *img, int threshold) {
 }
 
 Image *scale(Image *img, int width, int height){
-Image *imgCpy = copyImage(img);
-for (int i = 0; i < imgCpy->width ;i++){
+  Image *imgCpy = copyImage(img);
+  for (int i = 0; i < imgCpy->width ;i++){
   for (int j = 0; j <= imgCpy->height ; j++){
      //imgCpy->data[i][j] =(1−x)·(1−y)·bk,l +x·(1−y)·bk,l+1 +(1−x)·y·bk+1,l +x·y·bk+1,l+1*/
   }
-}
+  }
 }
 
 Image *rotate(Image *img, double angle, int brigthness) {
@@ -85,7 +86,4 @@ Image *rotate(Image *img, double angle, int brigthness) {
 
   return imgCpy;
 }
-/*
-Image *imgCpy = copyImage(img);
-x ̃ = cos(α) · (x − cx) − sin(α) · (y − cy) + cx
-y ̃ = sin(α) · (x − cx) + cos(α) · (y − cy) + cy*/
+
