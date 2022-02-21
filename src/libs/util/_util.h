@@ -15,18 +15,18 @@
 extern const char *MAIN_OPTIONS[];
 
 /**
- * exits the program and prints the given text highlighted
+ * @brief exits the program and prints the given text highlighted
  * @param text
  */
 void throw_error(char text[]);
 
 /**
- * Prints the main (home) selection menu
+ * @brief Prints the main (home) selection menu
  */
 void main_menu_handler();
 
 /**
- * Runs methods based on given selection
+ * @brief Runs methods based on given selection
  * @param selection
  */
 void selection_handler(int selection);

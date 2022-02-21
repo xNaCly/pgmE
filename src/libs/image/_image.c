@@ -32,8 +32,8 @@ Image *threshold(Image *img, int threshold) {
 
   Image *imgCpy = copyImage(img);
 
-  for (int i = 0; i < imgCpy->width; i++) {
-	for (int j = 0; j < imgCpy->height; j++) {
+  for (int i = 0; i < imgCpy->height; i++) {
+	for (int j = 0; j < imgCpy->width; j++) {
 	  imgCpy->data[i][j] = (imgCpy->data[i][j] < threshold) ? 0 : 255;
 	}
   }
@@ -61,13 +61,15 @@ Image *rotate(Image *img, double angle, int brigthness) {
 
   printf("\nMittelpunkt: (%d,%d)\nWinkel: %f\n", x_mid, y_mid, angle);
 
-  for (int x = 0; x < img->width; x++) {
-	for (int y = 0; y < img->height; y++) {
+  for (int y = 0; y < img->height; y++) {
+	for (int x = 0; x < img->width; x++) {
 	  int x_new = (int)round(cos(angle) * (x - x_mid) - sin(angle) * (y - y_mid) + x_mid);
 	  int y_new = (int)round(sin(angle) * (x - x_mid) + cos(angle) * (y - y_mid) + y_mid);
 
 	  //printf("[%d][%d]: %d,%d\n", x, y, x_new, y_new);
-	  imgCpy->data[x_new][y_new] = img->data[x][y];
+      if(x_new == img->width) x_new = 0;
+      if(y_new == img->height) y_new = 0;
+	  imgCpy->data[y_new][x_new] = img->data[y][x];
 	}
   }
 

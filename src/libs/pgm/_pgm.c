@@ -10,18 +10,16 @@ Image *createImage(int width, int height, int default_brightness) {
   img->width = width;
   img->height = height;
 
-
-
   // allocate double pointer to contain pixel data
-  img->data = (int **)malloc(width * sizeof(int *));
+  img->data = (int **)malloc(height * sizeof(int *));
 
   // loop over columns
-  for (int i = 0; i < width; i++) {
+  for (int i = 0; i < height; i++) {
 	// allocate rows
-	img->data[i] = (int *)malloc(height * sizeof(int));
+	img->data[i] = (int *)malloc(width * sizeof(int));
 
 	// loop over row items
-	for (int ii = 0; ii < height; ii++) {
+	for (int ii = 0; ii < width; ii++) {
 	  // assign default value to every pixel
 	  img->data[i][ii] = default_brightness;
 	}
@@ -41,9 +39,9 @@ Image *copyImage(Image *img_pointer) {
   Image *cpImage = createImage(width, height, 1);
 
   // loop over columns
-  for (int i = 0; i < width; i++) {
+  for (int i = 0; i < height; i++) {
 	// loop over row items
-	for (int ii = 0; ii < height; ii++) {
+	for (int ii = 0; ii < width; ii++) {
 	  // deep copy values
 	  cpImage->data[i][ii] = img_pointer->data[i][ii];
 	}
@@ -85,8 +83,8 @@ Image *loadImage(char file_name[]) {
 
   Image *img = createImage(width, height, 255);
 
-  for(int i = 0; i < width; i++){
-	for(int ii = 0; ii < height; ii++){
+  for(int i = 0; i < height; i++){
+	for(int ii = 0; ii < width; ii++){
 	  fscanf(file, "%d", &img->data[i][ii]);
 	}
   }
@@ -112,8 +110,8 @@ int saveImage(char file_name[], Image *img_pointer) {
 		  MAX_BRIGHT);
 
   // loops over every pixel and appends the value to the file
-  for (int i = 0; i < img_pointer->width; i++) {
-	for (int ii = 0; ii < img_pointer->height; ii++) {
+  for (int i = 0; i < img_pointer->height; i++) {
+	for (int ii = 0; ii < img_pointer->width; ii++) {
 	  fprintf(file, "%d\n", img_pointer->data[i][ii]);
 	}
   }

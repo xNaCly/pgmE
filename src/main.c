@@ -1,8 +1,19 @@
+/**
+ * @file main.c
+ * @author xnacly
+ * @brief contains the starting point of the project
+ * @date 2021-02-21
+ */
+
 #include <stdio.h>
 #include "libs/pgm/_pgm.h"
 #include "libs/image/_image.h"
 
 // TODO: temporäre funktion entfernen
+/**
+ * @brief prints the width and height of the given image
+ * @param img
+ */
 void print_image(Image *img) {
   printf("Breite: %d\nHöhe: %d\n", img->width, img->height);
 }
