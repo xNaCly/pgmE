@@ -4,24 +4,25 @@
 
 //TODO: INFO methods in this file need to modifiy a copy of the original image, not the og
 
+#define PI 3.14159265359
 
 /**
  * Applies the median filter to the given image
  * @param img
  */
-void median(Image *img);
+Image *median(Image *img);
 
 /**
  * Applies the gauss filter to the given image
  * @param img
  */
-void gauss(Image *img);
+Image *gauss(Image *img);
 
 /**
  * Modifies the image using the laplace-operator
  * @param img
  */
-void laplace(Image *img);
+Image *laplace(Image *img);
 
 /**
  * Modifies the Image using the thresholding method
@@ -36,7 +37,7 @@ Image *threshold(Image *img, int threshold);
  * @param width
  * @param height
  */
-void scale(Image *img, int width, int height);
+Image *scale(Image *img, int width, int height);
 
 /**
  * Rotates the Image to the given angle
@@ -44,5 +45,5 @@ void scale(Image *img, int width, int height);
  * @param angle
  * @param brigthness
  */
-void rotate(Image *img, double angle, int brigthness);
+Image *rotate(Image *img, double angle, int brigthness);
 #endif

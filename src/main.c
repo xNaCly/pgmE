@@ -13,7 +13,7 @@ int main(void) {
   print_image(img);
 
   // TODO: hier die funktionen testen.
-  //Image *edited_img = threshold(img, -10);
-  //saveImage("test.pgm", edited_img);
+  Image *edited_img = rotate(img, 180, 255);
+  saveImage("test.pgm", edited_img);
   return 0;
 }
