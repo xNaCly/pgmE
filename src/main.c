@@ -27,11 +27,9 @@ int main(void) {
 
   // *********************************
 
-  Image *edited_img = threshold(img, 120);
+  //Image *edited_img = threshold(img, 120);
   //Image *edited_img = laplace(img);
-
-
-  //Image *edited_img = rotate(img, 45, 0);
+  Image *edited_img = rotate(img, 80, 0);
   saveImage("test.pgm", edited_img);
   return 0;
 }
