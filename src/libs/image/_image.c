@@ -1,7 +1,6 @@
 #include "_image.h"
 #include <math.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 Image *median(Image *img);
   /*Rand soll nicht bearbeitet werden (if AnzahlPixel < 9) + sind Randpixel
@@ -13,19 +12,37 @@ Image *gauss(Image *img){
 
   for (int i = 0; i < imgCpy->width ; i++){
   	for (int j = 0; j < imgCpy->height ; j++){
-    	imgCpy->data[i][j] = (imgCpy->data[i-1][j-1] + 2*imgCpy->data[i][j-1] + imgCpy->data[i+1][j-1] + 2*imgCpy->data[i-1][j] + 4*imgCpy->data[i][j] + 2*imgCpy->data[i+1][j] + imgCpy->data[i-1][j+1] + 2*imgCpy->data[i][j+1] + imgCpy->data[i+1][j+1])/16;
+    	imgCpy->data[i][j] = (
+				imgCpy->data[i-1][j-1]
+				+ 2*imgCpy->data[i][j-1]
+				+ imgCpy->data[i+1][j-1]
+				+ 2*imgCpy->data[i-1][j]
+				+ 4*imgCpy->data[i][j]
+				+ 2*imgCpy->data[i+1][j]
+				+ imgCpy->data[i-1][j+1]
+				+ 2*imgCpy->data[i][j+1]
+				+ imgCpy->data[i+1][j+1]
+			)/16;
   	}
   }
 
   return imgCpy;
 }
 
+// TODO: WIP
 Image *laplace(Image *img){
   Image *imgCpy = copyImage(img);
 
   for (int i = 0; i < imgCpy->width ; i++){
 	for (int j = 0; j < imgCpy->height ; j++){
-	    imgCpy->data[i][j] = imgCpy->data[i-1][j-1] + imgCpy->data[i][j-1] + imgCpy->data[i+1][j-1] + imgCpy->data[i-1][j] -8 * imgCpy->data[i][j] + imgCpy->data[i+1][j] + imgCpy->data[i-1][j+1] + imgCpy->data[i][j+1] + imgCpy->data[i+1][j+1];
+	    imgCpy->data[i][j] = imgCpy->data[i-1][j-1]
+			+ imgCpy->data[i][j-1]
+			+ imgCpy->data[i+1][j-1]
+			+ imgCpy->data[i-1][j] -8 * imgCpy->data[i][j]
+			+ imgCpy->data[i+1][j]
+			+ imgCpy->data[i-1][j+1]
+			+ imgCpy->data[i][j+1]
+			+ imgCpy->data[i+1][j+1];
   	}
   }
 
@@ -85,7 +102,7 @@ Image *rotate(Image *img, double angle, int brigthness) {
       if(x_new == img->width) x_new = 0;
       if(y_new == img->height) y_new = 0;
 
-	  if(x_new < 0 || y_new < 0) continue;
+	  if(x_new < 0 || y_new < 0 || x_new > img->width || y_new > img->height) continue;
 
 	  // assign data from old pixel coords to new pixel coord
 	  imgCpy->data[y_new][x_new] = img->data[y][x];

@@ -24,7 +24,14 @@ int main(void) {
   print_image(img);
 
   // TODO: hier die funktionen testen.
-  Image *edited_img = rotate(img, 10, 255);
+
+  // *********************************
+
+  Image *edited_img = threshold(img, 120);
+  //Image *edited_img = laplace(img);
+
+
+  //Image *edited_img = rotate(img, 45, 0);
   saveImage("test.pgm", edited_img);
   return 0;
 }
