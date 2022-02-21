@@ -5,6 +5,7 @@ void median(Image *img);
     /*Rand soll nicht bearbeitet werden (if AnzahlPixel < 9) + sind Randpixel enthalten?
     Image *imgCpy = copyImage(img);
     qsort (imgCpy, sizeof(Image *), compare);
+    int n =;
     (AnzahlFeldElemente % 2) == 0 ? x[n/2] : x[(n-1)/2];*/
 void gauss(Image *img);
     //Image *imgCpy = copyImage(img);
@@ -15,11 +16,15 @@ void laplace(Image *img);
    for (int i = 0; i < img->width ;i++){
    for (int j = 0; j <= img->heigth ; j++){
    bi,j = bi−1,j−1 + bi,j−1 + bi+1,j−1 + bi−1,j − 8bi,j + bi+1,j + bi−1,j+1 + bi,j+1 + bi+1,j+1*/
-void threshold(Image *img, int threshold){
+Image threshold(Image *img, int threshold){
+    threshold = 128;
     Image *imgCpy = copyImage(img); 
-    for (int i = 0; i < img->width ;i++){
-    for (int j = 0; j < img->height ; j++){
-    img->data[i][j] < threshold ? 0 : 255;}}}
+    for (int i = 0; i < imgCpy->width ;i++){
+    for (int j = 0; j < imgCyp->height ; j++){
+    imgCyp->data[i][j] < threshold ? 0 : 255;}}
+    saveImage(test,imgCpy);
+    return imgCyp;
+    }
 void scale(Image *img, int width, int height);
     /*Image *imgCpy = copyImage(img);
     for (int i = 0; i < img->width ;i++){

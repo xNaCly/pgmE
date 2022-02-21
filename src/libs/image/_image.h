@@ -28,7 +28,7 @@ void laplace(Image *img);
  * @param img
  * @param threshold
  */
-void threshold(Image *img, int threshold);
+Image threshold(Image *img, int threshold);
 
 /**
  * Scales the given Image to the width and height specified
