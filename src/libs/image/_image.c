@@ -51,8 +51,8 @@ Image *rotate(Image *img, double angle, int brigthness) {
   angle = angle * (PI / 180);
 
   Image *imgCpy = createImage(
-	  (int)cos(angle) * img->width,
-	  (int)sin(angle) * img->height,
+	  img->width,
+	  img->height,
 	  brigthness);
 
   // calculate center
