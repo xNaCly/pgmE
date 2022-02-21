@@ -1,18 +1,19 @@
 #include <stdio.h>
 #include "libs/pgm/_pgm.h"
-//#include "libs/util/_util.h"
+#include "libs/image/_image.h"
 
-// TODO: tempräre funktion entfernen
+// TODO: temporäre funktion entfernen
 void print_image(Image *img) {
-  printf("Breite: %d\nHöhe: %d", img->width, img->height);
+  printf("Breite: %d\nHöhe: %d\n", img->width, img->height);
 }
 
 int main(void) {
-	//main_menu_handler();
+  //main_menu_handler();
   Image *img = loadImage("cat.pgm");
   print_image(img);
 
-	// TODO: hier die funktionen testen.
-
+  // TODO: hier die funktionen testen.
+  //Image *edited_img = threshold(img, -10);
+  //saveImage("test.pgm", edited_img);
   return 0;
 }

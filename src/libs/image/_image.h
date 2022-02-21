@@ -2,7 +2,7 @@
 #define _IMAGE_H_INCLUDED
 #include "../pgm/_pgm.h"
 
-//! All methods in this file need to modifiy a copy of the original image, not the og
+//TODO: INFO methods in this file need to modifiy a copy of the original image, not the og
 
 
 /**
@@ -24,11 +24,11 @@ void gauss(Image *img);
 void laplace(Image *img);
 
 /**
- * Modifies the Image using the Thresholding method
+ * Modifies the Image using the thresholding method
  * @param img
  * @param threshold
  */
-Image threshold(Image *img, int threshold);
+Image *threshold(Image *img, int threshold);
 
 /**
  * Scales the given Image to the width and height specified
