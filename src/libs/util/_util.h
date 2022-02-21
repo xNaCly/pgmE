@@ -25,4 +25,9 @@ void throw_error(char text[]);
  */
 void main_menu_handler();
 
+/**
+ * Runs methods based on given selection
+ * @param selection
+ */
+void selection_handler(int selection);
 #endif
