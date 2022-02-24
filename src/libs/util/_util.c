@@ -23,15 +23,6 @@ void check_selection(int selection, int arr_size, int edited_unsaved_image_in_me
 	throw_warning(error_text);
   }
 
-  if (selection == arr_size) {
-	if (!edited_unsaved_image_in_memory) {
-	  exit(0);
-	}
-	//clear();
-	printf("%sThere is still an unsaved editied image in memory, save it before exiting%s\n",
-		   ANSI_COLOR_RED, ANSI_RESET);
-  }
-
   // disallow editing and saving if there is no file in mem
   if (selection != 0 && !image_in_memory) {
 	//clear();

@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 
-Image *median(Image *img);
+//Image *median(Image *img);
 /*Rand soll nicht bearbeitet werden (if AnzahlPixel < 9) + sind Randpixel
 enthalten? Image *imgCpy = copyImage(img); qsort (imgCpy, sizeof(Image *),
 compare); int n =; (AnzahlFeldElemente % 2) == 0 ? x[n/2] : x[(n-1)/2];*/
@@ -81,20 +81,25 @@ Image *scale(Image *img, int width, int height) {
   return imgCpy;
 }
 
+//TODO: doesnt work, seg fault
 Image *rotate(Image *img, double angle, int brigthness) {
   angle = angle * (PI / 180);
 
+  //! calculate optimal height and width for the rotated image
+  int new_width = (int)(img->width * cos(angle) + img->height * cos(90 - angle));
+  int new_height = (int)(img->width * sin(angle) + img->height * sin(90 - angle));
+
   Image *imgCpy = createImage(
-	  img->width,
-	  img->height,
+	  new_width,
+	  new_height,
 	  brigthness);
 
   // calculate center
   int x_mid = img->width / 2;
   int y_mid = img->height / 2;
 
-  for (int y = 0; y < img->height; y++) {
-	for (int x = 0; x < img->width; x++) {
+  for (int y = 0; y < new_height; y++) {
+	for (int x = 0; x < new_width; x++) {
 	  // calulate new positions
 	  int x_new = (int)round(cos(angle) * (x - x_mid) - sin(angle) * (y - y_mid) + x_mid);
 	  int y_new = (int)round(sin(angle) * (x - x_mid) + cos(angle) * (y - y_mid) + y_mid);
@@ -102,9 +107,10 @@ Image *rotate(Image *img, double angle, int brigthness) {
 	  if (x_new == img->width) x_new = 0;
 	  if (y_new == img->height) y_new = 0;
 
-	  if (x_new < 0 || y_new < 0 || x_new > img->width || y_new > img->height) continue;
+	  if (x_new < 0 || y_new < 0 || x_new > new_width || y_new > new_height || x > img->width || y > img->height)
+		continue;
 
-	  // assign data from old pixel coords to new pixel coord
+	  // assign data from old pixel coordinates to new pixel coord
 	  imgCpy->data[y_new][x_new] = img->data[y][x];
 	}
   }
