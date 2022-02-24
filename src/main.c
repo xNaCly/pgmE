@@ -6,19 +6,10 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "libs/pgm/_pgm.h"
 #include "libs/util/_util.h"
 #include "libs/image/_image.h"
-
-
-// TODO: temporäre funktion entfernen
-/**
- * @brief prints the width and height of the given image
- * @param img
- */
-void print_image(Image *img) {
-  printf("Breite: %d\nHöhe: %d\n", img->width, img->height);
-}
 
 void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
   const char *MAIN_OPTIONS[] = {
@@ -30,97 +21,109 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 
   int selection = 0;
 
-  printf("\nMain Menu:\n\n");
-  for (int i = 0; i < sizeof(MAIN_OPTIONS) / sizeof(MAIN_OPTIONS[0]); i++) {
-	// loop over all options and print them
-	printf("[%d] %s%s%s\n", i, ANSI_STYLE_BOLD, MAIN_OPTIONS[i], ANSI_RESET);
-  }
-
-  if (!image_in_memory)
-	printf("%s\nNo Image in ram!%s\n", ANSI_COLOR_RED, ANSI_RESET);
-
-  // input prompt for the selection
-  printf("\nSelection (0-%d): ", arr_size);
-
-  // assign input to variable
-  // TODO: use strtol
-  scanf("%d", &selection);
-
-  Image *img = createImage(10, 10, 255);
-
-  check_selection(selection, arr_size, edited_unsaved_image_in_memory, image_in_memory);
-  if (selection == 0) {
-	printf("[%d] %s\n", 0, MAIN_OPTIONS[0]);
-	char dateiname[255] = ""; // size: 255 due to the maximum file length
-
-	//clear();
-	printf("Dateiname (with .pgm): ");
-	scanf("%s", dateiname);
-
-	img = loadImage(dateiname);
-
-	if (img == NULL) {
-	  throw_error("Datei konnte nicht geöffnet werden.");
+  while (selection != 8) {
+	printf("\nMain Menu:\n\n");
+	for (int i = 0; i < sizeof(MAIN_OPTIONS) / sizeof(MAIN_OPTIONS[0]); i++) {
+	  // loop over all options and print them
+	  printf("[%d] %s%s%s\n", i, ANSI_STYLE_BOLD, MAIN_OPTIONS[i], ANSI_RESET);
 	}
 
-	//clear();
-	printf("%s%s wurde eingelesen.%s\n", ANSI_COLOR_GREEN, dateiname,
-		   ANSI_RESET);
-	image_in_memory = 1;
-  } else if (selection == 1) {
-	edited_unsaved_image_in_memory = 1;
-  } else if (selection == 2) {
-	edited_unsaved_image_in_memory = 1;
-  } else if (selection == 3) {
-	edited_unsaved_image_in_memory = 1;
-  } else if (selection == 4) {
-	edited_unsaved_image_in_memory = 1;
-  } else if (selection == 5) {
-	edited_unsaved_image_in_memory = 1;
-  } else if (selection == 6) {
-	printf("[%d] %s\n", 6, MAIN_OPTIONS[6]);
+	if (!image_in_memory)
+	  printf("%s\nNo Image in ram!%s\n", ANSI_COLOR_RED, ANSI_RESET);
 
-	float angle = 0;
-	int brightness = MAX_BRIGHT;
+	// input prompt for the selection
+	printf("\nSelection (0-%d): ", arr_size);
 
-	//clear();
-	printf("Winkel um den das Bild gedreht werden soll: ");
-	scanf("%f", &angle);
+	// assign input to variable
+	// TODO: use strtol
+	scanf("%d", &selection);
 
-	printf("Helligkeit mit der freiliegende Pixel gefüllt werden sollen: ");
-	scanf("%d", &brightness);
-
-	// this has a warning, currently no idea how to fix this
-	img = rotate(img, angle, brightness);
-
-	//clear();
-	printf("%sBild wurde um %f-Grad im Uhrzeigersinn gedreht.%s\n",
-		   ANSI_COLOR_GREEN, angle, ANSI_RESET);
-	edited_unsaved_image_in_memory = 1;
-  } else if (selection == 7) {
-	char dateiname[255];
-
-	//clear();
-	printf("Dateiname (with .pgm): ");
-	scanf("%s", dateiname);
-
-	int feedback = saveImage(dateiname, img);
-
-	if (!feedback) {
-	  throw_error(
-		  "Datei konnte nicht gespeichert werden. (Fehler beim Speichern)");
+	if (selection == arr_size) {
+	  if (!edited_unsaved_image_in_memory) {
+		exit(0);
+	  }
+	  printf("%sThere is still an unsaved editied image in memory, save it before exiting%s\n",
+			 ANSI_COLOR_RED,
+			 ANSI_RESET);
 	}
 
-	freeImage(img);
+	check_selection(selection, arr_size, edited_unsaved_image_in_memory, image_in_memory);
 
-	edited_unsaved_image_in_memory = 0;
-	image_in_memory = 0;
+	Image *img = NULL;
 
-	//clear();
-	printf("%sBild wurde als: %s gespeichert.%s\n", ANSI_COLOR_GREEN, dateiname,
-		   ANSI_RESET);
+	if (selection == 0) {
+	  printf("[%d] %s\n", 0, MAIN_OPTIONS[0]);
+	  char dateiname[255] = ""; // size: 255 due to the maximum file length
+
+	  //clear();
+	  printf("Dateiname (with .pgm): ");
+	  scanf("%s", dateiname);
+
+	  img = loadImage(dateiname);
+
+	  if (img == NULL) {
+		throw_error("Datei konnte nicht geöffnet werden.");
+	  }
+
+	  //clear();
+	  printf("%s%s wurde eingelesen.%s\n", ANSI_COLOR_GREEN, dateiname,
+			 ANSI_RESET);
+	  image_in_memory = 1;
+	} else if (selection == 1) {
+	  edited_unsaved_image_in_memory = 1;
+	} else if (selection == 2) {
+	  edited_unsaved_image_in_memory = 1;
+	} else if (selection == 3) {
+	  edited_unsaved_image_in_memory = 1;
+	} else if (selection == 4) {
+	  edited_unsaved_image_in_memory = 1;
+	} else if (selection == 5) {
+	  edited_unsaved_image_in_memory = 1;
+	} else if (selection == 6) {
+	  printf("[%d] %s\n", 6, MAIN_OPTIONS[6]);
+
+	  float angle = 0;
+	  int brightness = MAX_BRIGHT;
+
+	  //clear();
+	  printf("Winkel um den das Bild gedreht werden soll: ");
+	  scanf("%f", &angle);
+
+	  printf("Helligkeit mit der freiliegende Pixel gefüllt werden sollen: ");
+	  scanf("%d", &brightness);
+
+	  // this has a warning, currently no idea how to fix this
+	  img = rotate(img, angle, brightness);
+
+	  //clear();
+	  printf("%sBild wurde um %f-Grad im Uhrzeigersinn gedreht.%s\n",
+			 ANSI_COLOR_GREEN, angle, ANSI_RESET);
+	  edited_unsaved_image_in_memory = 1;
+	} else if (selection == 7) {
+	  char dateiname[255];
+
+	  //clear();
+	  printf("Dateiname (with .pgm): ");
+	  scanf("%s", dateiname);
+
+	  int feedback = saveImage(dateiname, img);
+
+	  if (!feedback) {
+		throw_error(
+			"Datei konnte nicht gespeichert werden. (Fehler beim Speichern)");
+	  }
+
+	  freeImage(img);
+
+	  edited_unsaved_image_in_memory = 0;
+	  image_in_memory = 0;
+
+	  //clear();
+	  printf("%sBild wurde als: %s gespeichert.%s\n", ANSI_COLOR_GREEN, dateiname,
+			 ANSI_RESET);
+	}
   }
-  main_menu(edited_unsaved_image_in_memory, image_in_memory);
+
 }
 
 int main(void) {
