@@ -9,7 +9,6 @@
 #define _IMAGE_H_INCLUDED
 #include "../pgm/_pgm.h"
 
-//TODO: INFO methods in this file need to modifiy a copy of the original image, not the og
 #define PI 3.14159265359
 
 /**
