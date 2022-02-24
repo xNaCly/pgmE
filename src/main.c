@@ -24,6 +24,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
   Image *img = NULL;
 
   while (selection != 8) {
+	// TODO: selection option 8 is missing
 	printf("\nMain Menu:\n\n");
 	printf("[%s] Image in Ram\n\n", image_in_memory ? ANSI_COLOR_GREEN"+"ANSI_RESET : ANSI_COLOR_RED"-"ANSI_RESET);
 	for (int i = 0; i < arr_size; i++) {
