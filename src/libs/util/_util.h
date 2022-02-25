@@ -6,28 +6,33 @@
 
 #include "../pgm/_pgm.h"
 
-
 #define ANSI_COLOR_RED "\x1b[91m"
 #define ANSI_COLOR_GREEN "\x1b[92m"
+#define ANSI_COLOR_YELLOW "\x1b[93m"
 #define ANSI_STYLE_BOLD "\x1b[1m"
 #define ANSI_RESET "\x1b[0m"
 
-extern const char *MAIN_OPTIONS[];
+#define clear() system("clear")
 
 /**
- * @brief exits the program and prints the given text highlighted
+ * @brief exits the program and prints the given text highlighted red
  * @param text
  */
 void throw_error(char text[]);
 
 /**
- * @brief Prints the main (home) selection menu
+ * @brief prints the given text highlighted yellow, differs from throw_error by
+ * not exiting the program.
+ * @param text
  */
-void main_menu_handler();
+void throw_warning(char text[]);
 
 /**
- * @brief Runs methods based on given selection
+ * @brief checks if the selection meets certian criteria
  * @param selection
+ * @param arr_size size of the array containing possible inputs
+ * @param edited_unsaved_image_in_memory
+ * @param image_in_memory
  */
-void selection_handler(int selection);
+void check_selection(int selection, int arr_size, int edited_unsaved_image_in_memory, int image_in_memory);
 #endif
