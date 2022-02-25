@@ -24,14 +24,21 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
   Image *img = NULL;
 
   while (selection != 8) {
+	// TODO: selection option 8 is missing
 	printf("\nMain Menu:\n\n");
-	for (int i = 0; i < sizeof(MAIN_OPTIONS) / sizeof(MAIN_OPTIONS[0]); i++) {
+	printf("[%s] Image in Ram\n\n", image_in_memory ? ANSI_COLOR_GREEN"+"ANSI_RESET : ANSI_COLOR_RED"-"ANSI_RESET);
+	for (int i = 0; i < arr_size; i++) {
 	  // loop over all options and print them
-	  printf("[%d] %s%s%s\n", i, ANSI_STYLE_BOLD, MAIN_OPTIONS[i], ANSI_RESET);
+	  if (i == 0 || i == 7 || i == 8) {
+		printf("[%d] %s%s%s\n", i, ANSI_COLOR_GREEN, MAIN_OPTIONS[i], ANSI_RESET);
+		continue;
+	  }
+
+	  printf("[%d] %s%s%s\n", i, image_in_memory ? ANSI_COLOR_GREEN : ANSI_COLOR_RED, MAIN_OPTIONS[i], ANSI_RESET);
 	}
 
-	if (!image_in_memory)
-	  printf("%s\nNo Image in ram!%s\n", ANSI_COLOR_RED, ANSI_RESET);
+	//if (!image_in_memory)
+	//  printf("%s\nNo Image in ram!%s\n", ANSI_COLOR_RED, ANSI_RESET);
 
 	// input prompt for the selection
 	printf("\nSelection (0-%d): ", arr_size);
@@ -39,15 +46,6 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 	// assign input to variable
 	// TODO: use strtol
 	scanf("%d", &selection);
-
-	if (selection == arr_size) {
-	  if (!edited_unsaved_image_in_memory) {
-		exit(0);
-	  }
-	  printf("%sThere is still an unsaved editied image in memory, save it before exiting%s\n",
-			 ANSI_COLOR_RED,
-			 ANSI_RESET);
-	}
 
 	check_selection(selection, arr_size, edited_unsaved_image_in_memory, image_in_memory);
 
@@ -58,14 +56,18 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 	  printf("[%d] %s\n", 0, MAIN_OPTIONS[0]);
 	  char dateiname[255] = ""; // size: 255 due to the maximum file length
 
-	  //clear();
-	  printf("Dateiname (with .pgm): ");
-	  scanf("%s", dateiname);
+	  while (img == NULL) {
 
-	  img = loadImage(dateiname);
+		//clear();
+		printf("Dateiname (with .pgm): ");
+		scanf("%s", dateiname);
 
-	  if (img == NULL) {
-		throw_error("Datei konnte nicht geöffnet werden.");
+		img = loadImage(dateiname);
+
+		if (img == NULL) {
+		  throw_warning("Datei konnte nicht geöffnet werden.");
+		}
+
 	  }
 
 	  //clear();
@@ -147,6 +149,16 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 	}
   }
 
+  // TODO: somewhere here unaligned memory!
+  if (edited_unsaved_image_in_memory) {
+	printf("%sThere is still an unsaved editied image in memory, save it before exiting%s\n",
+		   ANSI_COLOR_RED,
+		   ANSI_RESET);
+	main_menu(edited_unsaved_image_in_memory, image_in_memory);
+  }
+
+  freeImage(img);
+  exit(0);
 }
 
 int main(void) {
@@ -157,9 +169,7 @@ int main(void) {
   //Image *img = loadImage("cat.pgm");
   //print_image(img);
 
-  // TODO: hier die funktionen testen.
   // *********************************
-
   //Image *edited_img = threshold(img, 120);
   //Image *edited_img = laplace(img);
   //Image *edited_img = rotate(img, 65.6 , 0);

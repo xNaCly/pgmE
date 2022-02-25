@@ -99,13 +99,14 @@ Image *rotate(Image *img, double angle, int brigthness) {
 	  int x_new = (int)round(cos(angle) * (x - x_mid) - sin(angle) * (y - y_mid) + x_mid);
 	  int y_new = (int)round(sin(angle) * (x - x_mid) + cos(angle) * (y - y_mid) + y_mid);
 
-      if(x_new == img->width) x_new = 0;
-      if(y_new == img->height) y_new = 0;
+	  if (x_new == img->width || x_new == new_width) x_new = 0;
+	  if (y_new == img->height || y_new == new_height) y_new = 0;
 
-	  if(x_new < 0 || y_new < 0 || x_new > img->width || y_new > img->height) continue;
+	  if (x_new < 0 || y_new < 0 || x_new > new_width - 1 || y_new > new_height - 1)
+		continue;
 
-	  // assign data from old pixel coords to new pixel coord
-	  imgCpy->data[y_new][x_new] = img->data[y][x];
+	  // assign data from old pixel coordinates to new pixel coord
+	  imgCpy->data[y_new][x_new] = img->data[y][x]; //TODO: doesnt work, seg fault
 	}
   }
 
