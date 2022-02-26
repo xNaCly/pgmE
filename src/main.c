@@ -51,26 +51,32 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         image_in_memory = 1;
         break;
       }
-      case SELECTION_MEDIAN_FILTER:
-        Image *copy = median(img);
-        freeImage(img);
-        img = copy;
-        edited_unsaved_image_in_memory = 1;
+      case SELECTION_MEDIAN_FILTER: {
+        //printf("[%d] %s\n", 1, MAIN_OPTIONS[1]);
+        //Image* copy = median(img);
+        //freeImage(img);
+        //img = copy;
+        //edited_unsaved_image_in_memory = 1;
         break;
-      case SELECTION_GAUSS_FILTER:
-        Image *copy = gauss(img);
-        freeImage(img);
-        img = copy;
-        edited_unsaved_image_in_memory = 1;
-        break;
-      case SELECTION_LAPLACE_OPERATOR: {
-        Image *copy = laplace(img);
+      }
+      case SELECTION_GAUSS_FILTER: {
+        printf("[%d] %s\n", 2, MAIN_OPTIONS[2]);
+        Image* copy = gauss(img);
         freeImage(img);
         img = copy;
         edited_unsaved_image_in_memory = 1;
         break;
       }
-      case SELECTION_THRESHOLD: {
+      case SELECTION_LAPLACE_OPERATOR: {
+        printf("[%d] %s\n", 3, MAIN_OPTIONS[3]);
+        Image* copy = laplace(img);
+        freeImage(img);
+        img = copy;
+        edited_unsaved_image_in_memory = 1;
+        break;
+      }
+      case SELECTION_THRESHOLD: { 
+        printf("[%d] %s\n", 4, MAIN_OPTIONS[4]);
         int threshold_ = 0;
         printf("Schwellwert: ");
         scanf("%d", &threshold_);
@@ -81,7 +87,14 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         break;
       }
       case SELECTION_SCALE: {
-        Image *copy = scale(img);
+        printf("[%d] %s\n", 5, MAIN_OPTIONS[5]);
+        int width = 0;
+        int height = 0;
+        printf("Höhe: ");
+        scanf("%d", &height);
+        printf("Breite: ");
+        scanf("%d", &width);
+        Image* copy = scale(img, width, height);
         freeImage(img);
         img = copy;
         edited_unsaved_image_in_memory = 1;
@@ -104,6 +117,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         break;
       }
       case SELECTION_SAVE: {
+        printf("[%d] %s\n", 7, MAIN_OPTIONS[7]);
         char filename[255];
         printf("Dateiname (with .pgm): ");
         scanf("%s", filename);
@@ -112,7 +126,6 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
           throw_error("Datei konnte nicht gespeichert werden. (Fehler beim Speichern)");
         }
         freeImage(img);
-        img = NULL;
         edited_unsaved_image_in_memory = 0;
         image_in_memory = 0;
         printf("%sBild wurde als: %s gespeichert.%s\n", ANSI_COLOR_GREEN, filename, ANSI_RESET);
@@ -120,6 +133,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       }
       case SELECTION_EXIT: {
         if (!edited_unsaved_image_in_memory) {
+          printf("[%d] %s\n", 8, MAIN_OPTIONS[8]);
           exit(0);
         }
         printf("%sThere is still an unsaved edited image in memory, save it before exiting%s\n", ANSI_COLOR_RED,
