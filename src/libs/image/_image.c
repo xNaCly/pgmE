@@ -62,15 +62,20 @@ Image *threshold(Image *img, int threshold) {
 }
 
 Image *scale(Image *img, int width, int height) {
-  Image *imgCpy = copyImage(img);
+  Image *newImg = createImage(width,height, 0);
 
-  for (int i = 0; i < imgCpy->width; i++) {
-    for (int j = 0; j <= imgCpy->height; j++) {
-      //imgCpy->data[i][j] =(1−x)·(1−y)·bk,l +x·(1−y)·bk,l+1 +(1−x)·y·bk+1,l +x·y·bk+1,l+1*/}
+  for (int i = 0; i < newImg->width; i++) {
+    for (int j = 0; j < newImg->height; j++) {
+      for (int k = 0; k < img->width; k++){
+        for (int l = 0; l < img->width; l++){
+        /*newImg->data[i][j] = (1-img->width) * (1-(img->height)) * (img->data[k][l]) + (img->width) * (1-(img->height)) * (img->data[k][l+1]) 
+        + (1-(img->width)) * (img->height) * (img->data[k+1][l]) + (img->width) * (img->height) * (img->data[k+1][l+1]); */
     }
   }
-
-  return imgCpy;
+  }
+}
+ 
+  return newImg;
 }
 
 Image *rotate(Image *img, double angle, int brigthness) {
