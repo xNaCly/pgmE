@@ -3,11 +3,14 @@
 #include <stdio.h>
 
 // TODO:
-Image *median(Image *img);
+Image *median(Image *img){
 
-/*Rand soll nicht bearbeitet werden (if AnzahlPixel < 9) + sind Randpixel
-enthalten? Image *imgCpy = copyImage(img); qsort (imgCpy, ,
-compare); int n =; (AnzahlFeldElemente % 2) == 0 ? x[n/2] : x[(n-1)/2];*/
+Image *imgCpy = copyImage(img);
+/*for (int i = 0; i < imgCpy->width; i++) {
+    for (int j = 0; j < imgCpy->height; j++) {
+       qsort (imgCpy, ,compare);
+        int n =; (AnzahlFeldElemente % 2) == 0 ? x[n/2] : x[(n-1)/2];*/
+}
 
 // TODO: 
 Image *gauss(Image *img) {
@@ -68,12 +71,12 @@ Image *scale(Image *img, int width, int height) {
     for (int j = 0; j < newImg->height; j++) {
       for (int k = 0; k < img->width; k++){
         for (int l = 0; l < img->width; l++){
-        /*newImg->data[i][j] = (1-img->width) * (1-(img->height)) * (img->data[k][l]) + (img->width) * (1-(img->height)) * (img->data[k][l+1]) 
-        + (1-(img->width)) * (img->height) * (img->data[k+1][l]) + (img->width) * (img->height) * (img->data[k+1][l+1]); */
+        newImg->data[i][j] = (1-img->width) * (1-(img->height)) * (img->data[k][l]) + (img->width) * (1-(img->height)) * (img->data[k][l+1]) 
+        + (1-(img->width)) * (img->height) * (img->data[k+1][l]) + (img->width) * (img->height) * (img->data[k+1][l+1]); 
+        }
+      }
     }
   }
-  }
-}
  
   return newImg;
 }
