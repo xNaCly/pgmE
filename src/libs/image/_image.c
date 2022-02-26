@@ -2,12 +2,14 @@
 #include <math.h>
 #include <stdio.h>
 
+// TODO:
 Image *median(Image *img);
 
 /*Rand soll nicht bearbeitet werden (if AnzahlPixel < 9) + sind Randpixel
 enthalten? Image *imgCpy = copyImage(img); qsort (imgCpy, ,
 compare); int n =; (AnzahlFeldElemente % 2) == 0 ? x[n/2] : x[(n-1)/2];*/
 
+// TODO: 
 Image *gauss(Image *img) {
   Image *imgCpy = copyImage(img);
 
@@ -37,6 +39,7 @@ Image *laplace(Image *img) {
 
   return imgCpy;
 }
+
 
 Image *threshold(Image *img, int threshold) {
   if (threshold < 1) {
@@ -71,7 +74,7 @@ Image *scale(Image *img, int width, int height) {
 }
 
 Image *rotate(Image *img, double angle, int brigthness) {
-  angle = angle * (PI / 180);
+  angle = angle * (M_PI / 180);
 
   //TODO: currently not calculating the correct dimensions
   //! calculate optimal height and width for the rotated image
