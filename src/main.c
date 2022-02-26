@@ -38,7 +38,6 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         char filename[255] = ""; // size: 255 due to the maximum file length
         if (img != NULL) {
           freeImage(img);
-          img = NULL;
         }
         while (img == NULL) {
           printf("Dateiname (with .pgm): ");
