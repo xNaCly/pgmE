@@ -2,14 +2,38 @@
 #include <math.h>
 #include <stdio.h>
 
-// TODO:
-Image *median(Image *img){
+// TODO: Randpixel probleme beheben
 
-Image *imgCpy = copyImage(img);
-/*for (int i = 0; i < imgCpy->width; i++) {
+Image *median(Image *img){
+  Image *imgCpy = copyImage(img);
+  for (int i = 0; i < imgCpy->width; i++) {
     for (int j = 0; j < imgCpy->height; j++) {
-       qsort (imgCpy, ,compare);
-        int n =; (AnzahlFeldElemente % 2) == 0 ? x[n/2] : x[(n-1)/2];*/
+      int surNums[9] = {
+        img->data[i-1][j+1],
+        img->data[i][j+1],
+        img->data[i+1][j+1],
+        img->data[i-1][j],
+        img->data[i][j], // mittelpunkt der 3x3 matrix
+        img->data[i+1][j],
+        img->data[i-1][j-1],
+        img->data[i][j-1],
+        img->data[i+1][j-1]
+      }
+      // sort
+      int cmpfunc (const void * a, const void * b) {
+        return ( *(int*)a - *(int*)b );
+      };
+      int lenght = sizeof(surNums) / sizeof(int);
+      qsort(surNums, lenght, sizeof(int), compare);
+      // access median:
+      int m_pixel = surNums[5];
+
+      // set pixel to median:
+      imgCpy->data[i][j] = m_pixel;
+    }
+  }
+  return imgCpy;
+
 }
 
 // TODO: 
