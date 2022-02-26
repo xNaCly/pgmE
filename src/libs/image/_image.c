@@ -74,7 +74,7 @@ Image *scale(Image *img, int width, int height) {
 }
 
 Image *rotate(Image *img, double angle, int brigthness) {
-  angle = angle * (M_PI / 180);
+  angle = angle * (PI / 180);
 
   //TODO: currently not calculating the correct dimensions
   //! calculate optimal height and width for the rotated image

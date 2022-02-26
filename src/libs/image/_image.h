@@ -9,6 +9,7 @@
 #define _IMAGE_H_INCLUDED
 #include "../pgm/_pgm.h"
 
+#define PI 3.141592
 
 /**
  * @brief Applies the median filter to the given image
