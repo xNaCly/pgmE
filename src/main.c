@@ -52,7 +52,17 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         break;
       }
       case SELECTION_MEDIAN_FILTER:
+        Image *copy = median(img);
+        freeImage(img);
+        img = copy;
+        edited_unsaved_image_in_memory = 1;
+        break;
       case SELECTION_GAUSS_FILTER:
+        Image *copy = gauss(img);
+        freeImage(img);
+        img = copy;
+        edited_unsaved_image_in_memory = 1;
+        break;
       case SELECTION_LAPLACE_OPERATOR: {
         Image *copy = laplace(img);
         freeImage(img);
@@ -71,6 +81,9 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         break;
       }
       case SELECTION_SCALE: {
+        Image *copy = scale(img);
+        freeImage(img);
+        img = copy;
         edited_unsaved_image_in_memory = 1;
         break;
       }
