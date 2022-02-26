@@ -74,10 +74,11 @@ Image *rotate(Image *img, double angle, int brigthness) {
   angle = angle * (PI / 180);
 
   //! calculate optimal height and width for the rotated image
-  int new_width = (int) (img->width * cos(angle) + img->height * cos(90 - angle));
-  int new_height = (int) (img->width * sin(angle) + img->height * sin(90 - angle));
+  /*int new_width = (int) (img->width * cos(angle) + img->height * cos(90 - angle));
+  int new_height = (int) (img->width * sin(angle) + img->height * sin(90 - angle));*/
 
-  Image *imgCpy = createImage(new_width, new_height, brigthness);
+ /* Image *imgCpy = createImage(new_width, new_height, brigthness);*/
+  Image *imgCpy = createImage(img->width, img->height, brigthness);
 
   // calculate center
   int x_mid = img->width / 2;
@@ -88,9 +89,9 @@ Image *rotate(Image *img, double angle, int brigthness) {
       // calculate new positions
       int x_new = (int) round(cos(angle) * (x - x_mid) - sin(angle) * (y - y_mid) + x_mid);
       int y_new = (int) round(sin(angle) * (x - x_mid) + cos(angle) * (y - y_mid) + y_mid);
-      if (x_new == new_width) x_new = 0;
-      if (y_new == new_height) y_new = 0;
-      if (x_new < 0 || y_new < 0 || x_new >= new_width || y_new >= new_height)
+      if (x_new == img->width) x_new = 0;
+      if (y_new == img->height) y_new = 0;
+      if (x_new < 0 || y_new < 0 || x_new >= img->width || y_new >= img->height)
         continue;
       imgCpy->data[y_new][x_new] = img->data[y][x]; //TODO: doesnt work, seg fault
     }
