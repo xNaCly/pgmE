@@ -54,6 +54,9 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       case SELECTION_MEDIAN_FILTER:
       case SELECTION_GAUSS_FILTER:
       case SELECTION_LAPLACE_OPERATOR: {
+        Image *copy = laplace(img);
+        freeImage(img);
+        img = copy;
         edited_unsaved_image_in_memory = 1;
         break;
       }
