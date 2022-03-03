@@ -3,41 +3,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// TODO: move to util
-int compare(const void *a, const void *b) {
-  int int_a = *((int *)a);
-  int int_b = *((int *)b);
-
-  if (int_a == int_b) return 0;
-  else if (int_a < int_b) return -1;
-  else return 1;
-}
-
 Image *median(Image *img) {
   Image *imgCpy = copyImage(img);
-  for (int i = 0; i < imgCpy->height; i++) { 
+  for (int i = 0; i < imgCpy->height; i++) {
 	for (int j = 0; j < imgCpy->width; j++) {
-	
-	// ignore pixels at the border of the image
-	if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2) 
+
+	  // ignore pixels at the border of the image
+	  if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
 		continue;
 
 	  int surNums[9] = {
-		  imgCpy->data[i - 1][j + 1], 
-		  imgCpy->data[i][j + 1], 	
-		  imgCpy->data[i + 1][j + 1], 
-		  imgCpy->data[i - 1][j],	
-		  imgCpy->data[i][j], 		
-		  imgCpy->data[i + 1][j],	
+		  imgCpy->data[i - 1][j + 1],
+		  imgCpy->data[i][j + 1],
+		  imgCpy->data[i + 1][j + 1],
+		  imgCpy->data[i - 1][j],
+		  imgCpy->data[i][j],
+		  imgCpy->data[i + 1][j],
 		  imgCpy->data[i - 1][j - 1],
-		  imgCpy->data[i][j - 1],	
+		  imgCpy->data[i][j - 1],
 		  imgCpy->data[i + 1][j - 1]
 	  };
 
 	  // sort the array 
 	  int lenght = sizeof(surNums) / sizeof(int);
 	  qsort(surNums, lenght, sizeof(int), compare);
-	  
+
 	  // access median value
 	  int m_pixel = surNums[4];
 
@@ -53,21 +43,21 @@ Image *gauss(Image *img) {
 
   for (int i = 0; i < imgCpy->height; i++) {
 	for (int j = 0; j < imgCpy->width; j++) {
-	// ignore pixels at the border of the image
-	if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2) 
+	  // ignore pixels at the border of the image
+	  if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
 		continue;
 
-	imgCpy->data[i][j] = (
-		(imgCpy->data[i - 1][j - 1]) + 
-		(2 * imgCpy->data[i][j - 1]) + 
-		(imgCpy->data[i + 1][j - 1]) +
-	  	(2 * imgCpy->data[i - 1][j]) +
-		(4 * imgCpy->data[i][j]) +
-		(2 * imgCpy->data[i + 1][j]) +
-		(imgCpy->data[i - 1][j + 1]) + 
-		(2 * imgCpy->data[i][j + 1]) + 
-		(imgCpy->data[i + 1][j + 1])
-	) / 16;
+	  imgCpy->data[i][j] = (
+		  (imgCpy->data[i - 1][j - 1]) +
+			  (2 * imgCpy->data[i][j - 1]) +
+			  (imgCpy->data[i + 1][j - 1]) +
+			  (2 * imgCpy->data[i - 1][j]) +
+			  (4 * imgCpy->data[i][j]) +
+			  (2 * imgCpy->data[i + 1][j]) +
+			  (imgCpy->data[i - 1][j + 1]) +
+			  (2 * imgCpy->data[i][j + 1]) +
+			  (imgCpy->data[i + 1][j + 1])
+	  ) / 16;
 	}
   }
 
@@ -80,20 +70,20 @@ Image *laplace(Image *img) {
 
   for (int i = 0; i < imgCpy->height; i++) {
 	for (int j = 0; j < imgCpy->width; j++) {
-	  	// ignore pixels at the border of the image
-		if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2) 
-			continue;
+	  // ignore pixels at the border of the image
+	  if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
+		continue;
 
-		imgCpy->data[i][j] = sqrt(
-			imgCpy->data[i - 1][j - 1] + 
-			imgCpy->data[i][j - 1] + 
-			imgCpy->data[i + 1][j - 1] + 
-			imgCpy->data[i - 1][j] -
-			8 * imgCpy->data[i][j] + 
-			imgCpy->data[i + 1][j] + 
-			imgCpy->data[i - 1][j + 1] + 
-			imgCpy->data[i][j + 1] + 
-			imgCpy->data[i + 1][j + 1]);
+	  imgCpy->data[i][j] = sqrt(
+		  imgCpy->data[i - 1][j - 1] +
+			  imgCpy->data[i][j - 1] +
+			  imgCpy->data[i + 1][j - 1] +
+			  imgCpy->data[i - 1][j] -
+			  8 * imgCpy->data[i][j] +
+			  imgCpy->data[i + 1][j] +
+			  imgCpy->data[i - 1][j + 1] +
+			  imgCpy->data[i][j + 1] +
+			  imgCpy->data[i + 1][j + 1]);
 	}
   }
 

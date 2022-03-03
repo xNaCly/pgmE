@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "libs/pgm/_pgm.h"
+// used for: loadImage, freeImage
 #include "libs/util/_util.h"
 #include "libs/image/_image.h"
 
@@ -31,28 +32,35 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 	  printf("[%d] %s%s%s\n", i, isActive ? ANSI_COLOR_GREEN : ANSI_COLOR_RED, MAIN_OPTIONS[i], ANSI_RESET);
 	}
 	printf("\nSelection (0-%d): ", SELECTION_EXIT);
-	// TODO: use strtol
-	scanf("%d", &selection);
+
+	char *temp = malloc(sizeof(char) * 10);
+	scanf("%s", temp);
+	selection = toInt(temp);
+	free(temp);
 
 	selection = check_is_option_valid(selection, image_in_memory);
 
 	switch (selection) {
 	  case SELECTION_LOAD: {
-		printf("[%d] %s\n", 0, MAIN_OPTIONS[0]);
-		char filename[255] = ""; // size: 255 due to the maximum file length
-		if(img != NULL){
+		if (!image_in_memory) {
+		  printf("[%d] %s\n", 0, MAIN_OPTIONS[0]);
+		  char filename[255] = ""; // size: 255 due to the maximum file length
+		  if (img != NULL) {
 			freeImage(img);
-		}
-		while (img == NULL) {
-		  printf("Dateiname (with .pgm): ");
-		  scanf("%s", filename);
-		  img = loadImage(filename);
-		  if (img == NULL) {
-			throw_warning("Datei konnte nicht geöffnet werden.");
 		  }
+		  while (img == NULL) {
+			printf("Dateiname (with .pgm): ");
+			scanf("%s", filename);
+			img = loadImage(filename);
+			if (img == NULL) {
+			  throw_warning("Datei konnte nicht geöffnet werden.");
+			}
+		  }
+		  printf("%s%s wurde eingelesen.%s\n", ANSI_COLOR_GREEN, filename, ANSI_RESET);
+		  image_in_memory = 1;
+		  break;
 		}
-		printf("%s%s wurde eingelesen.%s\n", ANSI_COLOR_GREEN, filename, ANSI_RESET);
-		image_in_memory = 1;
+		throw_warning("Bereits eine Datei in memory!");
 		break;
 	  }
 	  case SELECTION_MEDIAN_FILTER: {
@@ -83,7 +91,12 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 		printf("[%d] %s\n", 4, MAIN_OPTIONS[4]);
 		int threshold_ = 0;
 		printf("Schwellwert: ");
-		scanf("%d", &threshold_);
+
+		temp = malloc(sizeof(char) * 10);
+		scanf("%s", temp);
+		threshold_ = toInt(temp);
+		free(temp);
+
 		Image *copy = threshold(img, threshold_);
 		freeImage(img);
 		img = copy;
@@ -94,13 +107,25 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 		printf("[%d] %s\n", 5, MAIN_OPTIONS[5]);
 		int width = 0;
 		int height = 0;
+
 		printf("Höhe: ");
-		scanf("%d", &height);
+
+		temp = malloc(sizeof(char) * 10);
+		scanf("%s", temp);
+		height = toInt(temp);
+		free(temp);
+
 		printf("Breite: ");
-		scanf("%d", &width);
+
+		temp = malloc(sizeof(char) * 10);
+		scanf("%s", temp);
+		height = toInt(temp);
+		free(temp);
+
 		Image *copy = scale(img, width, height);
 		freeImage(img);
 		img = copy;
+
 		edited_unsaved_image_in_memory = 1;
 		break;
 	  }
@@ -144,9 +169,10 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 			   ANSI_RESET);
 		break;
 	  }
-	  default:
-	  	throw_warning("Invalid Option");
-		
+	  default: {
+		throw_warning("Invalid Option");
+		break;
+	  }
 	}
   }
   exit(0);
