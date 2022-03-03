@@ -80,7 +80,7 @@ Image *laplace(Image *img) {
 
   for (int i = 0; i < imgCpy->height; i++) {
 	for (int j = 0; j < imgCpy->width; j++) {
-	  if (i < 2 || j < 2 || i >= img->width - 2 || j >= img->height - 2)
+	  if (i < 2 || j < 2 || i >= img->height - 2 || j >= img->width - 2)
 		continue;
 	  imgCpy->data[i][j] =
 		  imgCpy->data[i - 1][j - 1] + imgCpy->data[i][j - 1] + imgCpy->data[i + 1][j - 1] + imgCpy->data[i - 1][j] -
