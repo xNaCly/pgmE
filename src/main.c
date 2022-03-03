@@ -11,6 +11,10 @@
 #include "libs/util/_util.h"
 #include "libs/image/_image.h"
 
+
+// TODO: remove double free
+// TODO: fix wrong selection input handling
+
 void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
   const char *MAIN_OPTIONS[
 	  SELECTION_EXIT + 1] = {"Datei laden", "Median-Filter", "Gauß-Filter", "Laplace-Operator", "Schwellwertverfahren",
@@ -36,8 +40,8 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 	  case SELECTION_LOAD: {
 		printf("[%d] %s\n", 0, MAIN_OPTIONS[0]);
 		char filename[255] = ""; // size: 255 due to the maximum file length
-		if (img != NULL) {
-		  freeImage(img);
+		if(img != NULL){
+			freeImage(img);
 		}
 		while (img == NULL) {
 		  printf("Dateiname (with .pgm): ");
@@ -140,11 +144,11 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 			   ANSI_RESET);
 		break;
 	  }
-	  default:throw_warning("Invalid Option");
+	  default:
+	  	throw_warning("Invalid Option");
+		
 	}
   }
-
-  freeImage(img);
   exit(0);
 }
 
