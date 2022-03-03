@@ -12,6 +12,7 @@ int compare(const void *a, const void *b) {
   else return 1;
 }
 
+//TODO: WORK IN PROGRESS
 Image *median(Image *img) {
   Image *imgCpy = copyImage(img);
   for (int i = 0; i < imgCpy->height; i++) { // 0-1920
