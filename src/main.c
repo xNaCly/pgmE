@@ -11,6 +11,10 @@
 #include "libs/util/_util.h"
 #include "libs/image/_image.h"
 
+
+// TODO: remove double free
+// TODO: fix wrong selection input handling
+
 void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
   const char *MAIN_OPTIONS[
 	  SELECTION_EXIT + 1] = {"Datei laden", "Median-Filter", "Gauß-Filter", "Laplace-Operator", "Schwellwertverfahren",
