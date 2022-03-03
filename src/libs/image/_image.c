@@ -14,27 +14,26 @@ int compare(const void *a, const void *b) {
 
 Image *median(Image *img) {
   Image *imgCpy = copyImage(img);
-  for (int i = 0; i < imgCpy->height; i++) {
-	for (int j = 0; j < imgCpy->width; j++) {
-	  if (i < 1 || j < 1 || i >= imgCpy->width - 2 || j >= imgCpy->height - 2)
+  for (int i = 0; i < imgCpy->height; i++) { // 0-1920
+	for (int j = 0; j < imgCpy->width; j++) { // 0-1080
+	  if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2) // 2-1918; 2-1078
 		continue;
 	  int surNums[9] = {
-		  imgCpy->data[i - 1][j + 1],
-		  imgCpy->data[i][j + 1],
-		  // TODO: seg fault here:
-		  imgCpy->data[i + 1][j + 1],
-		  imgCpy->data[i - 1][j],
-		  imgCpy->data[i][j], // mittelpunkt der 3x3 matrix
-		  imgCpy->data[i + 1][j],
-		  imgCpy->data[i - 1][j - 1],
-		  imgCpy->data[i][j - 1],
-		  imgCpy->data[i + 1][j - 1]
+		  imgCpy->data[i - 1][j + 1], 	// 1,3
+		  imgCpy->data[i][j + 1], 		// 2,3
+		  imgCpy->data[i + 1][j + 1], 	// 3,3
+		  imgCpy->data[i - 1][j],		// 1,2
+		  imgCpy->data[i][j], 			// 2,2
+		  imgCpy->data[i + 1][j],		// 3,2
+		  imgCpy->data[i - 1][j - 1],	// 1,1
+		  imgCpy->data[i][j - 1],		// 2,1
+		  imgCpy->data[i + 1][j - 1]	// 3,1
 	  };
 	  // sort
 	  int lenght = sizeof(surNums) / sizeof(int);
 	  qsort(surNums, lenght, sizeof(int), compare);
 	  // access median:
-	  int m_pixel = surNums[4];
+	  int m_pixel = surNums[5];
 
 	  // set pixel to median:
 	  imgCpy->data[i][j] = m_pixel;
@@ -64,7 +63,7 @@ Image *laplace(Image *img) {
 
   for (int i = 0; i < imgCpy->height; i++) {
 	for (int j = 0; j < imgCpy->width; j++) {
-	  if (i < 0 || j < 0 || i >= img->width - 2 || j >= img->height - 2)
+	  if (i < 2 || j < 2 || i >= img->width - 2 || j >= img->height - 2)
 		continue;
 	  imgCpy->data[i][j] =
 		  imgCpy->data[i - 1][j - 1] + imgCpy->data[i][j - 1] + imgCpy->data[i + 1][j - 1] + imgCpy->data[i - 1][j] -
