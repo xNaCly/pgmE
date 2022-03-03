@@ -9,6 +9,8 @@
 #define _IMAGE_H_INCLUDED
 #include "../pgm/_pgm.h"
 // used for: copyImage, createImage
+#include "../util/_util.h"
+// used for: compare
 
 #define PI 3.141592
 

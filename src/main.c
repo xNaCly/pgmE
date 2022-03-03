@@ -36,6 +36,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 	char *temp = malloc(sizeof(char) * 10);
 	scanf("%s", temp);
 	selection = toInt(temp);
+	free(temp);
 
 	selection = check_is_option_valid(selection, image_in_memory);
 
@@ -90,7 +91,12 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 		printf("[%d] %s\n", 4, MAIN_OPTIONS[4]);
 		int threshold_ = 0;
 		printf("Schwellwert: ");
-		scanf("%d", &threshold_);
+
+		temp = malloc(sizeof(char) * 10);
+		scanf("%s", temp);
+		threshold_ = toInt(temp);
+		free(temp);
+
 		Image *copy = threshold(img, threshold_);
 		freeImage(img);
 		img = copy;
@@ -101,13 +107,25 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 		printf("[%d] %s\n", 5, MAIN_OPTIONS[5]);
 		int width = 0;
 		int height = 0;
+
 		printf("Höhe: ");
-		scanf("%d", &height);
+
+		temp = malloc(sizeof(char) * 10);
+		scanf("%s", temp);
+		height = toInt(temp);
+		free(temp);
+
 		printf("Breite: ");
-		scanf("%d", &width);
+
+		temp = malloc(sizeof(char) * 10);
+		scanf("%s", temp);
+		height = toInt(temp);
+		free(temp);
+
 		Image *copy = scale(img, width, height);
 		freeImage(img);
 		img = copy;
+
 		edited_unsaved_image_in_memory = 1;
 		break;
 	  }

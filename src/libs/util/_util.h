@@ -26,6 +26,14 @@ enum {
 };
 
 /**
+ * used for qsort
+ * @param a
+ * @param b
+ * @return
+ */
+int compare(const void *a, const void *b);
+
+/**
  * @brief converts string to integer
  * @param text
  * @return integer
