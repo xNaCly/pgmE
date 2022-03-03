@@ -46,8 +46,8 @@ Image *median(Image *img) {
 Image *gauss(Image *img) {
   Image *imgCpy = copyImage(img);
 
-  for (int i = 0; i < imgCpy->width; i++) {
-	for (int j = 0; j < imgCpy->height; j++) {
+  for (int i = 0; i < imgCpy->height; i++) {
+	for (int j = 0; j < imgCpy->width; j++) {
 	  imgCpy->data[i][j] = (imgCpy->data[i - 1][j - 1] + 2 * imgCpy->data[i][j - 1] + imgCpy->data[i + 1][j - 1] +
 		  2 * imgCpy->data[i - 1][j] + 4 * imgCpy->data[i][j] + 2 * imgCpy->data[i + 1][j] +
 		  imgCpy->data[i - 1][j + 1] + 2 * imgCpy->data[i][j + 1] + imgCpy->data[i + 1][j + 1]) / 16;
@@ -99,9 +99,9 @@ Image *threshold(Image *img, int threshold) {
 Image *scale(Image *img, int width, int height) {
   Image *newImg = createImage(width, height, 0);
 
-  for (int i = 0; i < newImg->width; i++) {
-	for (int j = 0; j < newImg->height; j++) {
-	  for (int k = 0; k < img->width; k++) {
+  for (int i = 0; i < newImg->height; i++) {
+	for (int j = 0; j < newImg->width; j++) {
+	  for (int k = 0; k < img->height; k++) {
 		for (int l = 0; l < img->width; l++) {
 		  newImg->data[i][j] = (1 - img->width) * (1 - (img->height)) * (img->data[k][l])
 			  + (img->width) * (1 - (img->height)) * (img->data[k][l + 1])
