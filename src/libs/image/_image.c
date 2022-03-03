@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// TODO: move to util
 int compare(const void *a, const void *b) {
   int int_a = *((int *)a);
   int int_b = *((int *)b);
@@ -12,7 +13,6 @@ int compare(const void *a, const void *b) {
   else return 1;
 }
 
-//TODO: WORK IN PROGRESS
 Image *median(Image *img) {
   Image *imgCpy = copyImage(img);
   for (int i = 0; i < imgCpy->height; i++) { 
@@ -37,9 +37,10 @@ Image *median(Image *img) {
 	  // sort the array 
 	  int lenght = sizeof(surNums) / sizeof(int);
 	  qsort(surNums, lenght, sizeof(int), compare);
-
+	  
 	  // access median value
-	  int m_pixel = surNums[5];
+	  int m_pixel = surNums[4];
+
 	  // set pixel to median:
 	  imgCpy->data[i][j] = m_pixel;
 	}
@@ -47,7 +48,6 @@ Image *median(Image *img) {
   return imgCpy;
 }
 
-// TODO: 
 Image *gauss(Image *img) {
   Image *imgCpy = copyImage(img);
 
@@ -58,15 +58,15 @@ Image *gauss(Image *img) {
 		continue;
 
 	imgCpy->data[i][j] = (
-		imgCpy->data[i - 1][j - 1] + 
-		2 * imgCpy->data[i][j - 1] + 
-		imgCpy->data[i + 1][j - 1] +
-	  	2 * imgCpy->data[i - 1][j] +
-		4 * imgCpy->data[i][j] +
-		2 * imgCpy->data[i + 1][j] +
-		imgCpy->data[i - 1][j + 1] + 
-		2 * imgCpy->data[i][j + 1] + 
-		imgCpy->data[i + 1][j + 1]
+		(imgCpy->data[i - 1][j - 1]) + 
+		(2 * imgCpy->data[i][j - 1]) + 
+		(imgCpy->data[i + 1][j - 1]) +
+	  	(2 * imgCpy->data[i - 1][j]) +
+		(4 * imgCpy->data[i][j]) +
+		(2 * imgCpy->data[i + 1][j]) +
+		(imgCpy->data[i - 1][j + 1]) + 
+		(2 * imgCpy->data[i][j + 1]) + 
+		(imgCpy->data[i + 1][j + 1])
 	) / 16;
 	}
   }
