@@ -14,27 +14,31 @@ int compare(const void *a, const void *b) {
 
 Image *median(Image *img) {
   Image *imgCpy = copyImage(img);
-  for (int i = 0; i < imgCpy->height; i++) { // 0-1920
-	for (int j = 0; j < imgCpy->width; j++) { // 0-1080
-	  if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2) // 2-1918; 2-1078
+  for (int i = 0; i < imgCpy->height; i++) { 
+	for (int j = 0; j < imgCpy->width; j++) {
+	
+	// ignore pixels at the border of the image
+	if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2) 
 		continue;
+
 	  int surNums[9] = {
-		  imgCpy->data[i - 1][j + 1], 	// 1,3
-		  imgCpy->data[i][j + 1], 		// 2,3
-		  imgCpy->data[i + 1][j + 1], 	// 3,3
-		  imgCpy->data[i - 1][j],		// 1,2
-		  imgCpy->data[i][j], 			// 2,2
-		  imgCpy->data[i + 1][j],		// 3,2
-		  imgCpy->data[i - 1][j - 1],	// 1,1
-		  imgCpy->data[i][j - 1],		// 2,1
-		  imgCpy->data[i + 1][j - 1]	// 3,1
+		  imgCpy->data[i - 1][j + 1], 
+		  imgCpy->data[i][j + 1], 	
+		  imgCpy->data[i + 1][j + 1], 
+		  imgCpy->data[i - 1][j],	
+		  imgCpy->data[i][j], 		
+		  imgCpy->data[i + 1][j],	
+		  imgCpy->data[i - 1][j - 1],
+		  imgCpy->data[i][j - 1],	
+		  imgCpy->data[i + 1][j - 1]
 	  };
-	  // sort
+
+	  // sort the array 
 	  int lenght = sizeof(surNums) / sizeof(int);
 	  qsort(surNums, lenght, sizeof(int), compare);
-	  // access median:
-	  int m_pixel = surNums[5];
 
+	  // access median value
+	  int m_pixel = surNums[5];
 	  // set pixel to median:
 	  imgCpy->data[i][j] = m_pixel;
 	}
@@ -48,9 +52,21 @@ Image *gauss(Image *img) {
 
   for (int i = 0; i < imgCpy->height; i++) {
 	for (int j = 0; j < imgCpy->width; j++) {
-	  imgCpy->data[i][j] = (imgCpy->data[i - 1][j - 1] + 2 * imgCpy->data[i][j - 1] + imgCpy->data[i + 1][j - 1] +
-		  2 * imgCpy->data[i - 1][j] + 4 * imgCpy->data[i][j] + 2 * imgCpy->data[i + 1][j] +
-		  imgCpy->data[i - 1][j + 1] + 2 * imgCpy->data[i][j + 1] + imgCpy->data[i + 1][j + 1]) / 16;
+	// ignore pixels at the border of the image
+	if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2) 
+		continue;
+
+	imgCpy->data[i][j] = (
+		imgCpy->data[i - 1][j - 1] + 
+		2 * imgCpy->data[i][j - 1] + 
+		imgCpy->data[i + 1][j - 1] +
+	  	2 * imgCpy->data[i - 1][j] +
+		4 * imgCpy->data[i][j] +
+		2 * imgCpy->data[i + 1][j] +
+		imgCpy->data[i - 1][j + 1] + 
+		2 * imgCpy->data[i][j + 1] + 
+		imgCpy->data[i + 1][j + 1]
+	) / 16;
 	}
   }
 
