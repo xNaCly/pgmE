@@ -26,6 +26,13 @@ enum {
 };
 
 /**
+ * @brief converts string to integer
+ * @param text
+ * @return integer
+ */
+int toInt(const char *text);
+
+/**
  * @brief exits the program and prints the given text highlighted red
  * @param text
  */
