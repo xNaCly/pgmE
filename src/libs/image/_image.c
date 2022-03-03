@@ -102,7 +102,7 @@ Image *scale(Image *img, int width, int height) {
 
   for (int i = 0; i < newImg->height; i++) {
 	for (int j = 0; j < newImg->width; j++) {
-	  for (int k = 0; k < img->width; k++) {
+	  for (int k = 0; k < img->height; k++) {
 		for (int l = 0; l < img->width; l++) {
 		  newImg->data[i][j] = (1 - img->width) * (1 - (img->height)) * (img->data[k][l])
 			  + (img->width) * (1 - (img->height)) * (img->data[k][l + 1])
