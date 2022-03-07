@@ -1,6 +1,7 @@
 /**
  * @file _pgm.h
- * @brief handles everything regarding images in the .pgm standard http://netpbm.sourceforge.net/doc/pgm.html (Plain PGM)
+ * @brief handles everything regarding images in the .pgm standard
+ * http://netpbm.sourceforge.net/doc/pgm.html (Plain PGM)
  * @author xnacly
  * @date 2022-02-21
  */
@@ -12,15 +13,15 @@
 /**
  * @brief struct to store PGM-image data in
  */
-typedef struct
-{
+typedef struct {
   int width;
   int height;
   int **data; // 2d pointer: Brightness values
 } Image;
 
 /**
- * @brief creates an Image with given width and height, set every pixel to the default_brightness
+ * @brief creates an Image with given width and height, set every pixel to the
+ * default_brightness
  * @param width
  * @param height
  * @param default_brightness

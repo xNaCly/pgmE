@@ -6,9 +6,12 @@ int compare(const void *a, const void *b) {
   int int_a = *((int *)a);
   int int_b = *((int *)b);
 
-  if (int_a == int_b) return 0;
-  else if (int_a < int_b) return -1;
-  else return 1;
+  if (int_a == int_b)
+    return 0;
+  else if (int_a < int_b)
+    return -1;
+  else
+    return 1;
 }
 
 int toInt(const char *text) {
@@ -31,12 +34,12 @@ void throw_warning(char text[]) {
 
 int check_is_option_valid(int selection, int image_in_memory) {
   if (selection > SELECTION_EXIT) {
-	return SELECTION_INVALID;
+    return SELECTION_INVALID;
   }
   // disallow editing and saving if there is no file in mem
   if (selection != 0 && selection != SELECTION_EXIT && !image_in_memory) {
-	throw_warning("No Image loaded into the program.");
-	return SELECTION_INVALID;
+    throw_warning("No Image loaded into the program.");
+    return SELECTION_INVALID;
   }
   return selection;
 }
