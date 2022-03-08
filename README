@@ -26,3 +26,13 @@ Written by:
     https://github.com/voilacf
     
 in the scope of a project for the first semester majoring in applied computer science.
+
+Current TODO's:
+---------------
+src/main.c:// TODO: fix not being able to do anything after saving image
+src/main.c:// TODO: error handling for toInt
+src/main.c:// TODO: add secondary confirmation prompt to exit if file in mem
+src/libs/image/_image.c:// TODO: WIP
+src/libs/image/_image.c:// TODO: BIG WIP
+src/libs/image/_image.c:  // TODO: currently not calculating the correct dimensions
+---------------
