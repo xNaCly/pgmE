@@ -12,8 +12,10 @@
 #include "libs/image/_image.h"
 #include "libs/util/_util.h"
 
-// TODO: remove double free
-// TODO: fix wrong selection input handling
+// fixed: todo: find double free
+// TODO: fix not being able to do anything after saving image
+// TODO: error handling for toInt 
+// TODO: add secondary confirmation prompt to exit if file in mem
 
 void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
   const char *MAIN_OPTIONS[SELECTION_EXIT + 1] = {
@@ -40,7 +42,6 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
     char *temp = malloc(sizeof(char) * 10);
     scanf("%s", temp);
     selection = toInt(temp);
-    free(temp);
 
     selection = check_is_option_valid(selection, image_in_memory);
 
@@ -102,7 +103,6 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       int threshold_ = 0;
       printf("Schwellwert: ");
 
-      temp = malloc(sizeof(char) * 10);
       scanf("%s", temp);
       threshold_ = toInt(temp);
       free(temp);
@@ -120,17 +120,13 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 
       printf("Höhe: ");
 
-      temp = malloc(sizeof(char) * 10);
       scanf("%s", temp);
       height = toInt(temp);
-      free(temp);
 
       printf("Breite: ");
 
-      temp = malloc(sizeof(char) * 10);
       scanf("%s", temp);
       height = toInt(temp);
-      free(temp);
 
       Image *copy = scale(img, width, height);
       freeImage(img);
@@ -168,9 +164,10 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       if (!feedback) {
         throw_error(
             "Datei konnte nicht gespeichert werden. (Fehler beim Speichern)");
-      } else {
-        freeImage(img);
-      }
+      } 
+     // else {
+     //   freeImage(img);
+     // }
 
       edited_unsaved_image_in_memory = 0;
       image_in_memory = 0;
@@ -184,13 +181,13 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         printf("[%d] %s\n", 8, MAIN_OPTIONS[8]);
         exit(0);
       }
-      printf("%sThere is still an unsaved edited image in memory, save it "
-             "before exiting%s\n",
-             ANSI_COLOR_RED, ANSI_RESET);
+
+      printf("Noch ein bearbeitetes, ungespeicherters Bild im Speicher, willst du wirklich beenden?\n");
+      // see todo L17
       break;
     }
     default: {
-      throw_warning("Invalid Option");
+      throw_warning("Invalide Option");
       break;
     }
     }

@@ -64,12 +64,16 @@ Image *laplace(Image *img) {
       if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
         continue;
 
-      imgCpy->data[i][j] =
-          sqrt(imgCpy->data[i - 1][j - 1] + imgCpy->data[i][j - 1] +
-               imgCpy->data[i + 1][j - 1] + imgCpy->data[i - 1][j] -
-               8 * imgCpy->data[i][j] + imgCpy->data[i + 1][j] +
-               imgCpy->data[i - 1][j + 1] + imgCpy->data[i][j + 1] +
-               imgCpy->data[i + 1][j + 1]);
+      imgCpy->data[i][j] = (
+          imgCpy->data[i - 1][j - 1] + 
+          imgCpy->data[i][j - 1] +
+          imgCpy->data[i + 1][j - 1] +
+          imgCpy->data[i - 1][j] -
+          8 * imgCpy->data[i][j] + 
+          imgCpy->data[i + 1][j] +
+          imgCpy->data[i - 1][j + 1] + 
+          imgCpy->data[i][j + 1] +
+          imgCpy->data[i + 1][j + 1]);
     }
   }
 
@@ -98,6 +102,11 @@ Image *threshold(Image *img, int threshold) {
 
 // TODO: BIG WIP
 Image *scale(Image *img, int width, int height) {
+  if(width == img->width && height == img->height){
+    Image *cp = copyImage(img);
+    return cp;
+  }
+
   Image *newImg = createImage(width, height, 0);
 
   for (int i = 0; i < newImg->height; i++) {
@@ -105,10 +114,10 @@ Image *scale(Image *img, int width, int height) {
       for (int k = 0; k < img->height; k++) {
         for (int l = 0; l < img->width; l++) {
           newImg->data[i][j] =
-              (1 - img->width) * (1 - (img->height)) * (img->data[k][l]) +
+              ((1 - img->width) * (1 - (img->height)) * (img->data[k][l]) +
               (img->width) * (1 - (img->height)) * (img->data[k][l + 1]) +
               (1 - (img->width)) * (img->height) * (img->data[k + 1][l]) +
-              (img->width) * (img->height) * (img->data[k + 1][l + 1]);
+              (img->width) * (img->height) * (img->data[k + 1][l + 1]));
         }
       }
     }
@@ -147,7 +156,7 @@ Image *rotate(Image *img, double angle, int brigthness) {
       if (x_new < 0 || y_new < 0 || x_new >= img->width || y_new >= img->height)
         continue;
       imgCpy->data[y_new][x_new] =
-          img->data[y][x]; // TODO: doesnt work, seg fault
+          img->data[y][x]; 
     }
   }
 
