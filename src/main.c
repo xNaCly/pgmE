@@ -7,8 +7,7 @@
 
 #include "libs/pgm/_pgm.h"
 #include <stdio.h>
-#include <stdlib.h>
-// used for: loadImage, freeImage
+#include <stdlib.h> // used for: loadImage, freeImage
 #include "libs/image/_image.h"
 #include "libs/util/_util.h"
 
@@ -17,7 +16,8 @@
 void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
   const char *MAIN_OPTIONS[SELECTION_EXIT + 1] = {
       "Datei laden",      "Median-Filter",        "Gauß-Filter",
-      "Laplace-Operator", "Schwellwertverfahren", "Bild skalieren",
+     // "Laplace-Operator",
+      "Schwellwertverfahren", "Bild skalieren",
       "Bild rotieren",    "Datei speichern",      "Exit"};
   int selection = 0;
   Image *img = NULL;
@@ -89,15 +89,15 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       printf(ANSI_COLOR_GREEN"Bild wurde mit dem Gauss Filter bearbeitet."ANSI_RESET);
       break;
     }
-    case SELECTION_LAPLACE_OPERATOR: {
-      printf("[%d] %s\n", 3, MAIN_OPTIONS[3]);
-      Image *copy = laplace(img);
-      freeImage(&img);
-      img = copy;
-      edited_unsaved_image_in_memory = 1;
-      printf(ANSI_COLOR_GREEN"Bild wurde mit dem Laplace Operator bearbeitet."ANSI_RESET);
-      break;
-    }
+//    case SELECTION_LAPLACE_OPERATOR: {
+//      printf("[%d] %s\n", 3, MAIN_OPTIONS[3]);
+//      Image *copy = laplace(img);
+//      freeImage(&img);
+//      img = copy;
+//      edited_unsaved_image_in_memory = 1;
+//      printf(ANSI_COLOR_GREEN"Bild wurde mit dem Laplace Operator bearbeitet."ANSI_RESET);
+//      break;
+//    }
     case SELECTION_THRESHOLD: {
       printf("[%d] %s\n", 4, MAIN_OPTIONS[4]);
       int threshold_ = 0;
@@ -141,7 +141,6 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       printf("[%d] %s\n", 6, MAIN_OPTIONS[6]);
       float angle = 0;
       int brightness = MAX_BRIGHT;
-      // clear();
       printf("Winkel um den das Bild gedreht werden soll: ");
       scanf("%f", &angle);
       printf("Helligkeit mit der freiliegende Pixel gefüllt werden sollen: ");
@@ -180,8 +179,8 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
     }
     case SELECTION_EXIT: {
       if (!edited_unsaved_image_in_memory) {
-        printf("[%d] %s\n", 8, MAIN_OPTIONS[8]);
-        exit(0);
+        printf("[%d] %s\n", SELECTION_EXIT, MAIN_OPTIONS[SELECTION_EXIT]);
+        exit(EXIT_SUCCESS);
       }
 
       printf("Noch ein bearbeitetes, ungespeicherters Bild im Speicher, willst du wirklich beenden?\n");
@@ -194,12 +193,12 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
     }
     }
   }
-  exit(0);
+  exit(EXIT_SUCCESS);
 }
 
 int main(void) {
   int edited_image_in_memory = 0;
   int image_in_memory = 0;
   main_menu(edited_image_in_memory, image_in_memory);
-  return 0;
+  return EXIT_SUCCESS;
 }

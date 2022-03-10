@@ -1,7 +1,7 @@
 #include "_image.h"
 #include <math.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h> // malloc
 
 Image *median(Image *img) {
   Image *imgCpy = copyImage(img);
@@ -54,31 +54,31 @@ Image *gauss(Image *img) {
   return imgCpy;
 }
 
-// TODO: WIP
-Image *laplace(Image *img) {
-  Image *imgCpy = copyImage(img);
-
-  for (int i = 0; i < imgCpy->height; i++) {
-    for (int j = 0; j < imgCpy->width; j++) {
-      // ignore pixels at the border of the image
-      if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
-        continue;
-
-      imgCpy->data[i][j] = (
-          imgCpy->data[i - 1][j - 1] + 
-          imgCpy->data[i][j - 1] +
-          imgCpy->data[i + 1][j - 1] +
-          imgCpy->data[i - 1][j] -
-          8 * imgCpy->data[i][j] + 
-          imgCpy->data[i + 1][j] +
-          imgCpy->data[i - 1][j + 1] + 
-          imgCpy->data[i][j + 1] +
-          imgCpy->data[i + 1][j + 1]);
-    }
-  }
-
-  return imgCpy;
-}
+// todo: WIP (overthrown) 
+//Image *laplace(Image *img) {
+//  Image *imgCpy = copyImage(img);
+//
+//  for (int i = 0; i < imgCpy->height; i++) {
+//    for (int j = 0; j < imgCpy->width; j++) {
+//      // ignore pixels at the border of the image
+//      if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
+//        continue;
+//
+//      imgCpy->data[i][j] = (
+//          imgCpy->data[i - 1][j - 1] + 
+//          imgCpy->data[i][j - 1] +
+//          imgCpy->data[i + 1][j - 1] +
+//          imgCpy->data[i - 1][j] -
+//          8 * imgCpy->data[i][j] + 
+//          imgCpy->data[i + 1][j] +
+//          imgCpy->data[i - 1][j + 1] + 
+//          imgCpy->data[i][j + 1] +
+//          imgCpy->data[i + 1][j + 1]);
+//    }
+//  }
+//
+//  return imgCpy;
+//}
 
 Image *threshold(Image *img, int threshold) {
   if (threshold < 1) {

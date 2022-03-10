@@ -30,7 +30,7 @@ Image *gauss(Image *img);
  * @brief Modifies the image using the laplace-operator
  * @param img
  */
-Image *laplace(Image *img);
+// Image *laplace(Image *img);
 
 /**
  * @brief Modifies the Image using the thresholding method

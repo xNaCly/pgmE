@@ -1,8 +1,9 @@
 #include "_util.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdlib.h> // exit, EXIT_FAILURE
+#include <string.h> // strcmp
 
+// used for sorting with qsort 
 int compare(const void *a, const void *b) {
   int int_a = *((int *)a);
   int int_b = *((int *)b);
@@ -20,8 +21,11 @@ int toInt(const char *text) {
   long l;
 
   l = strtol(text, &ptr, 10);
+
+  // checks if text and rest after conversion from strtol is equal, 
+  // meaning no int was in text
   if(strcmp(text, ptr) == 0){
-    return -1;
+    return SELECTION_INVALID;
   }
 
   return (int)l;
@@ -29,7 +33,7 @@ int toInt(const char *text) {
 
 void throw_error(char text[]) {
   printf("%s%s%s\n", ANSI_COLOR_RED, text, ANSI_RESET);
-  exit(1);
+  exit(EXIT_FAILURE);
 }
 
 void throw_warning(char text[]) {
@@ -40,9 +44,10 @@ int check_is_option_valid(int selection, int image_in_memory) {
   if (selection > SELECTION_EXIT) {
     return SELECTION_INVALID;
   }
+
   // disallow editing and saving if there is no file in mem
   if (selection != 0 && selection != SELECTION_EXIT && !image_in_memory) {
-    throw_warning("No Image loaded into the program.");
+    throw_warning("Bild bearbeiten ohne Bild im Speicher nicht möglich.");
     return SELECTION_INVALID;
   }
   return selection;
