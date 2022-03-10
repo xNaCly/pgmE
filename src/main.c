@@ -78,6 +78,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       freeImage(&img);
       img = copy;
       edited_unsaved_image_in_memory = 1;
+      printf(ANSI_COLOR_GREEN"Bild wurde mit dem Median Operator bearbeitet."ANSI_RESET);
       break;
     }
     case SELECTION_GAUSS_FILTER: {
@@ -86,6 +87,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       freeImage(&img);
       img = copy;
       edited_unsaved_image_in_memory = 1;
+      printf(ANSI_COLOR_GREEN"Bild wurde mit dem Gauss Filter bearbeitet."ANSI_RESET);
       break;
     }
     case SELECTION_LAPLACE_OPERATOR: {
@@ -94,6 +96,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       freeImage(&img);
       img = copy;
       edited_unsaved_image_in_memory = 1;
+      printf(ANSI_COLOR_GREEN"Bild wurde mit dem Laplace Operator bearbeitet."ANSI_RESET);
       break;
     }
     case SELECTION_THRESHOLD: {
@@ -109,6 +112,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       freeImage(&img);
       img = copy;
       edited_unsaved_image_in_memory = 1;
+      printf(ANSI_COLOR_GREEN"Bild wurde mit dem Threshold Operator bearbeitet."ANSI_RESET);
       break;
     }
     case SELECTION_SCALE: {
@@ -131,6 +135,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       img = copy;
 
       edited_unsaved_image_in_memory = 1;
+      printf(ANSI_COLOR_GREEN"Bild wurde skaliert."ANSI_RESET);
       break;
     }
     case SELECTION_ROTATE: {
