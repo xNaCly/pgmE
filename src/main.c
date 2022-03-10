@@ -12,8 +12,6 @@
 #include "libs/image/_image.h"
 #include "libs/util/_util.h"
 
-// fixed: todo: find double free
-// TODO: fix not being able to do anything after saving image
 // TODO: error handling for toInt 
 // TODO: add secondary confirmation prompt to exit if file in mem
 
@@ -52,7 +50,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         char filename[255] = ""; // size: 255 due to the maximum file length
 
         if (img != NULL) {
-          freeImage(img);
+          freeImage(&img);
         } else {
 
           while (img == NULL) {
@@ -77,7 +75,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
     case SELECTION_MEDIAN_FILTER: {
       printf("[%d] %s\n", 1, MAIN_OPTIONS[1]);
       Image *copy = median(img);
-      freeImage(img);
+      freeImage(&img);
       img = copy;
       edited_unsaved_image_in_memory = 1;
       break;
@@ -85,7 +83,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
     case SELECTION_GAUSS_FILTER: {
       printf("[%d] %s\n", 2, MAIN_OPTIONS[2]);
       Image *copy = gauss(img);
-      freeImage(img);
+      freeImage(&img);
       img = copy;
       edited_unsaved_image_in_memory = 1;
       break;
@@ -93,7 +91,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
     case SELECTION_LAPLACE_OPERATOR: {
       printf("[%d] %s\n", 3, MAIN_OPTIONS[3]);
       Image *copy = laplace(img);
-      freeImage(img);
+      freeImage(&img);
       img = copy;
       edited_unsaved_image_in_memory = 1;
       break;
@@ -108,7 +106,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       free(temp);
 
       Image *copy = threshold(img, threshold_);
-      freeImage(img);
+      freeImage(&img);
       img = copy;
       edited_unsaved_image_in_memory = 1;
       break;
@@ -129,7 +127,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       height = toInt(temp);
 
       Image *copy = scale(img, width, height);
-      freeImage(img);
+      freeImage(&img);
       img = copy;
 
       edited_unsaved_image_in_memory = 1;
@@ -145,7 +143,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       printf("Helligkeit mit der freiliegende Pixel gefüllt werden sollen: ");
       scanf("%d", &brightness);
       Image *copy = rotate(img, angle, brightness);
-      freeImage(img);
+      freeImage(&img);
       img = copy;
       printf("%sBild wurde um %f-Grad im Uhrzeigersinn gedreht.%s\n",
              ANSI_COLOR_GREEN, angle, ANSI_RESET);
@@ -165,9 +163,9 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         throw_error(
             "Datei konnte nicht gespeichert werden. (Fehler beim Speichern)");
       } 
-     // else {
-     //   freeImage(img);
-     // }
+      else {
+        freeImage(&img);
+      }
 
       edited_unsaved_image_in_memory = 0;
       image_in_memory = 0;

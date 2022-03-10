@@ -33,7 +33,7 @@ Image *createImage(int width, int height, int default_brightness);
  * @brief frees the memory taken up by the given Image pointer
  * @param img_pointer Image pointer created with createImage()
  */
-void freeImage(Image *img_pointer);
+void freeImage(Image **img_pointer);
 
 /**
  * @brief  copys the image from the given pointer to a new pointer

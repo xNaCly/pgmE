@@ -28,11 +28,11 @@ Image *createImage(int width, int height, int default_brightness) {
   return img;
 }
 
-void freeImage(Image *img_pointer) {
+void freeImage(Image **img_pointer) {
   // avoid double free
-  if(img_pointer == NULL) return;
-  free(img_pointer); // free memory taken up by pointer
-  img_pointer =
+  if(*img_pointer == NULL) return;
+  free(*img_pointer); // free memory taken up by pointer
+  *img_pointer =
       NULL; // set pointer NULL to prevent it pointing to a random memory adress
 }
 
