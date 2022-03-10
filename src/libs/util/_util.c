@@ -1,6 +1,7 @@
 #include "_util.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int compare(const void *a, const void *b) {
   int int_a = *((int *)a);
@@ -19,6 +20,9 @@ int toInt(const char *text) {
   long l;
 
   l = strtol(text, &ptr, 10);
+  if(strcmp(text, ptr) == 0){
+    return -1;
+  }
 
   return (int)l;
 }

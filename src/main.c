@@ -12,7 +12,6 @@
 #include "libs/image/_image.h"
 #include "libs/util/_util.h"
 
-// TODO: error handling for toInt 
 // TODO: add secondary confirmation prompt to exit if file in mem
 
 void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
