@@ -21,6 +21,7 @@ Try locally:
 
 Write-up:
     https://xnacly.vercel.app/blog/image_editor_part_1
+    https://xnacly.vercel.app/blog/image_editor_part_2
 
 Written by:
 
@@ -32,10 +33,7 @@ in the scope of a project for the first semester majoring in applied computer sc
 
 Current TODO's:
 ---------------
-src/main.c:// TODO: fix not being able to do anything after saving image
-src/main.c:// TODO: error handling for toInt
 src/main.c:// TODO: add secondary confirmation prompt to exit if file in mem
-src/libs/image/_image.c:// TODO: WIP
 src/libs/image/_image.c:// TODO: BIG WIP
 src/libs/image/_image.c:  // TODO: currently not calculating the correct dimensions
 ---------------
