@@ -2,12 +2,15 @@
 
 #include <math.h>
 #include <stdio.h>
-#include <stdlib.h>  // malloc
+#include <stdlib.h> // malloc
 
-Image *median(Image *img) {
+Image *median(Image *img)
+{
   Image *imgCpy = copyImage(img);
-  for (int i = 0; i < imgCpy->height; i++) {
-    for (int j = 0; j < imgCpy->width; j++) {
+  for (int i = 0; i < imgCpy->height; i++)
+  {
+    for (int j = 0; j < imgCpy->width; j++)
+    {
       // ignore pixels at the border of the image
       if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
         continue;
@@ -15,7 +18,7 @@ Image *median(Image *img) {
       // fill a field with the 8 surrounding pixels
       int surNums[9] = {imgCpy->data[i - 1][j + 1], imgCpy->data[i][j + 1],
                         imgCpy->data[i + 1][j + 1], imgCpy->data[i - 1][j],
-                        imgCpy->data[i][j],         imgCpy->data[i + 1][j],
+                        imgCpy->data[i][j], imgCpy->data[i + 1][j],
                         imgCpy->data[i - 1][j - 1], imgCpy->data[i][j - 1],
                         imgCpy->data[i + 1][j - 1]};
 
@@ -33,11 +36,14 @@ Image *median(Image *img) {
   return imgCpy;
 }
 
-Image *gauss(Image *img) {
+Image *gauss(Image *img)
+{
   Image *imgCpy = copyImage(img);
 
-  for (int i = 0; i < imgCpy->height; i++) {
-    for (int j = 0; j < imgCpy->width; j++) {
+  for (int i = 0; i < imgCpy->height; i++)
+  {
+    for (int j = 0; j < imgCpy->width; j++)
+    {
       // ignore pixels at the border of the image
       if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
         continue;
@@ -55,45 +61,54 @@ Image *gauss(Image *img) {
   return imgCpy;
 }
 
-// Image *laplace(Image *img) {
-//  Image *imgCpy = copyImage(img);
-//
-//  for (int i = 0; i < imgCpy->height; i++) {
-//    for (int j = 0; j < imgCpy->width; j++) {
-//      // ignore pixels at the border of the image
-//      if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
-//        continue;
-//
-//      imgCpy->data[i][j] = (
-//          imgCpy->data[i - 1][j - 1] +
-//          imgCpy->data[i][j - 1] +
-//          imgCpy->data[i + 1][j - 1] +
-//          imgCpy->data[i - 1][j] -
-//          8 * imgCpy->data[i][j] +
-//          imgCpy->data[i + 1][j] +
-//          imgCpy->data[i - 1][j + 1] +
-//          imgCpy->data[i][j + 1] +
-//          imgCpy->data[i + 1][j + 1]);
-//    }
-//  }
-//
-//  return imgCpy;
-//}
+Image *laplace(Image *img)
+{
+  Image *imgCpy = copyImage(img);
 
-Image *threshold(Image *img, int threshold) {
+  for (int i = 0; i < imgCpy->height; i++)
+  {
+    for (int j = 0; j < imgCpy->width; j++)
+    {
+      // ignore pixels at the border of the image
+      if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
+        continue;
+
+      imgCpy->data[i][j] = sqrt(
+          img->data[i - 1][j - 1] +
+          img->data[i][j - 1] +
+          img->data[i + 1][j - 1] +
+          img->data[i - 1][j] -
+          8 * img->data[i][j] +
+          img->data[i + 1][j] +
+          img->data[i - 1][j + 1] +
+          img->data[i][j + 1] +
+          img->data[i + 1][j + 1]);
+    }
+  }
+
+  return imgCpy;
+}
+
+Image *threshold(Image *img, int threshold)
+{
   // threshold higher than MAX_BRIGHT and lower than 1 doesnt make sense, therefore update threshold to reasonable values
-  if (threshold < 1) {
+  if (threshold < 1)
+  {
     printf("threshold was too small, was set to: 1\n");
     threshold = 1;
-  } else if (threshold > MAX_BRIGHT) {
+  }
+  else if (threshold > MAX_BRIGHT)
+  {
     printf("threshold was too big, was set to: %d\n", MAX_BRIGHT);
     threshold = MAX_BRIGHT;
   }
 
   Image *imgCpy = copyImage(img);
 
-  for (int i = 0; i < imgCpy->height; i++) {
-    for (int j = 0; j < imgCpy->width; j++) {
+  for (int i = 0; i < imgCpy->height; i++)
+  {
+    for (int j = 0; j < imgCpy->width; j++)
+    {
       // if pixel at coord is smaller than threshold -> replace it with 0, otherwise replace it with MAX_BRIGHT
       imgCpy->data[i][j] = (imgCpy->data[i][j] < threshold) ? 0 : MAX_BRIGHT;
     }
@@ -103,19 +118,25 @@ Image *threshold(Image *img, int threshold) {
 }
 
 // TODO: BIG WIP
-Image *scale(Image *img, int width, int height) {
+Image *scale(Image *img, int width, int height)
+{
   // if image has same dimensions as the given dimensions to rescale, return a copy of the given img
-  if (width == img->width && height == img->height) {
+  if (width == img->width && height == img->height)
+  {
     Image *imgCpy = copyImage(img);
     return imgCpy;
   }
 
   Image *newImg = createImage(width, height, 0);
 
-  for (int k = 0; k < newImg->height; k++) {
-    for (int l = 0; l < newImg->width; l++) {
-      for (int i = 0; i < img->height; i++) {
-        for (int j = 0; j < img->width; j++) {
+  for (int k = 0; k < newImg->height; k++)
+  {
+    for (int l = 0; l < newImg->width; l++)
+    {
+      for (int i = 0; i < img->height; i++)
+      {
+        for (int j = 0; j < img->width; j++)
+        {
           newImg->data[i][j] = (1 - width) * (1 - height) * img->data[i][j] +
                                width * (1 - height) * img->data[i][j + 1] +
                                (1 - width) * height * img->data[i + 1][j] +
@@ -128,7 +149,8 @@ Image *scale(Image *img, int width, int height) {
   return newImg;
 }
 
-Image *rotate(Image *img, double angle, int brigthness) {
+Image *rotate(Image *img, double angle, int brigthness)
+{
   angle = angle * (PI / 180);
 
   Image *imgCpy = createImage(img->width, img->height, brigthness);
@@ -137,8 +159,10 @@ Image *rotate(Image *img, double angle, int brigthness) {
   int x_mid = img->width / 2;
   int y_mid = img->height / 2;
 
-  for (int y = 0; y < img->height; y++) {
-    for (int x = 0; x < img->width; x++) {
+  for (int y = 0; y < img->height; y++)
+  {
+    for (int x = 0; x < img->width; x++)
+    {
       // calculate new positions
       int x_new = (int)round(cos(angle) * (x - x_mid) -
                              sin(angle) * (y - y_mid) + x_mid);
@@ -146,8 +170,10 @@ Image *rotate(Image *img, double angle, int brigthness) {
                              cos(angle) * (y - y_mid) + y_mid);
       // out of bound checks
       // ----------------------------
-      if (x_new == img->width) x_new = 0;
-      if (y_new == img->height) y_new = 0;
+      if (x_new == img->width)
+        x_new = 0;
+      if (y_new == img->height)
+        y_new = 0;
       if (x_new < 0 || y_new < 0 || x_new >= img->width || y_new >= img->height)
         continue;
       // ----------------------------

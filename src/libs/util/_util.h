@@ -16,18 +16,19 @@
 
 // enables the switch case which contains the main menu
 // (basically just used to compare to the user input)
-enum {
+enum
+{
   SELECTION_LOAD = 0,
   SELECTION_MEDIAN_FILTER,
   SELECTION_GAUSS_FILTER,
-  // SELECTION_LAPLACE_OPERATOR, // INFO: discontinued
+  SELECTION_LAPLACE_OPERATOR, // INFO: discontinued
   SELECTION_THRESHOLD,
   SELECTION_SCALE,
   SELECTION_ROTATE,
   SELECTION_SAVE,
-  SELECTION_EXIT,  
+  SELECTION_EXIT,
   SELECTION_INVALID =
-      9999 // Error code 
+      9999 // Error code
 };
 
 /**
@@ -49,14 +50,14 @@ int toInt(const char *text);
  * @brief exits the program and prints the given text highlighted red
  * @param text
  */
-void throw_error(const char* text);
+void throw_error(const char *text);
 
 /**
  * @brief prints the given text highlighted yellow, differs from throw_error by
  * not exiting the program.
  * @param text
  */
-void throw_warning(const char* text);
+void throw_warning(const char *text);
 
 /**
  * @brief checks if the selection meets certian criteria
