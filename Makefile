@@ -13,7 +13,7 @@ main: pre
 	gcc $(COMPILE)
 
 debug: pre
-	gcc -g $(COMPILE)
+	gcc -g $(COMPILE) # compiles executable with debugging info
 	gdb $(BUILD_DIR)/main.out
 
 pre: 
