@@ -1,5 +1,6 @@
-PGM-Editor
+pgmE - portable graymap Editor
 ==========
+pgmE is an extremely fast, small and efficient editor which implements the pgm standard.
 
 Small Image editor which only supports the .pgm standard.
 
