@@ -8,10 +8,9 @@
 #include "libs/pgm/_pgm.h"
 #include <stdio.h>
 #include <stdlib.h> // used for: loadImage, freeImage
+#include <ctype.h>
 #include "libs/image/_image.h"
 #include "libs/util/_util.h"
-
-// TODO: add secondary confirmation prompt to exit if file in mem
 
 void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
   const char *MAIN_OPTIONS[SELECTION_EXIT + 1] = {
@@ -30,7 +29,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
     for (int i = 0; i <= SELECTION_EXIT; i++) {
       // loop over all options and print them
       int isActive = (image_in_memory || i == SELECTION_LOAD ||
-                      i == SELECTION_SAVE || i == SELECTION_EXIT);
+                       i == SELECTION_EXIT);
       printf("[%d] %s%s%s\n", i, isActive ? ANSI_COLOR_GREEN : ANSI_COLOR_RED,
              MAIN_OPTIONS[i], ANSI_RESET);
     }
@@ -45,7 +44,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
     switch (selection) {
     case SELECTION_LOAD: {
       if (!image_in_memory) {
-        printf("[%d] %s\n", 0, MAIN_OPTIONS[0]);
+        printf("[%d] %s\n", SELECTION_LOAD, MAIN_OPTIONS[SELECTION_LOAD]);
         char filename[255] = ""; // size: 255 due to the maximum file length
 
         if (img != NULL) {
@@ -72,7 +71,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       break;
     }
     case SELECTION_MEDIAN_FILTER: {
-      printf("[%d] %s\n", 1, MAIN_OPTIONS[1]);
+      printf("[%d] %s\n", SELECTION_MEDIAN_FILTER, MAIN_OPTIONS[SELECTION_MEDIAN_FILTER]);
       Image *copy = median(img);
       freeImage(&img);
       img = copy;
@@ -81,7 +80,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       break;
     }
     case SELECTION_GAUSS_FILTER: {
-      printf("[%d] %s\n", 2, MAIN_OPTIONS[2]);
+      printf("[%d] %s\n", SELECTION_GAUSS_FILTER, MAIN_OPTIONS[SELECTION_GAUSS_FILTER]);
       Image *copy = gauss(img);
       freeImage(&img);
       img = copy;
@@ -99,7 +98,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 //      break;
 //    }
     case SELECTION_THRESHOLD: {
-      printf("[%d] %s\n", 4, MAIN_OPTIONS[4]);
+      printf("[%d] %s\n", SELECTION_THRESHOLD, MAIN_OPTIONS[SELECTION_THRESHOLD]);
       int threshold_ = 0;
       printf("Schwellwert: ");
 
@@ -115,7 +114,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       break;
     }
     case SELECTION_SCALE: {
-      printf("[%d] %s\n", 5, MAIN_OPTIONS[5]);
+      printf("[%d] %s\n", SELECTION_SCALE, MAIN_OPTIONS[SELECTION_SCALE]);
       int width = 0;
       int height = 0;
 
@@ -138,7 +137,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       break;
     }
     case SELECTION_ROTATE: {
-      printf("[%d] %s\n", 6, MAIN_OPTIONS[6]);
+      printf("[%d] %s\n", SELECTION_ROTATE, MAIN_OPTIONS[SELECTION_ROTATE]);
       float angle = 0;
       int brightness = MAX_BRIGHT;
       printf("Winkel um den das Bild gedreht werden soll: ");
@@ -154,7 +153,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       break;
     }
     case SELECTION_SAVE: {
-      printf("[%d] %s\n", 7, MAIN_OPTIONS[7]);
+      printf("[%d] %s\n", SELECTION_SAVE, MAIN_OPTIONS[SELECTION_SAVE]);
       char filename[255];
 
       printf("Dateiname (with .pgm): ");
@@ -183,8 +182,22 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         exit(EXIT_SUCCESS);
       }
 
-      printf("Noch ein bearbeitetes, ungespeicherters Bild im Speicher, willst du wirklich beenden?\n");
-      // see todo L17
+      printf("Noch ein bearbeitetes, ungespeicherters Bild im Speicher, willst du wirklich beenden?");
+      char c = -1;
+
+      while(c != 'y' || c != 'n'){
+        // TODO: this prints two times, otherwise works
+        printf("\n[Y/n]: ");
+        scanf("%c", &c);
+
+        c = tolower((unsigned char) c);
+
+        if(c == 'y')
+         exit(EXIT_SUCCESS);
+        else if(c == 'n')
+          break;
+      }
+
       break;
     }
     default: {
