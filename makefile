@@ -1,16 +1,25 @@
-cc := -fdiagnostics-color=always \
-			-Wall -Wpedantic -std=c99 \
-			src/main.c src/libs/util/_util.c \
-			src/libs/pgm/_pgm.c \
-			src/libs/image/_image.c \
-			-lm -o build/main.out
-main:
-	gcc ${cc}
-	build/main.out
-debug:
-	gcc -g ${cc}
-	gdb build/main.out
+FLAGS := -fdiagnostics-color=always -Wall -Wpedantic -std=c99 # compiler flags
+
+BUILD_DIR := ./build
+SRC_DIR := ./src
+
+FILES := $(shell find $(SRC_DIR) -name "*.c") # finds all source files in /src/*
+COMPILE := $(FLAGS) $(FILES) -lm -o $(BUILD_DIR)/main.out # put everything together
+
+run: main
+	$(BUILD_DIR)/main.out
+
+main: pre
+	gcc $(COMPILE)
+
+debug: pre
+	gcc -g $(COMPILE)
+	gdb $(BUILD_DIR)/main.out
+
+pre: 
+	mkdir -p $(BUILD_DIR) 
+
+.PHONY: clean
 clean:
-	rm -r build/; rm test.pgm
-pre:
-	mkdir build/
+	rm -rf $(BUILD_DIR) 
+	rm -f test.pgm
