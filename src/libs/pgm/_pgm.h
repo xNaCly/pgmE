@@ -16,7 +16,7 @@
 typedef struct {
   int width;
   int height;
-  int **data; // 2d pointer: Brightness values
+  int **data;  // 2d pointer: Brightness values
 } Image;
 
 /**

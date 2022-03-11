@@ -1,4 +1,5 @@
 #include "_pgm.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,10 +31,10 @@ Image *createImage(int width, int height, int default_brightness) {
 
 void freeImage(Image **img_pointer) {
   // avoid double free
-  if(*img_pointer == NULL) return;
-  free(*img_pointer); // free memory taken up by pointer
-  *img_pointer =
-      NULL; // set pointer NULL to prevent it pointing to a random memory adress
+  if (*img_pointer == NULL) return;
+  free(*img_pointer);   // free memory taken up by pointer
+  *img_pointer = NULL;  // set pointer NULL to prevent it pointing to a random
+                        // memory adress
 }
 
 Image *copyImage(Image *img_pointer) {
@@ -58,8 +59,7 @@ Image *loadImage(char file_name[]) {
   FILE *file = fopen(file_name, "r");
 
   // if opening the file failed return NULL
-  if (file == NULL)
-    return NULL;
+  if (file == NULL) return NULL;
 
   // get first char of the file
   char pgm_prefix = getc(file);

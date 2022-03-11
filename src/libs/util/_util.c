@@ -1,9 +1,10 @@
 #include "_util.h"
-#include <stdio.h>
-#include <stdlib.h> // exit, EXIT_FAILURE
-#include <string.h> // strcmp
 
-// used for sorting with qsort 
+#include <stdio.h>
+#include <stdlib.h>  // exit, EXIT_FAILURE
+#include <string.h>  // strcmp
+
+// used for sorting with qsort
 int compare(const void *a, const void *b) {
   int int_a = *((int *)a);
   int int_b = *((int *)b);
@@ -22,9 +23,9 @@ int toInt(const char *text) {
 
   l = strtol(text, &ptr, 10);
 
-  // checks if text and rest after conversion from strtol is equal, 
+  // checks if text and rest after conversion from strtol is equal,
   // meaning no int was in text
-  if(strcmp(text, ptr) == 0){
+  if (strcmp(text, ptr) == 0) {
     return SELECTION_INVALID;
   }
 

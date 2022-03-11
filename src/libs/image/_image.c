@@ -1,13 +1,13 @@
 #include "_image.h"
+
 #include <math.h>
 #include <stdio.h>
-#include <stdlib.h> // malloc
+#include <stdlib.h>  // malloc
 
 Image *median(Image *img) {
   Image *imgCpy = copyImage(img);
   for (int i = 0; i < imgCpy->height; i++) {
     for (int j = 0; j < imgCpy->width; j++) {
-
       // ignore pixels at the border of the image
       if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
         continue;
@@ -54,8 +54,7 @@ Image *gauss(Image *img) {
   return imgCpy;
 }
 
-// todo: WIP (overthrown) 
-//Image *laplace(Image *img) {
+// Image *laplace(Image *img) {
 //  Image *imgCpy = copyImage(img);
 //
 //  for (int i = 0; i < imgCpy->height; i++) {
@@ -65,13 +64,13 @@ Image *gauss(Image *img) {
 //        continue;
 //
 //      imgCpy->data[i][j] = (
-//          imgCpy->data[i - 1][j - 1] + 
+//          imgCpy->data[i - 1][j - 1] +
 //          imgCpy->data[i][j - 1] +
 //          imgCpy->data[i + 1][j - 1] +
 //          imgCpy->data[i - 1][j] -
-//          8 * imgCpy->data[i][j] + 
+//          8 * imgCpy->data[i][j] +
 //          imgCpy->data[i + 1][j] +
-//          imgCpy->data[i - 1][j + 1] + 
+//          imgCpy->data[i - 1][j + 1] +
 //          imgCpy->data[i][j + 1] +
 //          imgCpy->data[i + 1][j + 1]);
 //    }
@@ -102,22 +101,21 @@ Image *threshold(Image *img, int threshold) {
 
 // TODO: BIG WIP
 Image *scale(Image *img, int width, int height) {
-  if(width == img->width && height == img->height){
-    Image *cp = copyImage(img);
-    return cp;
+  if (width == img->width && height == img->height) {
+    Image *imgCpy = copyImage(img);
+    return imgCpy;
   }
 
   Image *newImg = createImage(width, height, 0);
 
-  for (int i = 0; i < newImg->height; i++) {
-    for (int j = 0; j < newImg->width; j++) {
-      for (int k = 0; k < img->height; k++) {
-        for (int l = 0; l < img->width; l++) {
-          newImg->data[i][j] =
-              ((1 - img->width) * (1 - (img->height)) * (img->data[k][l]) +
-              (img->width) * (1 - (img->height)) * (img->data[k][l + 1]) +
-              (1 - (img->width)) * (img->height) * (img->data[k + 1][l]) +
-              (img->width) * (img->height) * (img->data[k + 1][l + 1]));
+  for (int k = 0; k < newImg->height; k++) {
+    for (int l = 0; l < newImg->width; l++) {
+      for (int i = 0; i < img->height; i++) {
+        for (int j = 0; j < img->width; j++) {
+          newImg->data[i][j] = (1 - width) * (1 - height) * img->data[i][j] +
+                               width * (1 - height) * img->data[i][j + 1] +
+                               (1 - width) * height * img->data[i + 1][j] +
+                               width * height * img->data[i + 1][j + 1];
         }
       }
     }
@@ -149,14 +147,11 @@ Image *rotate(Image *img, double angle, int brigthness) {
                              sin(angle) * (y - y_mid) + x_mid);
       int y_new = (int)round(sin(angle) * (x - x_mid) +
                              cos(angle) * (y - y_mid) + y_mid);
-      if (x_new == img->width)
-        x_new = 0;
-      if (y_new == img->height)
-        y_new = 0;
+      if (x_new == img->width) x_new = 0;
+      if (y_new == img->height) y_new = 0;
       if (x_new < 0 || y_new < 0 || x_new >= img->width || y_new >= img->height)
         continue;
-      imgCpy->data[y_new][x_new] =
-          img->data[y][x]; 
+      imgCpy->data[y_new][x_new] = img->data[y][x];
     }
   }
 

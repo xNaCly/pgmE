@@ -33,7 +33,7 @@ in the scope of a project for the first semester majoring in applied computer sc
 
 Current TODO's:
 ---------------
-src/main.c:// TODO: add secondary confirmation prompt to exit if file in mem
-src/libs/image/_image.c:// TODO: BIG WIP
-src/libs/image/_image.c:  // TODO: currently not calculating the correct dimensions
+./src/main.c:189:               // TODO: this prints two times, otherwise works
+./src/libs/image/_image.c:102:  // TODO: BIG WIP
+./src/libs/image/_image.c:124:  // TODO: currently not calculating the correct dimensions
 ---------------
