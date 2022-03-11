@@ -14,7 +14,7 @@ Start it by running:
     
     make run
 
-This will compile pgmE.
+This will compile and run pgmE.
 
 Features
 ------------
