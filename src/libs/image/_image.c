@@ -82,10 +82,10 @@ Image *gauss(Image *img) {
 
 Image *threshold(Image *img, int threshold) {
   if (threshold < 1) {
-    printf("threshold was too small, was set to: 1");
+    printf("threshold was too small, was set to: 1\n");
     threshold = 1;
   } else if (threshold > MAX_BRIGHT) {
-    printf("threshold was too big, was set to: 255");
+    printf("threshold was too big, was set to: 255\n");
     threshold = 255;
   }
 
