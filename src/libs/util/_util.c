@@ -32,12 +32,12 @@ int toInt(const char *text) {
   return (int)l;
 }
 
-void throw_error(char text[]) {
+void throw_error(const char* text) {
   printf("%s%s%s\n", ANSI_COLOR_RED, text, ANSI_RESET);
   exit(EXIT_FAILURE);
 }
 
-void throw_warning(char text[]) {
+void throw_warning(const char text[]) {
   printf("%s%s%s\n", ANSI_COLOR_YELLOW, text, ANSI_RESET);
 }
 

@@ -54,7 +54,7 @@ Image *copyImage(Image *img_pointer) {
   return cpImage;
 }
 
-Image *loadImage(char file_name[]) {
+Image *loadImage(const char* file_name) {
   // open file in read mode
   FILE *file = fopen(file_name, "r");
 
@@ -98,7 +98,7 @@ Image *loadImage(char file_name[]) {
   return img;
 }
 
-int saveImage(char file_name[], Image *img_pointer) {
+int saveImage(const char* file_name, Image *img_pointer) {
   // open file with given name
   FILE *file = fopen(file_name, "w");
 

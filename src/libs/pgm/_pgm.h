@@ -47,7 +47,7 @@ Image *copyImage(Image *img_pointer);
  * @param file_name
  * @return *Image
  */
-Image *loadImage(char* file_name);
+Image *loadImage(const char* file_name);
 
 /**
  * @brief saves the given pointer in a .pgm file with the given name
