@@ -8,7 +8,7 @@
 #ifndef _PGM_H_INCLUDED
 #define _PGM_H_INCLUDED
 
-#define MAX_BRIGHT 255
+#define MAX_BRIGHT 255 
 
 /**
  * @brief struct to store PGM-image data in
@@ -16,7 +16,7 @@
 typedef struct {
   int width;
   int height;
-  int **data;  // 2d pointer: Brightness values
+  int **data;  
 } Image;
 
 /**
@@ -47,7 +47,7 @@ Image *copyImage(Image *img_pointer);
  * @param file_name
  * @return *Image
  */
-Image *loadImage(char file_name[]);
+Image *loadImage(char* file_name);
 
 /**
  * @brief saves the given pointer in a .pgm file with the given name
@@ -55,6 +55,6 @@ Image *loadImage(char file_name[]);
  * @param img_pointer Image pointer created with createImage()
  * @return 0 or 1
  */
-int saveImage(char file_name[], Image *img_pointer);
+int saveImage(const char* file_name, Image *img_pointer);
 
 #endif

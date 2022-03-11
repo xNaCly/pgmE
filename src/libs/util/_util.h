@@ -6,24 +6,28 @@
 
 #include "../pgm/_pgm.h"
 
+// ---------- Coloring the output -----------
 #define ANSI_COLOR_RED "\x1b[91m"
 #define ANSI_COLOR_GREEN "\x1b[92m"
 #define ANSI_COLOR_YELLOW "\x1b[93m"
 #define ANSI_STYLE_BOLD "\x1b[1m"
 #define ANSI_RESET "\x1b[0m"
+// ---------- ------------------- -----------
 
+// enables the switch case which contains the main menu
+// (basically just used to compare to the user input)
 enum {
   SELECTION_LOAD = 0,
   SELECTION_MEDIAN_FILTER,
   SELECTION_GAUSS_FILTER,
-  // SELECTION_LAPLACE_OPERATOR,
+  // SELECTION_LAPLACE_OPERATOR, // INFO: discontinued
   SELECTION_THRESHOLD,
   SELECTION_SCALE,
   SELECTION_ROTATE,
   SELECTION_SAVE,
-  SELECTION_EXIT,  // ALWAYS LATEST AVAILABLE OPTION ;)
+  SELECTION_EXIT,  
   SELECTION_INVALID =
-      9999  // MAKE SURE THAT THIS WILL RUN INTO THE INVALID SECTION ;)
+      9999 // Error code 
 };
 
 /**
@@ -45,14 +49,14 @@ int toInt(const char *text);
  * @brief exits the program and prints the given text highlighted red
  * @param text
  */
-void throw_error(char text[]);
+void throw_error(const char* text);
 
 /**
  * @brief prints the given text highlighted yellow, differs from throw_error by
  * not exiting the program.
  * @param text
  */
-void throw_warning(char text[]);
+void throw_warning(const char* text);
 
 /**
  * @brief checks if the selection meets certian criteria

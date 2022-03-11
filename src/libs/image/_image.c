@@ -12,6 +12,7 @@ Image *median(Image *img) {
       if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
         continue;
 
+      // fill a field with the 8 surrounding pixels
       int surNums[9] = {imgCpy->data[i - 1][j + 1], imgCpy->data[i][j + 1],
                         imgCpy->data[i + 1][j + 1], imgCpy->data[i - 1][j],
                         imgCpy->data[i][j],         imgCpy->data[i + 1][j],
@@ -80,19 +81,21 @@ Image *gauss(Image *img) {
 //}
 
 Image *threshold(Image *img, int threshold) {
+  // threshold higher than MAX_BRIGHT and lower than 1 doesnt make sense, therefore update threshold to reasonable values
   if (threshold < 1) {
     printf("threshold was too small, was set to: 1\n");
     threshold = 1;
   } else if (threshold > MAX_BRIGHT) {
-    printf("threshold was too big, was set to: 255\n");
-    threshold = 255;
+    printf("threshold was too big, was set to: %d\n", MAX_BRIGHT);
+    threshold = MAX_BRIGHT;
   }
 
   Image *imgCpy = copyImage(img);
 
   for (int i = 0; i < imgCpy->height; i++) {
     for (int j = 0; j < imgCpy->width; j++) {
-      imgCpy->data[i][j] = (imgCpy->data[i][j] < threshold) ? 0 : 255;
+      // if pixel at coord is smaller than threshold -> replace it with 0, otherwise replace it with MAX_BRIGHT
+      imgCpy->data[i][j] = (imgCpy->data[i][j] < threshold) ? 0 : MAX_BRIGHT;
     }
   }
 
@@ -101,6 +104,7 @@ Image *threshold(Image *img, int threshold) {
 
 // TODO: BIG WIP
 Image *scale(Image *img, int width, int height) {
+  // if image has same dimensions as the given dimensions to rescale, return a copy of the given img
   if (width == img->width && height == img->height) {
     Image *imgCpy = copyImage(img);
     return imgCpy;
@@ -127,13 +131,6 @@ Image *scale(Image *img, int width, int height) {
 Image *rotate(Image *img, double angle, int brigthness) {
   angle = angle * (PI / 180);
 
-  // TODO: currently not calculating the correct dimensions
-  //! calculate optimal height and width for the rotated image
-  /*int new_width = (int) (img->width * cos(angle) + img->height * cos(90 -
-  angle)); int new_height = (int) (img->width * sin(angle) + img->height *
-  sin(90 - angle));*/
-
-  /* Image *imgCpy = createImage(new_width, new_height, brigthness);*/
   Image *imgCpy = createImage(img->width, img->height, brigthness);
 
   // calculate center
@@ -147,10 +144,13 @@ Image *rotate(Image *img, double angle, int brigthness) {
                              sin(angle) * (y - y_mid) + x_mid);
       int y_new = (int)round(sin(angle) * (x - x_mid) +
                              cos(angle) * (y - y_mid) + y_mid);
+      // out of bound checks
+      // ----------------------------
       if (x_new == img->width) x_new = 0;
       if (y_new == img->height) y_new = 0;
       if (x_new < 0 || y_new < 0 || x_new >= img->width || y_new >= img->height)
         continue;
+      // ----------------------------
       imgCpy->data[y_new][x_new] = img->data[y][x];
     }
   }

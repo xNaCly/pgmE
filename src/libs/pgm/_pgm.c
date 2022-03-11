@@ -11,7 +11,7 @@ Image *createImage(int width, int height, int default_brightness) {
   img->width = width;
   img->height = height;
 
-  // allocate double pointer to contain pixel data
+  // allocate double pointer to contain pointers
   img->data = (int **)malloc(height * sizeof(int *));
 
   // loop over columns
@@ -89,6 +89,7 @@ Image *loadImage(char file_name[]) {
 
   for (int i = 0; i < height; i++) {
     for (int ii = 0; ii < width; ii++) {
+      // push all pixel values into the data field
       fscanf(file, "%d", &img->data[i][ii]);
     }
   }

@@ -5,8 +5,8 @@
  * @date 2021-02-21
  */
 
-#include <ctype.h>
-#include <stdio.h>
+#include <ctype.h> // used for tolower
+#include <stdio.h> // used for scanf, printf, EXIT_SUCCESS
 #include <stdlib.h>  // used for: loadImage, freeImage
 
 #include "libs/image/_image.h"
@@ -24,22 +24,29 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 
   while (selection >= 0) {
     printf("\nMain Menu:\n\n");
+    // indicator to visualise when image is in ram
     printf("[%s] Image in Ram\n\n", image_in_memory
                                         ? ANSI_COLOR_GREEN "+" ANSI_RESET
                                         : ANSI_COLOR_RED "-" ANSI_RESET);
+
+    // loop over all options and print them
     for (int i = 0; i <= SELECTION_EXIT; i++) {
-      // loop over all options and print them
       int isActive =
           (image_in_memory || i == SELECTION_LOAD || i == SELECTION_EXIT);
+      // print all options not available red, the available ones green
       printf("[%d] %s%s%s\n", i, isActive ? ANSI_COLOR_GREEN : ANSI_COLOR_RED,
              MAIN_OPTIONS[i], ANSI_RESET);
     }
+    
     printf("\nSelection (0-%d): ", SELECTION_EXIT);
 
+    // allocate temp variable for usage later
     char *temp = malloc(sizeof(char) * 10);
     scanf("%s", temp);
+    // safe conversion from string to integer using strtol in toInt
     selection = toInt(temp);
 
+    // check if selection is in the allowed spectre
     selection = check_is_option_valid(selection, image_in_memory);
 
     switch (selection) {
@@ -48,9 +55,11 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
           printf("[%d] %s\n", SELECTION_LOAD, MAIN_OPTIONS[SELECTION_LOAD]);
           char filename[255] = "";  // size: 255 due to the maximum file length
 
+          // avoid double free by checking if the image was freed before
           if (img != NULL) {
             freeImage(&img);
           } else {
+            // loop until the input is a valid file which can be opened
             while (img == NULL) {
               printf("Dateiname (with .pgm): ");
               scanf("%s", filename);
@@ -67,6 +76,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 
           break;
         }
+        // disallow reading an image into mem if there is already one
         throw_warning("Bereits eine Datei in memory!");
         break;
       }
@@ -222,7 +232,9 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 }
 
 int main(void) {
+  // enables confirmation prompt on exit while there is an edited image in memory
   int edited_image_in_memory = 0;
+  // enables disallowing editing images while there arent any in memory
   int image_in_memory = 0;
   main_menu(edited_image_in_memory, image_in_memory);
   return EXIT_SUCCESS;

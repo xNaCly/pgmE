@@ -42,6 +42,7 @@ void throw_warning(char text[]) {
 }
 
 int check_is_option_valid(int selection, int image_in_memory) {
+  // selection mustn't be bigger than the last option
   if (selection > SELECTION_EXIT) {
     return SELECTION_INVALID;
   }

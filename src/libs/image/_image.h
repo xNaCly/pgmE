@@ -7,12 +7,10 @@
 
 #ifndef _IMAGE_H_INCLUDED
 #define _IMAGE_H_INCLUDED
-#include "../pgm/_pgm.h"
-// used for: copyImage, createImage
-#include "../util/_util.h"
-// used for: compare
+#include "../pgm/_pgm.h" // used for: copyImage, createImage
+#include "../util/_util.h" // used for: compare
 
-#define PI 3.141592
+#define PI 3.141592 // needed for rotation
 
 /**
  * @brief Applies the median filter to the given image
@@ -30,7 +28,7 @@ Image *gauss(Image *img);
  * @brief Modifies the image using the laplace-operator
  * @param img
  */
-// Image *laplace(Image *img);
+// Image *laplace(Image *img); // INFO: this method was overthrown due to a wrong formular
 
 /**
  * @brief Modifies the Image using the thresholding method
