@@ -180,6 +180,6 @@ Image *rotate(Image *img, double angle, int brigthness)
       imgCpy->data[y_new][x_new] = img->data[y][x];
     }
   }
-
-  return imgCpy;
+  Image *newImg=median(imgCpy);
+  return newImg;
 }
