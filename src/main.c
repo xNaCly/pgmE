@@ -13,18 +13,15 @@
 #include "libs/pgm/_pgm.h"
 #include "libs/util/_util.h"
 
-void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
-{
+void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
   const char *MAIN_OPTIONS[SELECTION_EXIT + 1] = {
-      "Datei laden", "Median-Filter", "Gauß-Filter",
-      "Laplace-Operator",
-      "Schwellwertverfahren", "Bild skalieren", "Bild rotieren",
-      "Datei speichern", "Exit"};
+      "Datei laden",      "Median-Filter",        "Gauß-Filter",
+      "Laplace-Operator", "Schwellwertverfahren", "Bild skalieren",
+      "Bild rotieren",    "Datei speichern",      "Exit"};
   int selection = 0;
   Image *img = NULL;
 
-  while (selection >= 0)
-  {
+  while (selection >= 0) {
     printf("\nMain Menu:\n\n");
     // indicator to visualise when image is in ram
     printf("[%s] Image in Ram\n\n", image_in_memory
@@ -32,8 +29,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
                                         : ANSI_COLOR_RED "-" ANSI_RESET);
 
     // loop over all options and print them
-    for (int i = 0; i <= SELECTION_EXIT; i++)
-    {
+    for (int i = 0; i <= SELECTION_EXIT; i++) {
       int isActive =
           (image_in_memory || i == SELECTION_LOAD || i == SELECTION_EXIT);
       // print all options not available red, the available ones green
@@ -52,30 +48,22 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
     // check if selection is in the allowed spectre
     selection = check_is_option_valid(selection, image_in_memory);
 
-    switch (selection)
-    {
-    case SELECTION_LOAD:
-    {
-      if (!image_in_memory)
-      {
+    switch (selection) {
+    case SELECTION_LOAD: {
+      if (!image_in_memory) {
         printf("[%d] %s\n", SELECTION_LOAD, MAIN_OPTIONS[SELECTION_LOAD]);
         char filename[255] = ""; // size: 255 due to the maximum file length
 
         // avoid double free by checking if the image was freed before
-        if (img != NULL)
-        {
+        if (img != NULL) {
           freeImage(&img);
-        }
-        else
-        {
+        } else {
           // loop until the input is a valid file which can be opened
-          while (img == NULL)
-          {
+          while (img == NULL) {
             printf("Dateiname (with .pgm): ");
             scanf("%s", filename);
             img = loadImage(filename);
-            if (img == NULL)
-            {
+            if (img == NULL) {
               throw_warning("Datei konnte nicht geöffnet werden.");
             }
           }
@@ -91,8 +79,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
       throw_warning("Bereits eine Datei in memory!");
       break;
     }
-    case SELECTION_MEDIAN_FILTER:
-    {
+    case SELECTION_MEDIAN_FILTER: {
       printf("[%d] %s\n", SELECTION_MEDIAN_FILTER,
              MAIN_OPTIONS[SELECTION_MEDIAN_FILTER]);
       Image *copy = median(img);
@@ -103,8 +90,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
              "Bild wurde mit dem Median Operator bearbeitet." ANSI_RESET);
       break;
     }
-    case SELECTION_GAUSS_FILTER:
-    {
+    case SELECTION_GAUSS_FILTER: {
       printf("[%d] %s\n", SELECTION_GAUSS_FILTER,
              MAIN_OPTIONS[SELECTION_GAUSS_FILTER]);
       Image *copy = gauss(img);
@@ -115,18 +101,17 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
              "Bild wurde mit dem Gauss Filter bearbeitet." ANSI_RESET);
       break;
     }
-    case SELECTION_LAPLACE_OPERATOR:
-    {
+    case SELECTION_LAPLACE_OPERATOR: {
       printf("[%d] %s\n", 3, MAIN_OPTIONS[3]);
       Image *copy = laplace(img);
       freeImage(&img);
       img = copy;
       edited_unsaved_image_in_memory = 1;
-      printf(ANSI_COLOR_GREEN "Bild wurde mit dem Laplace Operator bearbeitet." ANSI_RESET);
+      printf(ANSI_COLOR_GREEN
+             "Bild wurde mit dem Laplace Operator bearbeitet." ANSI_RESET);
       break;
     }
-    case SELECTION_THRESHOLD:
-    {
+    case SELECTION_THRESHOLD: {
       printf("[%d] %s\n", SELECTION_THRESHOLD,
              MAIN_OPTIONS[SELECTION_THRESHOLD]);
       int threshold_ = 0;
@@ -140,13 +125,11 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
       freeImage(&img);
       img = copy;
       edited_unsaved_image_in_memory = 1;
-      printf(ANSI_COLOR_GREEN
-             "Bild wurde mit dem Threshold Operator "
-             "bearbeitet." ANSI_RESET);
+      printf(ANSI_COLOR_GREEN "Bild wurde mit dem Threshold Operator "
+                              "bearbeitet." ANSI_RESET);
       break;
     }
-    case SELECTION_SCALE:
-    {
+    case SELECTION_SCALE: {
       printf("[%d] %s\n", SELECTION_SCALE, MAIN_OPTIONS[SELECTION_SCALE]);
       int width = 0;
       int height = 0;
@@ -169,16 +152,14 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
       printf(ANSI_COLOR_GREEN "Bild wurde skaliert." ANSI_RESET);
       break;
     }
-    case SELECTION_ROTATE:
-    {
+    case SELECTION_ROTATE: {
       printf("[%d] %s\n", SELECTION_ROTATE, MAIN_OPTIONS[SELECTION_ROTATE]);
       float angle = 0;
       int brightness = MAX_BRIGHT;
       printf("Winkel um den das Bild gedreht werden soll: ");
       scanf("%f", &angle);
-      printf(
-          "Helligkeit mit der freiliegende Pixel gefüllt werden "
-          "sollen: ");
+      printf("Helligkeit mit der freiliegende Pixel gefüllt werden "
+             "sollen: ");
       scanf("%d", &brightness);
       Image *copy = rotate(img, angle, brightness);
       freeImage(&img);
@@ -188,8 +169,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
       edited_unsaved_image_in_memory = 1;
       break;
     }
-    case SELECTION_SAVE:
-    {
+    case SELECTION_SAVE: {
       printf("[%d] %s\n", SELECTION_SAVE, MAIN_OPTIONS[SELECTION_SAVE]);
       char filename[255];
 
@@ -198,14 +178,10 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
 
       int feedback = saveImage(filename, img);
 
-      if (!feedback)
-      {
-        throw_error(
-            "Datei konnte nicht gespeichert werden. (Fehler "
-            "beim Speichern)");
-      }
-      else
-      {
+      if (!feedback) {
+        throw_error("Datei konnte nicht gespeichert werden. (Fehler "
+                    "beim Speichern)");
+      } else {
         freeImage(&img);
       }
 
@@ -216,25 +192,20 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
              filename, ANSI_RESET);
       break;
     }
-    case SELECTION_EXIT:
-    {
-      if (!edited_unsaved_image_in_memory)
-      {
+    case SELECTION_EXIT: {
+      if (!edited_unsaved_image_in_memory) {
         printf("[%d] %s\n", SELECTION_EXIT, MAIN_OPTIONS[SELECTION_EXIT]);
         exit(EXIT_SUCCESS);
       }
 
-      printf(
-          "Noch ein bearbeitetes, ungespeicherters Bild im "
-          "Speicher, willst "
-          "du wirklich beenden?");
+      printf("Noch ein bearbeitetes, ungespeicherters Bild im "
+             "Speicher, willst "
+             "du wirklich beenden?\n");
       char c = -1;
 
-      while (c != 'y' || c != 'n')
-      {
-        // TODO: this prints two times, otherwise works
-        printf("\n[Y/n]: ");
-        scanf("%c", &c);
+      while (c != 'y' || c != 'n') {
+        printf("[Y/n]: ");
+        scanf(" %c", &c);
 
         c = tolower((unsigned char)c);
 
@@ -246,8 +217,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
 
       break;
     }
-    default:
-    {
+    default: {
       throw_warning("Invalide Option");
       break;
     }
@@ -256,9 +226,9 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory)
   exit(EXIT_SUCCESS);
 }
 
-int main(void)
-{
-  // enables confirmation prompt on exit while there is an edited image in memory
+int main(void) {
+  // enables confirmation prompt on exit while there is an edited image in
+  // memory
   int edited_image_in_memory = 0;
   // enables disallowing editing images while there arent any in memory
   int image_in_memory = 0;
