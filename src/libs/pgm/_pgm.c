@@ -16,14 +16,14 @@ Image *createImage(int width, int height, int default_brightness) {
 
   // loop over columns
   for (int i = 0; i < height; i++) {
-    // allocate rows
-    img->data[i] = (int *)malloc(width * sizeof(int));
+	// allocate rows
+	img->data[i] = (int *)malloc(width * sizeof(int));
 
-    // loop over row items
-    for (int ii = 0; ii < width; ii++) {
-      // assign default value to every pixel
-      img->data[i][ii] = default_brightness;
-    }
+	// loop over row items
+	for (int ii = 0; ii < width; ii++) {
+	  // assign default value to every pixel
+	  img->data[i][ii] = default_brightness;
+	}
   }
 
   return img;
@@ -34,7 +34,7 @@ void freeImage(Image **img_pointer) {
   if (*img_pointer == NULL) return;
   free(*img_pointer);   // free memory taken up by pointer
   *img_pointer = NULL;  // set pointer NULL to prevent it pointing to a random
-                        // memory adress
+  // memory adress
 }
 
 Image *copyImage(Image *img_pointer) {
@@ -44,17 +44,17 @@ Image *copyImage(Image *img_pointer) {
 
   // loop over columns
   for (int i = 0; i < height; i++) {
-    // loop over row items
-    for (int ii = 0; ii < width; ii++) {
-      // deep copy values
-      cpImage->data[i][ii] = img_pointer->data[i][ii];
-    }
+	// loop over row items
+	for (int ii = 0; ii < width; ii++) {
+	  // deep copy values
+	  cpImage->data[i][ii] = img_pointer->data[i][ii];
+	}
   }
 
   return cpImage;
 }
 
-Image *loadImage(const char* file_name) {
+Image *loadImage(const char *file_name) {
   // open file in read mode
   FILE *file = fopen(file_name, "r");
 
@@ -74,7 +74,7 @@ Image *loadImage(const char* file_name) {
 
   // check if first line of the file conforms to the pgm standard
   if (pgm_prefix != 'P' || pgm_version != 2) {
-    return NULL;
+	return NULL;
   }
 
   fscanf(file, "%d", &width);
@@ -82,40 +82,40 @@ Image *loadImage(const char* file_name) {
   fscanf(file, "%d", &brightness);
 
   if (width <= 0 || height <= 0 || brightness <= 0) {
-    return NULL;
+	return NULL;
   }
 
-  Image *img = createImage(width, height, 255);
+  Image *img = createImage(width, height, brightness);
 
   for (int i = 0; i < height; i++) {
-    for (int ii = 0; ii < width; ii++) {
-      // push all pixel values into the data field
-      fscanf(file, "%d", &img->data[i][ii]);
-    }
+	for (int ii = 0; ii < width; ii++) {
+	  // push all pixel values into the data field
+	  fscanf(file, "%d", &img->data[i][ii]);
+	}
   }
 
   fclose(file);
   return img;
 }
 
-int saveImage(const char* file_name, Image *img_pointer) {
+int saveImage(const char *file_name, Image *img_pointer) {
   // open file with given name
   FILE *file = fopen(file_name, "w");
 
   // return 0 if file couldn't be created
   if (file == NULL) {
-    return 0;
+	return 0;
   }
 
   // print first 4 lines to file
   fprintf(file, "P2\n%d %d\n%d\n", img_pointer->width, img_pointer->height,
-          MAX_BRIGHT);
+		  MAX_BRIGHT);
 
   // loops over every pixel and appends the value to the file
   for (int i = 0; i < img_pointer->height; i++) {
-    for (int ii = 0; ii < img_pointer->width; ii++) {
-      fprintf(file, "%d\n", img_pointer->data[i][ii]);
-    }
+	for (int ii = 0; ii < img_pointer->width; ii++) {
+	  fprintf(file, "%d\n", img_pointer->data[i][ii]);
+	}
   }
 
   fclose(file);

@@ -8,7 +8,7 @@
 #ifndef _PGM_H_INCLUDED
 #define _PGM_H_INCLUDED
 
-#define MAX_BRIGHT 255 
+#define MAX_BRIGHT 255
 
 /**
  * @brief struct to store PGM-image data in
