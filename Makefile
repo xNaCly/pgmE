@@ -35,7 +35,7 @@ run: main
 
 # compile the executable
 main: pre
-	gcc -O2 $(COMPILE)
+	gcc $(COMPILE)
 
 # compiles executable with debugging info and runs it with the GNU-debugger (gdb)
 debug: pre

@@ -1,39 +1,30 @@
-PGM-Editor
+pgmE - portable graymap Editor
 ==========
+pgmE is an extremely fast, small and efficient editor which implements the pgm standard.
 
-Small Image editor which only supports the .pgm standard.
+Requirements
+------------
+In order to build you need:
+    - make
+    - gcc
 
-    (http://netpbm.sourceforge.net/doc/pgm.html)
+Running pgmE
+------------
+Start it by running:
     
-It features a simple TUI to load and save images as well as selecting what filter or modification to apply to the loaded image.
-The following image manipulation methods have been implemented:
+    make run
+
+This will compile and run pgmE.
+
+Features
+------------
+- load pgm images
+- save pgm images
+- edit pgm images:
     - median filter
-    - gauss filter
-    - laplace filter
-    - threshold filter
-    - scaling
-    - rotating
+    - gauss operator
+    - laplace operator
+    - resize
+    - rotate
+    - threshold operator
 
-Try locally:
-
-    make pre
-    make main
-
-Write-up:
-    https://xnacly.vercel.app/blog/image_editor_part_1
-    https://xnacly.vercel.app/blog/image_editor_part_2
-
-Written by:
-
-    https://github.com/xnacly
-    https://github.com/noraxys
-    https://github.com/voilacf
-    
-in the scope of a project for the first semester majoring in applied computer science.
-
-Current TODO's:
----------------
-./src/main.c:189:               // TODO: this prints two times, otherwise works
-./src/libs/image/_image.c:102:  // TODO: BIG WIP
-./src/libs/image/_image.c:124:  // TODO: currently not calculating the correct dimensions
----------------
