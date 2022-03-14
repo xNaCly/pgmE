@@ -21,8 +21,8 @@ MY_FLAGS := -Wextra \
 						# warnings for undefined macros
 						# warnings for global variables
 
-BUILD_DIR := ./build
-SRC_DIR := ./src
+BUILD_DIR := ./dist
+SRC_DIR := .
 
 # finds all source files in /src/*
 FILES := $(shell find $(SRC_DIR) -name "*.c") 
