@@ -4,7 +4,7 @@
 #include <stdlib.h>  // exit, EXIT_FAILURE
 #include <string.h>  // strcmp
 
-double toDouble(const char *text){
+double toDouble(const char *text) {
   char *ptr;
   long l;
 
@@ -34,7 +34,7 @@ int toInt(const char *text) {
   return (int)l;
 }
 
-void throw_error(const char* text) {
+void throw_error(const char *text) {
   printf("%s%s%s\n", ANSI_COLOR_RED, text, ANSI_RESET);
   exit(EXIT_FAILURE);
 }

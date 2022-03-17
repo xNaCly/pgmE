@@ -8,7 +8,7 @@
 #include <ctype.h>   // used for tolower
 #include <stdio.h>   // used for scanf, printf, EXIT_SUCCESS
 #include <stdlib.h>  // used for: loadImage, freeImage
-#include <string.h>
+#include <time.h> // used for clock
 
 #include "core/p_image.h"
 #include "core/p_pgm.h"
@@ -54,6 +54,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
     switch (selection) {
       case SELECTION_LOAD: {
         if (!image_in_memory) {
+          double time_spent = 0;
           printf("[%d] %s\n", SELECTION_LOAD, MAIN_OPTIONS[SELECTION_LOAD]);
           char filename[255] = "";  // size: 255 due to the maximum file length
 
@@ -65,13 +66,16 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
             while (img == NULL) {
               printf("Dateiname (with .pgm): ");
               scanf("%s", filename);
+              clock_t begin = clock();
               img = loadImage(filename);
+              clock_t end = clock();
+              time_spent = (double)(end-begin)/CLOCKS_PER_SEC;
               if (img == NULL) {
                 throw_warning("Datei konnte nicht geöffnet werden.");
               }
             }
 
-            printf("%s%s wurde eingelesen.%s\n", ANSI_COLOR_GREEN, filename,
+            printf("%s%s wurde eingelesen. [%.4f s]%s\n", ANSI_COLOR_GREEN, filename, time_spent,
                    ANSI_RESET);
             image_in_memory = 1;
           }
@@ -194,7 +198,10 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         printf("Dateiname (mit .pgm): ");
         scanf("%s", filename);
 
+        clock_t begin = clock();
         int feedback = saveImage(filename, img);
+        clock_t end = clock();
+        double time_spent = (double)(end-begin) / CLOCKS_PER_SEC;
 
         if (!feedback) {
           throw_error(
@@ -207,8 +214,8 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         edited_unsaved_image_in_memory = 0;
         image_in_memory = 0;
 
-        printf("%sBild wurde als: %s gespeichert.%s\n", ANSI_COLOR_GREEN,
-               filename, ANSI_RESET);
+        printf("%sBild wurde als: %s gespeichert. [%.4f s]%s\n", ANSI_COLOR_GREEN,
+               filename, time_spent, ANSI_RESET);
         break;
       }
       case SELECTION_EXIT: {
