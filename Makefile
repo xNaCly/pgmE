@@ -14,6 +14,7 @@ MY_FLAGS := -Wextra \
 						-Wshadow \
 						-Wundef \
 						-fno-common \
+						-O3
 						
 						# set of warnings and errors not covered by -Wall
 						# all warnings cause errors
