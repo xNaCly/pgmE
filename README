@@ -2,7 +2,7 @@ pgmE - portable graymap Editor
 ==========
 pgmE is an extremely fast, small and efficient editor which implements the pgm standard.
 
-Getting Started:
+Getting Started
 ---------------
 Available targets:
 
@@ -27,3 +27,8 @@ Features
     - rotate
     - threshold operator
 
+TODO
+----
+- Rewrite into CLI tool
+- deb and pgk packages
+- bins for linux and windows
