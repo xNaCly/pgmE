@@ -4,17 +4,19 @@
 #include <stdlib.h>  // exit, EXIT_FAILURE
 #include <string.h>  // strcmp
 
-// used for sorting with qsort
-int compare(const void *a, const void *b) {
-  int int_a = *((int *)a);
-  int int_b = *((int *)b);
+double toDouble(const char *text){
+  char *ptr;
+  long l;
 
-  if (int_a == int_b)
-    return 0;
-  else if (int_a < int_b)
-    return -1;
-  else
-    return 1;
+  l = strtod(text, &ptr);
+
+  // checks if text and rest after conversion from strtol is equal,
+  // meaning no int was in text
+  if (strcmp(text, ptr) == 0) {
+    return SELECTION_INVALID;
+  }
+
+  return l;
 }
 
 int toInt(const char *text) {

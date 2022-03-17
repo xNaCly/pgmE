@@ -44,6 +44,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
     scanf("%s", temp);
     // safe conversion from string to integer using strtol in toInt
     selection = toInt(temp);
+    free(temp);
 
     // check if selection is in the allowed spectre
     selection = check_is_option_valid(selection, image_in_memory);
@@ -117,9 +118,10 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
       int threshold_ = 0;
       printf("Schwellwert: ");
 
-      scanf("%s", temp);
-      threshold_ = toInt(temp);
-      free(temp);
+      char *text = malloc(sizeof(char)*255);
+      scanf("%s", text);
+      threshold_ = toInt(text);
+      free(text);
 
       Image *copy = threshold(img, threshold_);
       freeImage(&img);
@@ -136,13 +138,15 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
 
       printf("Höhe: ");
 
-      scanf("%s", temp);
-      height = toInt(temp);
+      char *text = malloc(sizeof(char) * 255);
+      scanf("%s", text);
+      height = toInt(text);
 
       printf("Breite: ");
 
-      scanf("%s", temp);
-      width = toInt(temp);
+      scanf("%s", text);
+      width = toInt(text);
+      free(text);
 
       Image *copy = scale(img, width, height);
       freeImage(&img);
@@ -154,16 +158,26 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
     }
     case SELECTION_ROTATE: {
       printf("[%d] %s\n", SELECTION_ROTATE, MAIN_OPTIONS[SELECTION_ROTATE]);
-      float angle = 0;
+      double angle = 0;
       int brightness = MAX_BRIGHT;
       printf("Winkel um den das Bild gedreht werden soll: ");
-      scanf("%f", &angle);
+
+      char *text = malloc(sizeof(char) * 255);
+      scanf("%s", text);
+      angle = toDouble(text);
+
       printf("Helligkeit mit der freiliegende Pixel gefüllt werden "
              "sollen: ");
-      scanf("%d", &brightness);
+
+      scanf("%s", text);
+      brightness = toInt(text);
+      free(text);
+
       Image *copy = rotate(img, angle, brightness);
+
       freeImage(&img);
       img = copy;
+
       printf("%sBild wurde um %f-Grad im Uhrzeigersinn gedreht.%s\n",
              ANSI_COLOR_GREEN, angle, ANSI_RESET);
       edited_unsaved_image_in_memory = 1;
@@ -198,17 +212,25 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         exit(EXIT_SUCCESS);
       }
 
-      printf("Noch ein bearbeitetes, ungespeicherters Bild im "
+      printf(ANSI_COLOR_RED"Noch ein bearbeitetes, ungespeicherters Bild im "
              "Speicher, willst "
-             "du wirklich beenden?\n");
+             "du wirklich beenden?\n"ANSI_RESET);
+      // very simple yes no prompt
       char c = -1;
 
       while (c != 'y' || c != 'n') {
         printf("[Y/n]: ");
         scanf(" %c", &c);
 
+        /* 
+        convert char to lower representation to cut down 
+        on conditional statements
+        */
         c = tolower((unsigned char)c);
 
+        /*
+         Exit program on y, go back into main loop on n
+         */
         if (c == 'y')
           exit(EXIT_SUCCESS);
         else if (c == 'n')

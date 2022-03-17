@@ -6,7 +6,8 @@
 
 #include "p_pgm.h"
 
-// ---------- Coloring the output -----------
+// ---------- ------------------- -----------
+// ANSI escape codes to colour output
 #define ANSI_COLOR_RED "\x1b[91m"
 #define ANSI_COLOR_GREEN "\x1b[92m"
 #define ANSI_COLOR_YELLOW "\x1b[93m"
@@ -31,13 +32,13 @@ enum
       9999 // Error code
 };
 
+
 /**
- * used for qsort
- * @param a
- * @param b
- * @return
+ * @brief converts string to double
+ * @param text
+ * @return double
  */
-int compare(const void *a, const void *b);
+double toDouble(const char *text);
 
 /**
  * @brief converts string to integer
