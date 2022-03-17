@@ -21,6 +21,7 @@ Features
     - rotate
     - threshold operator
 
+
 TODO
 ----
 - Rewrite into CLI tool
