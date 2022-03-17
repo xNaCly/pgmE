@@ -59,22 +59,24 @@ Image *laplace(Image *img) {
   Image *imgCpy = copyImage(img);
 
   for (int i = 0; i < imgCpy->height; i++) {
-	for (int j = 0; j < imgCpy->width; j++) {
-	  // ignore pixels at the border of the image
-	  if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
-		continue;
+		for (int j = 0; j < imgCpy->width; j++) {
+			// ignore pixels at the border of the image
+			if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
+				continue;
 
-	  imgCpy->data[i][j] = sqrt(
-		  img->data[i - 1][j - 1] +
-			  img->data[i][j - 1] +
-			  img->data[i + 1][j - 1] +
-			  img->data[i - 1][j] -
-			  8 * img->data[i][j] +
-			  img->data[i + 1][j] +
-			  img->data[i - 1][j + 1] +
-			  img->data[i][j + 1] +
-			  img->data[i + 1][j + 1]);
-	}
+			int value = (
+				img->data[i - 1][j - 1] +
+					img->data[i][j - 1] +
+					img->data[i + 1][j - 1] +
+					img->data[i - 1][j] -
+					(8 * img->data[i][j]) +
+					img->data[i + 1][j] +
+					img->data[i - 1][j + 1] +
+					img->data[i][j + 1] +
+					img->data[i + 1][j + 1]);
+
+			imgCpy->data[i][j] = value < 0 ? 0 : value;
+		}
   }
 
   return imgCpy;
