@@ -23,32 +23,51 @@ MY_FLAGS := -Wextra \
 
 BUILD_DIR := ./dist
 SRC_DIR := .
-
-# finds all source files in /src/*
-FILES := $(shell find $(SRC_DIR) -name "*.c") 
-
+FILES := $(shell find $(SRC_DIR) -name "*.c") # finds all source files 
 COMPILE := $(MANDATORY_FLAGS) $(MY_FLAGS) $(FILES) -lm -o $(BUILD_DIR)/main.out 
 
-# run the previously built executable
+default: help
+
+## This help screen
+help:
+			@printf "Available targets:\n\n"
+			@awk '/^[a-zA-Z\-\_0-9%:\\]+/ { \
+				helpMessage = match(lastLine, /^## (.*)/); \
+				if (helpMessage) { \
+					helpCommand = $$1; \
+					helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
+		gsub("\\\\", "", helpCommand); \
+		gsub(":+$$", "", helpCommand); \
+					printf "  \x1b[32;01m%-35s\x1b[0m %s\n", helpCommand, helpMessage; \
+				} \
+			} \
+			{ lastLine = $$0 }' $(MAKEFILE_LIST) | sort -u
+			@printf "\n"
+
+## Production build, run the executable
 run: build
 	$(BUILD_DIR)/main.out
 
+## Debug build, run the executable with gdb
 run/debug: build/debug
 	gdb $(BUILD_DIR)/main.out
 
-run/testing: build/debug
+## Debug build, run the executable with valgrind to check for memory leaks
+run/test: build/debug
 	valgrind --leak-check=yes $(BUILD_DIR)/main.out
 
+## Production build with optimisation 
 build:
 	gcc -O3 $(COMPILE)
 
+## Debug build with debug infos
 build/debug: create_dir
 	gcc -g3 $(COMPILE)
 
 create_dir: 
 	mkdir -p $(BUILD_DIR) 
 
-.PHONY: clean
+## Clean the directory
 clean:
 	rm -rf $(BUILD_DIR) 
 	rm -f test.pgm

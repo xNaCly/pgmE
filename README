@@ -2,19 +2,18 @@ pgmE - portable graymap Editor
 ==========
 pgmE is an extremely fast, small and efficient editor which implements the pgm standard.
 
-Requirements
-------------
-In order to build you need:
-    - make
-    - gcc
+Getting Started:
+---------------
+Available targets:
 
-Running pgmE
-------------
-Start it by running:
-    
-    make run
+  build                               Production build with optimisation
+  build/debug                         Debug build with debug infos
+  clean                               Clean the directory
+  help                                This help screen
+  run                                 Production build, run the executable
+  run/debug                           Debug build, run the executable with gdb
+  run/test                            Debug build, run the executable with valgrind to check for memory leaks
 
-This will compile and run pgmE.
 
 Features
 ------------
