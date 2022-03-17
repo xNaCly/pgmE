@@ -17,21 +17,18 @@
 
 // enables the switch case which contains the main menu
 // (basically just used to compare to the user input)
-enum
-{
+enum {
   SELECTION_LOAD = 0,
   SELECTION_MEDIAN_FILTER,
   SELECTION_GAUSS_FILTER,
-  SELECTION_LAPLACE_OPERATOR, // INFO: discontinued
+  SELECTION_LAPLACE_OPERATOR,  // INFO: discontinued
   SELECTION_THRESHOLD,
   SELECTION_SCALE,
   SELECTION_ROTATE,
   SELECTION_SAVE,
   SELECTION_EXIT,
-  SELECTION_INVALID =
-      9999 // Error code
+  SELECTION_INVALID = 9999  // Error code
 };
-
 
 /**
  * @brief converts string to double

@@ -16,7 +16,7 @@
 typedef struct {
   int width;
   int height;
-  int **data;  
+  int **data;
   char *name;
 } Image;
 
@@ -28,7 +28,8 @@ typedef struct {
  * @param default_brightness
  * @return *Image
  */
-Image *createImage(int width, int height, int default_brightness, char *image_name);
+Image *createImage(int width, int height, int default_brightness,
+                   char *image_name);
 
 /**
  * @brief frees the memory taken up by the given Image pointer
@@ -48,7 +49,7 @@ Image *copyImage(Image *img_pointer);
  * @param file_name
  * @return *Image
  */
-Image *loadImage(char* file_name);
+Image *loadImage(char *file_name);
 
 /**
  * @brief saves the given pointer in a .pgm file with the given name
@@ -56,6 +57,6 @@ Image *loadImage(char* file_name);
  * @param img_pointer Image pointer created with createImage()
  * @return 0 or 1
  */
-int saveImage(const char* file_name, Image *img_pointer);
+int saveImage(const char *file_name, Image *img_pointer);
 
 #endif
