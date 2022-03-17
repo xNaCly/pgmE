@@ -133,10 +133,9 @@ Image *scale(Image *img, int width, int height) {
 
   Image *newImg = createImage(width, height, 0, img->name);
 
-  for (int i = 0; i < newImg->height; i++) {
-    for (int j = 0; j < newImg->width; j++) {
-      //	if(i >= img->height - 1 || j >= img->width -1)
-      //		continue;
+  for (int i = 0; i < img->height; i++) {
+    for (int j = 0; j < img->width; j++) {
+      	if(i >= img->height - 2 || j >= img->width - 2 || i >= newImg->height - 2 || j >= newImg->width - 2 ) continue;
 
       newImg->data[i][j] = (1 - x) * (1 - y) * img->data[i][j] +
                            x * (1 - y) * img->data[i][j + 1] +

@@ -31,11 +31,15 @@ Image *createImage(int width, int height, int default_brightness,
   return img;
 }
 
-void freeImage(Image **img_pointer) {
-  // avoid double free
-  if (*img_pointer == NULL) return;
-  free(*img_pointer);   // free memory taken up by pointer
-  *img_pointer = NULL;  // set pointer NULL to prevent it pointing to a random
+void freeImage(Image **img) {
+  if (*img == NULL) return; // avoid double free
+  for(int i = 0; i < (*img)->height; i++){
+    free((*img)->data[i]); // loop over pointers to free them
+  }
+  free((*img)->data); // free pointer pointer 
+
+  free(*img);   // free memory taken up by pointer
+  *img = NULL;  // set pointer NULL to prevent it pointing to a random
   // memory adress
 }
 
@@ -121,6 +125,5 @@ int saveImage(const char *file_name, Image *img_pointer) {
   }
 
   fclose(file);
-
   return 1;
 }

@@ -244,9 +244,10 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
           /*
            Exit program on y, go back into main loop on n
            */
-          if (c == 'y')
+          if (c == 'y'){
+            freeImage(&img);
             exit(EXIT_SUCCESS);
-          else if (c == 'n')
+          } else if (c == 'n')
             break;
         }
 

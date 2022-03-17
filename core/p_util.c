@@ -15,7 +15,7 @@ double toDouble(const char *text) {
   if (strcmp(text, ptr) == 0) {
     return SELECTION_INVALID;
   }
-
+  
   return l;
 }
 

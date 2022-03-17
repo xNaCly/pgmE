@@ -38,6 +38,11 @@ run: main
 main: pre
 	gcc $(COMPILE)
 
+# checks for memory leaks
+leaks: pre
+	gcc -g $(COMPILE)
+	valgrind --leak-check=yes $(BUILD_DIR)/main.out
+
 # compiles executable with debugging info and runs it with the GNU-debugger (gdb)
 debug: pre
 	gcc -g3 $(COMPILE) 
