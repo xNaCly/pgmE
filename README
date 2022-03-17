@@ -6,7 +6,7 @@ pgmE is an extremely fast, small and efficient editor which implements the pgm s
 Getting Started
 ---------------
 
-  make run                                 Build, run the executable
+  make run
 
 
 Features
