@@ -14,7 +14,6 @@ MY_FLAGS := -Wextra \
 						-Wshadow \
 						-Wundef \
 						-fno-common \
-						-O3
 						
 						# set of warnings and errors not covered by -Wall
 						# all warnings cause errors
@@ -30,29 +29,25 @@ FILES := $(shell find $(SRC_DIR) -name "*.c")
 
 COMPILE := $(MANDATORY_FLAGS) $(MY_FLAGS) $(FILES) -lm -o $(BUILD_DIR)/main.out 
 
-# the previously built executable
-run: main
+# run the previously built executable
+run: build
 	$(BUILD_DIR)/main.out
 
-# compile the executable
-main: pre
-	gcc $(COMPILE)
-
-# checks for memory leaks
-leaks: pre
-	gcc -g $(COMPILE)
-	valgrind --leak-check=yes $(BUILD_DIR)/main.out
-
-# compiles executable with debugging info and runs it with the GNU-debugger (gdb)
-debug: pre
-	gcc -g3 $(COMPILE) 
+run/debug: build/debug
 	gdb $(BUILD_DIR)/main.out
 
-# creates build dir, only if its not created yet
-pre: 
+run/testing: build/debug
+	valgrind --leak-check=yes $(BUILD_DIR)/main.out
+
+build:
+	gcc -O3 $(COMPILE)
+
+build/debug: create_dir
+	gcc -g3 $(COMPILE)
+
+create_dir: 
 	mkdir -p $(BUILD_DIR) 
 
-# removes build and test files/dirs
 .PHONY: clean
 clean:
 	rm -rf $(BUILD_DIR) 
