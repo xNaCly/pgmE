@@ -4,12 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-Image *createImage(int width, int height, int default_brightness) {
+Image *createImage(int width, int height, int default_brightness, char* image_name) {
   Image *img;
   img = malloc(sizeof *img);
 
   img->width = width;
   img->height = height;
+  img->name = image_name;
 
   // allocate double pointer to contain pointers
   img->data = (int **)malloc(height * sizeof(int *));
@@ -37,24 +38,24 @@ void freeImage(Image **img_pointer) {
   // memory adress
 }
 
-Image *copyImage(Image *img_pointer) {
-  int width = img_pointer->width;
-  int height = img_pointer->height;
-  Image *cpImage = createImage(width, height, 1);
+Image *copyImage(Image *img) {
+  int width = img->width;
+  int height = img->height;
+  Image *cpImage = createImage(width, height, 1, img->name);
 
   // loop over columns
   for (int i = 0; i < height; i++) {
 	// loop over row items
 	for (int ii = 0; ii < width; ii++) {
 	  // deep copy values
-	  cpImage->data[i][ii] = img_pointer->data[i][ii];
+	  cpImage->data[i][ii] = img->data[i][ii];
 	}
   }
 
   return cpImage;
 }
 
-Image *loadImage(const char *file_name) {
+Image *loadImage(char *file_name) {
   // open file in read mode
   FILE *file = fopen(file_name, "r");
 
@@ -85,7 +86,7 @@ Image *loadImage(const char *file_name) {
 	return NULL;
   }
 
-  Image *img = createImage(width, height, brightness);
+  Image *img = createImage(width, height, brightness, file_name);
 
   for (int i = 0; i < height; i++) {
 	for (int ii = 0; ii < width; ii++) {
