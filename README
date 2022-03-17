@@ -1,6 +1,7 @@
 pgmE - portable graymap Editor
-==========
+==============================
 pgmE is an extremely fast, small and efficient editor which implements the pgm standard.
+
 
 Getting Started
 ---------------
@@ -24,4 +25,5 @@ TODO
 ----
 - Rewrite into CLI tool
 - deb and pgk packages
-- bins for linux and windows
+- bins for *nix and windows
+- create install scripts for *nix and windows
