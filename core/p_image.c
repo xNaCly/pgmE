@@ -4,13 +4,31 @@
 #include <stdio.h>
 #include <stdlib.h> // malloc
 
+/**
+ * used for qsort
+ * @param a
+ * @param b
+ * @return int
+ */
+static int compare(const void *a, const void *b) {
+  int int_a = *((int *)a);
+  int int_b = *((int *)b);
+
+  if (int_a == int_b)
+    return 0;
+  else if (int_a < int_b)
+    return -1;
+  else
+    return 1;
+}
+
 Image *median(Image *img) {
   Image *imgCpy = copyImage(img);
   for (int i = 0; i < imgCpy->height; i++) {
 	for (int j = 0; j < imgCpy->width; j++) {
 	  // ignore pixels at the border of the image
 	  if (i < 2 || j < 2 || i >= imgCpy->height - 2 || j >= imgCpy->width - 2)
-		continue;
+			continue;
 
 	  // fill a field with the 8 surrounding pixels
 	  int surNums[9] = {imgCpy->data[i - 1][j + 1], imgCpy->data[i][j + 1],
@@ -108,23 +126,14 @@ Image *threshold(Image *img, int threshold) {
 Image *scale(Image *img, int width, int height) {
   // if image has same dimensions as the given dimensions to rescale, return a copy of the given img
   if (width == img->width && height == img->height) {
-	Image *imgCpy = copyImage(img);
-	return imgCpy;
+		Image *imgCpy = copyImage(img);
+		return imgCpy;
   }
 
   Image *newImg = createImage(width, height, 0);
 
-  for (int k = 0; k < newImg->height; k++) {
-	for (int l = 0; l < newImg->width; l++) {
-	  for (int i = 0; i < img->height; i++) {
-		for (int j = 0; j < img->width; j++) {
-		  newImg->data[i][j] = (1 - width) * (1 - height) * img->data[i][j] +
-			  width * (1 - height) * img->data[i][j + 1] +
-			  (1 - width) * height * img->data[i + 1][j] +
-			  width * height * img->data[i + 1][j + 1];
-		}
-	  }
-	}
+  for (int i = 0; i < newImg->height; i++) {
+		for (int j = 0; j < newImg->width; j++) {}
   }
 
   return newImg;
