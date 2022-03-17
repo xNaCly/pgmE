@@ -6,12 +6,15 @@ Getting Started
 ---------------
 Available targets:
 
-  build                               Production build with optimisation
+  build                               Build the executable
   build/debug                         Debug build with debug infos
+  build/prod                          Production build with optimisation
+  build/prod/windows                  Windows production build with optimisation
   clean                               Clean the directory
   help                                This help screen
-  run                                 Production build, run the executable
+  run                                 Build, run the executable
   run/debug                           Debug build, run the executable with gdb
+  run/prod                            Production build, run the exectuable
   run/test                            Debug build, run the executable with valgrind to check for memory leaks
 
 
