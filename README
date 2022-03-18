@@ -41,6 +41,10 @@ FILES
 - p_util:   small utility stuff, such as: throw warning and error, convert data 
 
 
+NOTES
+-----
+The whole application was compiled with several very harsh gcc warning and error flags and was tested for memory leaks with valgrind.
+
 TODO
 ----
 - Rewrite into CLI tool
