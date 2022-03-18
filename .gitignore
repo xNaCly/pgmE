@@ -1,2 +1,9 @@
+# build dirs:
 dist/*
+prod/*
+build/*
+# configs for vscode and clion:
 .idea/*
+.code/*
+# images:
+*.pgm
