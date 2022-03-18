@@ -24,6 +24,10 @@ Features
 
 
 
+NOTES
+-----
+The whole application was compiled with several very harsh gcc warning and error flags and was tested for memory leaks with valgrind.
+
 TODO
 ----
 - deb and pgk packages
