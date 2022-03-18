@@ -134,22 +134,23 @@ Image *scale(Image *img, int width, int height) {
   int l = img->height;
 
   for (int lh = 0; lh < height; lh++) {
-    for (int kw = 0; kw < width; kw++) {
-      float x = (float)kw/width * k;
-      float y = (float)lh/height * l;
-      int oldX = x > k-2 ? k-2 : (int)x;
-      int oldY = y > l-2 ? l-2 : (int)y;
-      float dX = x-oldX;
-      float dY = y-oldY;
+      for (int kw = 0; kw < width; kw++) {
+        float scaleX = (float)kw / (float)width;
+        float scaleY = (float)lh / (float)height;
+        float x = scaleX * (float)k;
+        float y = scaleY * (float)l;
+        int oldX = x > k-2 ? k-2 : (int)x;
+        int oldY = y > l-2 ? l-2 : (int)y;
+        float dX = x-oldX;
+        float dY = y-oldY;
 
-      // TODO: this segfaults!
-      newImg->data[kw][lh] = 
-        (1-dX) * (1-dY) * img->data[oldX][oldY] +
-        dX * (1-dY) * img->data[oldX+1][oldY] +
-        (1-dX) * dY * img->data[oldX][oldY+1] +
-        dX * dY * img->data[oldX+1][oldY+1];
+        float p1 = (1-dX) * (1-dY) * (float)img->data[oldY][oldX];
+        float p2 = dX * (1-dY) * (float)img->data[oldY+1][oldX];
+        float p3 = (1-dX) * dY * (float)img->data[oldY][oldX+1];
+        float p4 = dX * dY * (float)img->data[oldY+1][oldX+1];
+        newImg->data[lh][kw] = (int)roundf(p1 + p2 + p3 + p4);
+      }
     }
-  }
 
   return newImg;
 }
