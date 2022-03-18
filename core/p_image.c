@@ -128,19 +128,25 @@ Image *scale(Image *img, int width, int height) {
     return imgCpy;
   }
 
-  int x = img->width / width;
-  int y = img->height / height;
 
   Image *newImg = createImage(width, height, 0, img->name);
+  int k = img->width;
+  int l = img->height;
 
-  for (int i = 0; i < img->height; i++) {
-    for (int j = 0; j < img->width; j++) {
-      	if(i >= img->height - 2 || j >= img->width - 2 || i >= newImg->height - 2 || j >= newImg->width - 2 ) continue;
+  for (int lh = 0; lh < height; lh++) {
+    for (int kw = 0; kw < width; kw++) {
+      float x = (float)kw/width * k;
+      float y = (float)lh/height * l;
+      int newX = x > k-2 ? (int)x : k-2;
+      int newY = y > l-2 ? (int)y : l-2;
+      float dX = x-newX;
+      float dY = y-newY;
 
-      newImg->data[i][j] = (1 - x) * (1 - y) * img->data[i][j] +
-                           x * (1 - y) * img->data[i][j + 1] +
-                           (1 - x) * y * img->data[i + 1][j] +
-                           x * y * img->data[i + 1][j + 1];
+      newImg->data[kw][lh] = 
+        (1-dX) * (1-dY) * img->data[newX][newY] +
+        dX * (1-dY) * img->data[newX+1][newY] +
+        (1-dX) * dY * img->data[newX][newY+1] +
+        dX * dY * img->data[newX+1][newY+1];
     }
   }
 
