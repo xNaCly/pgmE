@@ -2,7 +2,7 @@
 MANDATORY_FLAGS := -fdiagnostics-color=always  \
 									 -Wall \
 									 -Wpedantic \
-									 -std=c99
+									 -std=c11
 
 									 	# use color in diagnostics
 										# enables all construction warnings
@@ -13,7 +13,7 @@ MY_FLAGS := -Wextra \
 						-Werror \
 						-Wshadow \
 						-Wundef \
-						-fno-common \
+						-fno-common 
 						
 						# set of warnings and errors not covered by -Wall
 						# all warnings cause errors
@@ -56,7 +56,7 @@ run/prod: build/prod
 
 ## Debug build, run the executable with gdb
 run/debug: build/debug
-	gdb $(BUILD_DIR)/$(OUT_NAME).debug
+	gdb -ex=r $(BUILD_DIR)/$(OUT_NAME).debug
 
 ## Debug build, run the executable with valgrind to check for memory leaks
 run/test: build/debug

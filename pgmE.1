@@ -1,0 +1,110 @@
+.TH PGME 1 pgme\-v0.0.1
+.SH NAME
+pgmE \- minimal PGM image editor
+.SH SYNOPSIS
+.B pgme
+FILE 
+MODIFICATION 
+.RB [ CMD_SPECIFIC_OPTIONS ]
+.P
+.B pgme
+FILE
+.RB [ \-m ]
+.RB [ \-g ]
+.RB [ \-l ]
+.RB [ \-t ]
+.RB [ \-s ]
+.RB [ \-r ]
+.RB [ CMD_SPECIFIC_OPTIONS ]
+.P
+.B pgme
+FILE 
+MODIFICATION 
+.RB [ \-\-t ]
+.RB [ \-\-h ]
+.RB [ \-\-w ]
+.RB [ \-\-a ]
+.RB [ \-\-b ]
+.SH DESCRIPTION
+.B pgmE 
+is an extremely fast, small and efficient editor, which implements the PGM standard.
+It was written as a first semester project by undergradute students.
+It can be used to apply several filters and operators to images in the PGM format.
+
+Source code: https://github.com/xnacly/pgmE
+
+PGM specification: http://netpbm.sourceforge.net/doc/pgm.html 
+.SH OPTIONS
+.TP
+.B \-m 
+median filter
+.TP
+.B \-g 
+gauss filter
+.TP
+.B \-l
+laplace operator
+.TP
+.B \-t
+threshold operator
+.RS
+.TP
+.B \-\-t
+configure the threshold value [1-255]
+.RE
+.TP
+.B \-s
+scale / resize
+.RS
+.TP
+.B \-\-h
+configure height
+.TP
+.B \-\-w
+configure width
+.RE
+.TP
+.B \-r
+rotate
+.RS
+.TP
+.B \-\-a
+configure angle
+.TP
+.B \-\-b
+configure brightness for pixels which are without value
+.RE
+
+.SH EXAMPLES
+.TP 
+apply the laplace operator to 'example.pgm'
+.RS
+.TP
+pgmE example.pgm -l
+.RE
+.TP
+rotate the image 87 degrees and fill the pixels which are not in the image with the brightness 15
+.RS
+.TP
+pgmE example.pgm -r --a=87 --b=15
+.RE
+.TP
+apply the threshold filter with the value 128
+.RS
+.TP
+pgmE example.pgm -t --t=128
+.RE
+.TP
+scale the image to 1920x1080
+.RS
+.TP
+pgmE example.pgm -s --w=1920 --h=1080
+.RE
+
+.SH SEE ALSO
+.IR convert-im6.q16 (1),
+.IR ImageMagick-im6.q16 (1)
+
+.SH AUTHOR
+Written by xnacly (https://github.com/xnacly)
+

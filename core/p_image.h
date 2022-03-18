@@ -8,7 +8,6 @@
 #ifndef P_IMAGE_H_INCLUDED
 #define P_IMAGE_H_INCLUDED
 #include "p_pgm.h"   // used for: copyImage, createImage
-#include "p_util.h"  // used for: compare
 
 #define PI 3.141592  // needed for rotation
 

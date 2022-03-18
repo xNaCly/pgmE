@@ -6,268 +6,198 @@
  */
 
 #include <ctype.h>   // used for tolower
-#include <stdio.h>   // used for scanf, printf, EXIT_SUCCESS
+#include <stdio.h>   // used for scanf,  , EXIT_SUCCESS
 #include <stdlib.h>  // used for: loadImage, freeImage
-#include <time.h> // used for clock
+#include <string.h>
+#include <unistd.h>  // getopt
 
 #include "core/p_image.h"
 #include "core/p_pgm.h"
-#include "core/p_util.h"
 
-void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
-  const char *MAIN_OPTIONS[SELECTION_EXIT + 1] = {
-      "Datei laden",      "Median-Filter",        "Gauß-Filter",
-      "Laplace-Operator", "Schwellwertverfahren", "Bild skalieren",
-      "Bild rotieren",    "Datei speichern",      "Exit"};
-  int selection = 0;
-  Image *img = NULL;
+#define ANSI_COLOR_RED "\x1b[91m"
+#define ANSI_COLOR_GREEN "\x1b[92m"
+#define ANSI_COLOR_YELLOW "\x1b[93m"
+#define ANSI_STYLE_BOLD "\x1b[1m"
+#define ANSI_RESET "\x1b[0m"
 
-  while (selection >= 0) {
-    printf("\nMain Menu:\n\n");
-    // indicator to visualise when image is in ram
-    printf("[%s] Image in Ram (%s)\n\n",
-           image_in_memory ? ANSI_COLOR_GREEN "+" ANSI_RESET
-                           : ANSI_COLOR_RED "-" ANSI_RESET,
-           img == NULL ? "-" : img->name);
-
-    // loop over all options and print them
-    for (int i = 0; i <= SELECTION_EXIT; i++) {
-      int isActive =
-          (image_in_memory || i == SELECTION_LOAD || i == SELECTION_EXIT);
-      // print all options not available red, the available ones green
-      printf("[%d] %s%s%s\n", i, isActive ? ANSI_COLOR_GREEN : ANSI_COLOR_RED,
-             MAIN_OPTIONS[i], ANSI_RESET);
-    }
-
-    printf("\nSelection (0-%d): ", SELECTION_EXIT);
-
-    // allocate temp variable for usage later
-    char *temp = malloc(sizeof(char) * 10);
-    scanf("%s", temp);
-    // safe conversion from string to integer using strtol in toInt
-    selection = toInt(temp);
-    free(temp);
-
-    // check if selection is in the allowed spectre
-    selection = check_is_option_valid(selection, image_in_memory);
-
-    switch (selection) {
-      case SELECTION_LOAD: {
-        if (!image_in_memory) {
-          double time_spent = 0;
-          printf("[%d] %s\n", SELECTION_LOAD, MAIN_OPTIONS[SELECTION_LOAD]);
-          char filename[255] = "";  // size: 255 due to the maximum file length
-
-          // avoid double free by checking if the image was freed before
-          if (img != NULL) {
-            freeImage(&img);
-          } else {
-            // loop until the input is a valid file which can be opened
-            while (img == NULL) {
-              printf("Dateiname (with .pgm): ");
-              scanf("%s", filename);
-              clock_t begin = clock();
-              img = loadImage(filename);
-              clock_t end = clock();
-              time_spent = (double)(end-begin)/CLOCKS_PER_SEC;
-              if (img == NULL) {
-                throw_warning("Datei konnte nicht geöffnet werden.");
-              }
-            }
-
-            printf("%s%s wurde eingelesen. [%.4f s]%s\n", ANSI_COLOR_GREEN, filename, time_spent,
-                   ANSI_RESET);
-            image_in_memory = 1;
-          }
-
-          break;
-        }
-        // disallow reading an image into mem if there is already one
-        throw_warning("Bereits eine Datei in memory!");
-        break;
-      }
-      case SELECTION_MEDIAN_FILTER: {
-        printf("[%d] %s\n", SELECTION_MEDIAN_FILTER,
-               MAIN_OPTIONS[SELECTION_MEDIAN_FILTER]);
-        Image *copy = median(img);
-        freeImage(&img);
-        img = copy;
-        edited_unsaved_image_in_memory = 1;
-        printf(ANSI_COLOR_GREEN
-               "Bild wurde mit dem Median Operator bearbeitet." ANSI_RESET);
-        break;
-      }
-      case SELECTION_GAUSS_FILTER: {
-        printf("[%d] %s\n", SELECTION_GAUSS_FILTER,
-               MAIN_OPTIONS[SELECTION_GAUSS_FILTER]);
-        Image *copy = gauss(img);
-        freeImage(&img);
-        img = copy;
-        edited_unsaved_image_in_memory = 1;
-        printf(ANSI_COLOR_GREEN
-               "Bild wurde mit dem Gauss Filter bearbeitet." ANSI_RESET);
-        break;
-      }
-      case SELECTION_LAPLACE_OPERATOR: {
-        printf("[%d] %s\n", 3, MAIN_OPTIONS[3]);
-        Image *copy = laplace(img);
-        freeImage(&img);
-        img = copy;
-        edited_unsaved_image_in_memory = 1;
-        printf(ANSI_COLOR_GREEN
-               "Bild wurde mit dem Laplace Operator bearbeitet." ANSI_RESET);
-        break;
-      }
-      case SELECTION_THRESHOLD: {
-        printf("[%d] %s\n", SELECTION_THRESHOLD,
-               MAIN_OPTIONS[SELECTION_THRESHOLD]);
-        int threshold_ = 0;
-        printf("Schwellwert: ");
-
-        char *text = malloc(sizeof(char) * 255);
-        scanf("%s", text);
-        threshold_ = toInt(text);
-        free(text);
-
-        Image *copy = threshold(img, threshold_);
-        freeImage(&img);
-        img = copy;
-        edited_unsaved_image_in_memory = 1;
-        printf(ANSI_COLOR_GREEN
-               "Bild wurde mit dem Threshold Operator "
-               "bearbeitet." ANSI_RESET);
-        break;
-      }
-      case SELECTION_SCALE: {
-        printf("[%d] %s\n", SELECTION_SCALE, MAIN_OPTIONS[SELECTION_SCALE]);
-        int width = 0;
-        int height = 0;
-
-        printf("Höhe: ");
-
-        char *text = malloc(sizeof(char) * 255);
-        scanf("%s", text);
-        height = toInt(text);
-
-        printf("Breite: ");
-
-        scanf("%s", text);
-        width = toInt(text);
-        free(text);
-
-        Image *copy = scale(img, width, height);
-        freeImage(&img);
-        img = copy;
-
-        edited_unsaved_image_in_memory = 1;
-        printf(ANSI_COLOR_GREEN "Bild wurde skaliert." ANSI_RESET);
-        break;
-      }
-      case SELECTION_ROTATE: {
-        printf("[%d] %s\n", SELECTION_ROTATE, MAIN_OPTIONS[SELECTION_ROTATE]);
-        double angle = 0;
-        int brightness = MAX_BRIGHT;
-        printf("Winkel um den das Bild gedreht werden soll: ");
-
-        char *text = malloc(sizeof(char) * 255);
-        scanf("%s", text);
-        angle = toDouble(text);
-
-        printf(
-            "Helligkeit mit der freiliegende Pixel gefüllt werden "
-            "sollen: ");
-
-        scanf("%s", text);
-        brightness = toInt(text);
-        free(text);
-
-        Image *copy = rotate(img, angle, brightness);
-
-        freeImage(&img);
-        img = copy;
-
-        printf("%sBild wurde um %2f-Grad im Uhrzeigersinn gedreht.%s\n",
-               ANSI_COLOR_GREEN, angle, ANSI_RESET);
-        edited_unsaved_image_in_memory = 1;
-        break;
-      }
-      case SELECTION_SAVE: {
-        printf("[%d] %s\n", SELECTION_SAVE, MAIN_OPTIONS[SELECTION_SAVE]);
-        char filename[255];
-
-        printf("Dateiname (mit .pgm): ");
-        scanf("%s", filename);
-
-        clock_t begin = clock();
-        int feedback = saveImage(filename, img);
-        clock_t end = clock();
-        double time_spent = (double)(end-begin) / CLOCKS_PER_SEC;
-
-        if (!feedback) {
-          throw_error(
-              "Datei konnte nicht gespeichert werden. (Fehler "
-              "beim Speichern)");
-        } else {
-          freeImage(&img);
-        }
-
-        edited_unsaved_image_in_memory = 0;
-        image_in_memory = 0;
-
-        printf("%sBild wurde als: %s gespeichert. [%.4f s]%s\n", ANSI_COLOR_GREEN,
-               filename, time_spent, ANSI_RESET);
-        break;
-      }
-      case SELECTION_EXIT: {
-        if (!edited_unsaved_image_in_memory) {
-          printf("[%d] %s\n", SELECTION_EXIT, MAIN_OPTIONS[SELECTION_EXIT]);
-          exit(EXIT_SUCCESS);
-        }
-
-        printf(ANSI_COLOR_RED
-               "Noch ein bearbeitetes, ungespeicherters Bild im "
-               "Speicher, willst "
-               "du wirklich beenden?\n" ANSI_RESET);
-        // very simple yes no prompt
-        char c = -1;
-
-        while (c != 'y' || c != 'n') {
-          printf("[Y/n]: ");
-          scanf(" %c", &c);
-
-          /*
-          convert char to lower representation to cut down
-          on conditional statements
-          */
-          c = tolower((unsigned char)c);
-
-          /*
-           Exit program on y, go back into main loop on n
-           */
-          if (c == 'y'){
-            freeImage(&img);
-            exit(EXIT_SUCCESS);
-          } else if (c == 'n')
-            break;
-        }
-
-        break;
-      }
-      default: {
-        throw_warning("Invalide Option");
-        break;
-      }
-    }
+char* stripIndex(char* text, int start, int end){
+  for(int i = start; i < end; i++){
+    memmove(&text[0], &text[0+1], strlen(text)-0);
   }
+  return text;
+}
+
+double toDouble(const char *text) {
+  char *ptr;
+  long l;
+
+  l = strtod(text, &ptr);
+
+  // checks if text and rest after conversion from strtol is equal,
+  // meaning no int was in text
+  if (strcmp(text, ptr) == 0) {
+    return 999;
+  }
+  
+  return l;
+}
+
+int toInt(const char *text) {
+  char *ptr;
+  long l;
+
+  l = strtol(text, &ptr, 10);
+
+  // checks if text and rest after conversion from strtol is equal,
+  // meaning no int was in text
+  if (strcmp(text, ptr) == 0) {
+    return 999;
+  }
+
+  return (int)l;
+}
+
+void usage(){
+  printf("Usage: pgme FILE MODIFICATION [CMD_SPECIFIC_OPTIONS]\n"
+         "       pgme FILE [-m] [-g] [-l] [-t] [-s] [-r] [CMD_SPECIFIC_OPTIONS]\n"
+         "       pgme FILE MODIFICATION [--t] [--h] [--w] [--a] [--b]\n"
+      );
+
   exit(EXIT_SUCCESS);
 }
 
-int main(void) {
-  // enables confirmation prompt on exit while there is an edited image in
-  // memory
-  int edited_image_in_memory = 0;
-  // enables disallowing editing images while there arent any in memory
-  int image_in_memory = 0;
-  main_menu(edited_image_in_memory, image_in_memory);
+void throw_warning(const char text[]) {
+  printf("%s%s%s\n", ANSI_COLOR_YELLOW, text, ANSI_RESET);
+}
+
+void main_menu(int argc, char **argv) {
+  Image *img = NULL;
+  int result = 0;
+  int thresh = 0;
+  double angle = 0;
+  int brightness = 0;
+  int width = 0;
+  int height = 0;
+
+  if(argc == 1){
+    usage();
+  }
+
+  char filenames[10][255];
+
+  for (int i = 1; i < argc; i++) {
+    if (argv[i][0] != '-') {
+      strcpy(filenames[i - 1], argv[i]);
+    } else if (argv[i][0] == '-') {
+      if (strcmp(argv[i], "--help") == 0) {
+        usage();
+      } else if (strncmp(argv[i], "--t=", 4) == 0){
+        char* temp = argv[i];
+        temp = stripIndex(temp, 0, 4);
+        thresh = toInt(temp);
+      } else if (strncmp(argv[i], "--a=", 4) == 0){
+        char* temp = argv[i];
+        temp = stripIndex(temp, 0, 4);
+        angle = toDouble(temp);
+      } else if (strncmp(argv[i], "--b=", 4) == 0){
+        char* temp = argv[i];
+        temp = stripIndex(temp, 0, 4);
+        brightness = toInt(temp);
+      } else if (strncmp(argv[i], "--h=", 4) == 0){
+        char* temp = argv[i];
+        temp = stripIndex(temp, 0, 4);
+        height = toInt(temp);
+      } else if (strncmp(argv[i], "--w=", 4) == 0){
+        char* temp = argv[i];
+        temp = stripIndex(temp, 0, 4);
+        width = toInt(temp);
+      } else if(argv[i][1] != '-'){
+        for (size_t ii = 1; ii < strlen(argv[i]); ii++) {
+          switch (argv[i][ii]) {
+            case 'g':
+            case 'm':
+            case 'l':
+            case 't':
+            case 's':
+            case 'r':
+              result = argv[i][ii];
+              break;
+            default:
+              printf("%s\n", argv[i]);
+              throw_warning("Unrecognized argument");
+              exit(EXIT_FAILURE);
+          }
+        }
+      }
+    }
+  }
+
+  img = loadImage(filenames[0]);
+
+  if (img == NULL) {
+    char temp[559];
+    sprintf(temp, "pgmE %s", filenames[0]);
+    perror(temp);
+    exit(EXIT_FAILURE);
+  }
+  switch (result) {
+    case 'g': {
+      Image *copy = gauss(img);
+      freeImage(&img);
+      img = copy;
+      break;
+    }
+    case 'm': {
+      Image *copy = median(img);
+      freeImage(&img);
+      img = copy;
+      break;
+    }
+    case 'l': {
+      Image *copy = laplace(img);
+      freeImage(&img);
+      img = copy;
+      break;
+    }
+    case 't': {
+      Image *copy = threshold(img, thresh);
+      freeImage(&img);
+      img = copy;
+      break;
+    }
+    case 'r': {
+      Image *copy = rotate(img, angle, brightness);
+      freeImage(&img);
+      img = copy;
+      break;
+    }
+    case 's': {
+      Image *copy = scale(img, width, height);
+      freeImage(&img);
+      img = copy;
+      break;
+    }
+    default: {
+      throw_warning(
+          "No filter or operator specified, see --help for more info.");
+      break;
+    }
+  }
+
+  int feedback = saveImage(filenames[0], img);
+
+  if (!feedback) {
+    char temp[559];
+    sprintf(temp, "pgmE%s", filenames[0]);
+    perror(temp);
+    exit(EXIT_FAILURE);
+  } else {
+    freeImage(&img);
+  }
+}
+
+
+int main(int argc, char **argv) {
+  main_menu(argc, argv);
   return EXIT_SUCCESS;
 }
