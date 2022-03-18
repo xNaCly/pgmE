@@ -46,6 +46,20 @@ help:
 			{ lastLine = $$0 }' $(MAKEFILE_LIST) | sort -u
 			@printf "\n"
 
+## self install
+install: build/prod
+	cp ./pgmE.1 ./pgmE.1_copy
+	gzip ./pgmE.1_copy
+	mv ./pgmE.1_copy.gz ./pgmE.1.gz
+	sudo mkdir -p /usr/local/share/man/man1
+	sudo mv pgmE.1.gz /usr/local/share/man/man1/pgmE.1.gz
+	sudo mv $(PROD_DIR)/$(OUT_NAME) /usr/local/bin/pgmE
+
+## uninstall 
+uninstall:
+	sudo rm /usr/local/man/man1/pgmE.1.gz
+	sudo rm /usr/local/bin/pgmE
+
 ## Build, run the executable
 run: build
 	$(BUILD_DIR)/$(OUT_NAME)
@@ -89,3 +103,5 @@ clean:
 	rm -rf $(BUILD_DIR)
 	rm -rf $(PROD_DIR)
 	rm -f test.pgm
+
+.PHONY: install uninstall run run/prod run/prod run/test build build/prod build/prod/windows build/debug clean
