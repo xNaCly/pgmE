@@ -60,7 +60,7 @@ run/debug: build/debug
 
 ## Debug build, run the executable with valgrind to check for memory leaks
 run/test: build/debug
-	valgrind --leak-check=yes $(BUILD_DIR)/$(OUT_NAME)
+	valgrind --leak-check=yes $(BUILD_DIR)/$(OUT_NAME).debug
 
 ## Build the executable
 build: create_dir

@@ -137,16 +137,16 @@ Image *scale(Image *img, int width, int height) {
     for (int kw = 0; kw < width; kw++) {
       float x = (float)kw/width * k;
       float y = (float)lh/height * l;
-      int newX = x > k-2 ? (int)x : k-2;
-      int newY = y > l-2 ? (int)y : l-2;
-      float dX = x-newX;
-      float dY = y-newY;
+      int oldX = x > k-2 ? (int)x : k-2;
+      int oldY = y > l-2 ? (int)y : l-2;
+      float dX = x-oldX;
+      float dY = y-oldY;
 
       newImg->data[kw][lh] = 
-        (1-dX) * (1-dY) * img->data[newX][newY] +
-        dX * (1-dY) * img->data[newX+1][newY] +
-        (1-dX) * dY * img->data[newX][newY+1] +
-        dX * dY * img->data[newX+1][newY+1];
+        (1-dX) * (1-dY) * img->data[oldX][oldY] +
+        dX * (1-dY) * img->data[oldX+1][oldY] +
+        (1-dX) * dY * img->data[oldX][oldY+1] +
+        dX * dY * img->data[oldX+1][oldY+1];
     }
   }
 
@@ -179,6 +179,8 @@ Image *rotate(Image *img, double angle, int brightness) {
       imgCpy->data[y_new][x_new] = img->data[y][x];
     }
   }
+
   Image *newImg = median(imgCpy);
+  freeImage(&imgCpy);
   return newImg;
 }
