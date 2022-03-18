@@ -137,11 +137,12 @@ Image *scale(Image *img, int width, int height) {
     for (int kw = 0; kw < width; kw++) {
       float x = (float)kw/width * k;
       float y = (float)lh/height * l;
-      int oldX = x > k-2 ? (int)x : k-2;
-      int oldY = y > l-2 ? (int)y : l-2;
+      int oldX = x > k-2 ? k-2 : (int)x;
+      int oldY = y > l-2 ? l-2 : (int)y;
       float dX = x-oldX;
       float dY = y-oldY;
 
+      // TODO: this segfaults!
       newImg->data[kw][lh] = 
         (1-dX) * (1-dY) * img->data[oldX][oldY] +
         dX * (1-dY) * img->data[oldX+1][oldY] +

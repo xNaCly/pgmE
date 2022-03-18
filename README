@@ -10,7 +10,7 @@ Getting Started
 
 
 Features
-------------
+--------
 - load pgm images
 - save pgm images
 - edit pgm images:
@@ -22,9 +22,31 @@ Features
     - threshold operator
 
 
+FILES
+-----
+.
+├── core
+│  ├── p_image.c
+│  ├── p_image.h
+│  ├── p_pgm.c
+│  ├── p_pgm.h
+│  ├── p_util.c
+│  └── p_util.h
+├── main.c
+├── Makefile
+└── README
+
+- p_image:  working with the data in the images: applying filters, operators, resizing and rotating 
+- p_pgm:    working with the images as a structure, loading, copying, saving, freeing
+- p_util:   small utility stuff, such as: throw warning and error, convert data 
+
+
 TODO
 ----
 - Rewrite into CLI tool
 - deb and pgk packages
-- bins for *nix and windows
 - create install scripts for *nix and windows
+
+- done: 
+    - bins for *nix and windows
+
