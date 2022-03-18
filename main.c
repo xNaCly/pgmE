@@ -8,7 +8,7 @@
 #include <ctype.h>   // used for tolower
 #include <stdio.h>   // used for scanf, printf, EXIT_SUCCESS
 #include <stdlib.h>  // used for: loadImage, freeImage
-#include <time.h> // used for clock
+#include <time.h>    // used for clock
 
 #include "core/p_image.h"
 #include "core/p_pgm.h"
@@ -69,6 +69,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
               clock_t begin = clock();
               img = loadImage(filename);
               clock_t end = clock();
+              // benchmark to stop the time it took to load file into memory
               time_spent = (double)(end-begin)/CLOCKS_PER_SEC;
               if (img == NULL) {
                 throw_warning("Datei konnte nicht geöffnet werden.");
@@ -219,6 +220,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
         break;
       }
       case SELECTION_EXIT: {
+        // allow immediate exit if no file was edited
         if (!edited_unsaved_image_in_memory) {
           printf("[%d] %s\n", SELECTION_EXIT, MAIN_OPTIONS[SELECTION_EXIT]);
           exit(EXIT_SUCCESS);
@@ -228,6 +230,7 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
                "Noch ein bearbeitetes, ungespeicherters Bild im "
                "Speicher, willst "
                "du wirklich beenden?\n" ANSI_RESET);
+
         // very simple yes no prompt
         char c = -1;
 
@@ -236,8 +239,8 @@ void main_menu(int edited_unsaved_image_in_memory, int image_in_memory) {
           scanf(" %c", &c);
 
           /*
-          convert char to lower representation to cut down
-          on conditional statements
+          convert char to lowercase representation therefore cutting down
+          on the usage of conditional statements
           */
           c = tolower((unsigned char)c);
 

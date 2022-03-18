@@ -6,7 +6,7 @@
 
 double toDouble(const char *text) {
   char *ptr;
-  long l;
+  double l;
 
   l = strtod(text, &ptr);
 
