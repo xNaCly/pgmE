@@ -56,7 +56,7 @@ run/prod: build/prod
 
 ## Debug build, run the executable with gdb
 run/debug: build/debug
-	gdb $(BUILD_DIR)/$(OUT_NAME)
+	gdb $(BUILD_DIR)/$(OUT_NAME).debug
 
 ## Debug build, run the executable with valgrind to check for memory leaks
 run/test: build/debug
@@ -76,7 +76,7 @@ build/prod/windows: create_dir/prod
 
 ## Debug build with debug infos
 build/debug: create_dir
-	gcc -g3 $(COMPILE)
+	gcc -g3 $(COMPILE) $(BUILD_DIR)/$(OUT_NAME).debug
 
 create_dir: 
 	mkdir -p $(BUILD_DIR) 
