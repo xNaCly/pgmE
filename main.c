@@ -16,19 +16,15 @@
 #include "core/p_image.h"
 #include "core/p_pgm.h"
 
-#define ANSI_COLOR_RED "\x1b[91m"
-#define ANSI_COLOR_GREEN "\x1b[92m"
-#define ANSI_COLOR_YELLOW "\x1b[93m"
-#define ANSI_STYLE_BOLD "\x1b[1m"
-#define ANSI_RESET "\x1b[0m"
+#include "main.h"
 
-int verbose = 0;
 int isDir(const char* target){
   struct stat statbuf;
   stat(target, &statbuf);
   return S_ISDIR(statbuf.st_mode);
 }
 
+int verbose = 0;
 
 char* stripIndex(char* text, int start, int end){
   for(int i = start; i < end; i++){
@@ -150,13 +146,19 @@ void main_menu(int argc, char **argv) {
   clock_t begin = clock();
   
   for(int i = 0; i < amount_of_files; i++){
-    if(isDir(filenames[i]))
+    if(isDir(filenames[i])){
+      if(verbose)
+        printf("'%s' is a directory.\n", filenames[i]);
       continue;
+    }
 
     img = loadImage(filenames[i]);
 
-    if(img == NULL)
+    if(img == NULL){
+      if(verbose)
+        printf("'%s' isn't a pgm image.\n", filenames[i]);
       continue;
+    }
 
     if(verbose)
       printf("opened %s\n", img->name);
@@ -187,6 +189,15 @@ void main_menu(int argc, char **argv) {
         break;
       }
       case 't': {
+        if (thresh < 1) {
+          if(verbose)
+            printf("threshold was too small, was set to: 1\n");
+          thresh = 1;
+        } else if (thresh > MAX_BRIGHT) {
+          if(verbose)
+            printf("threshold was too big, was set to: %d\n", MAX_BRIGHT);
+          thresh = MAX_BRIGHT;
+        }
         Image *copy = threshold(img, thresh);
         freeImage(&img);
         img = copy;
