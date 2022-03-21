@@ -22,7 +22,7 @@ MY_FLAGS := -Wextra \
 						# warnings for global variables
 
 BUILD_DIR := ./build
-PROD_DIR := ./prod
+PROD_DIR := ./dist
 SRC_DIR := .
 OUT_NAME := pgmE
 FILES := $(shell find $(SRC_DIR) -name "*.c") # finds all source files 
