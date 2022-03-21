@@ -4,12 +4,12 @@
  * @brief contains the starting point of the project
  * @date 2021-02-21
  */
-#include <ctype.h>   // used for tolower
-#include <stdio.h>   // used for scanf,  , EXIT_SUCCESS
-#include <stdlib.h>  // used for: loadImage, freeImage
+#include <ctype.h>  
+#include <stdio.h> 
+#include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <unistd.h>  // getopt
+#include <unistd.h>
 #include <dirent.h>
 #include <sys/stat.h>
 
@@ -39,8 +39,6 @@ double toDouble(const char *text) {
 
   l = strtod(text, &ptr);
 
-  // checks if text and rest after conversion from strtol is equal,
-  // meaning no int was in text
   if (strcmp(text, ptr) == 0) {
     return 999;
   }
@@ -54,8 +52,8 @@ int toInt(const char *text) {
 
   l = strtol(text, &ptr, 10);
 
-  // checks if text and rest after conversion from strtol is equal,
-  // meaning no int was in text
+  
+ 
   if (strcmp(text, ptr) == 0) {
     return 999;
   }
