@@ -4,12 +4,14 @@
  * @brief contains the starting point of the project
  * @date 2021-02-21
  */
-
 #include <ctype.h>   // used for tolower
 #include <stdio.h>   // used for scanf,  , EXIT_SUCCESS
 #include <stdlib.h>  // used for: loadImage, freeImage
+#include <time.h>
 #include <string.h>
 #include <unistd.h>  // getopt
+#include <dirent.h>
+#include <sys/stat.h>
 
 #include "core/p_image.h"
 #include "core/p_pgm.h"
@@ -19,6 +21,14 @@
 #define ANSI_COLOR_YELLOW "\x1b[93m"
 #define ANSI_STYLE_BOLD "\x1b[1m"
 #define ANSI_RESET "\x1b[0m"
+
+int verbose = 0;
+int isDir(const char* target){
+  struct stat statbuf;
+  stat(target, &statbuf);
+  return S_ISDIR(statbuf.st_mode);
+}
+
 
 char* stripIndex(char* text, int start, int end){
   for(int i = start; i < end; i++){
@@ -59,7 +69,7 @@ int toInt(const char *text) {
 
 void usage(){
   printf("Usage: pgme FILE MODIFICATION [CMD_SPECIFIC_OPTIONS]\n"
-         "       pgme FILE [-m] [-g] [-l] [-t] [-s] [-r] [CMD_SPECIFIC_OPTIONS]\n"
+         "       pgme FILE [-m] [-g] [-l] [-t] [-s] [-r] [-v] [CMD_SPECIFIC_OPTIONS]\n"
          "       pgme FILE MODIFICATION [--t] [--h] [--w] [--a] [--b]\n"
       );
 
@@ -84,10 +94,12 @@ void main_menu(int argc, char **argv) {
   }
 
   char filenames[10][255];
+  int amount_of_files = 0;
 
   for (int i = 1; i < argc; i++) {
     if (argv[i][0] != '-') {
       strcpy(filenames[i - 1], argv[i]);
+      amount_of_files++;
     } else if (argv[i][0] == '-') {
       if (strcmp(argv[i], "--help") == 0) {
         usage();
@@ -114,6 +126,9 @@ void main_menu(int argc, char **argv) {
       } else if(argv[i][1] != '-'){
         for (size_t ii = 1; ii < strlen(argv[i]); ii++) {
           switch (argv[i][ii]) {
+            case 'v':
+              verbose = 1;
+              break;
             case 'g':
             case 'm':
             case 'l':
@@ -132,68 +147,94 @@ void main_menu(int argc, char **argv) {
     }
   }
 
-  img = loadImage(filenames[0]);
+  clock_t begin = clock();
+  
+  for(int i = 0; i < amount_of_files; i++){
+    if(isDir(filenames[i]))
+      continue;
 
-  if (img == NULL) {
-    char temp[559];
-    sprintf(temp, "pgmE %s", filenames[0]);
-    perror(temp);
-    exit(EXIT_FAILURE);
-  }
-  switch (result) {
-    case 'g': {
-      Image *copy = gauss(img);
+    img = loadImage(filenames[i]);
+
+    if(img == NULL)
+      continue;
+
+    if(verbose)
+      printf("opened %s\n", img->name);
+
+    switch (result) {
+      case 'g': {
+        Image *copy = gauss(img);
+        freeImage(&img);
+        img = copy;
+        if(verbose)
+          printf("applied gauss filter to '%s'\n", img->name);
+        break;
+      }
+      case 'm': {
+        Image *copy = median(img);
+        freeImage(&img);
+        img = copy;
+        if(verbose)
+          printf("applied median filter to '%s'\n", img->name);
+        break;
+      }
+      case 'l': {
+        Image *copy = laplace(img);
+        freeImage(&img);
+        img = copy;
+        if(verbose)
+          printf("applied laplace operator to '%s'\n", img->name);
+        break;
+      }
+      case 't': {
+        Image *copy = threshold(img, thresh);
+        freeImage(&img);
+        img = copy;
+        if(verbose)
+          printf("applied threshold filter to '%s'\n", img->name);
+        break;
+      }
+      case 'r': {
+        Image *copy = rotate(img, angle, brightness);
+        freeImage(&img);
+        img = copy;
+        if(verbose)
+          printf("rotated '%s'\n", img->name);
+        break;
+      }
+      case 's': {
+        Image *copy = scale(img, width, height);
+        freeImage(&img);
+        img = copy;
+        if(verbose)
+          printf("scaled '%s'\n", img->name);
+        break;
+      }
+      default: {
+        throw_warning(
+            "No filter or operator specified, see --help for more info.");
+        break;
+      }
+    }
+
+    int feedback = saveImage(filenames[i], img);
+
+    if (!feedback) {
+      printf("Couldn't save '%s'", img->name);
+      exit(EXIT_FAILURE);
+    } else {
+      if(verbose)
+        printf("saved %s\n", img->name);
       freeImage(&img);
-      img = copy;
-      break;
     }
-    case 'm': {
-      Image *copy = median(img);
-      freeImage(&img);
-      img = copy;
-      break;
-    }
-    case 'l': {
-      Image *copy = laplace(img);
-      freeImage(&img);
-      img = copy;
-      break;
-    }
-    case 't': {
-      Image *copy = threshold(img, thresh);
-      freeImage(&img);
-      img = copy;
-      break;
-    }
-    case 'r': {
-      Image *copy = rotate(img, angle, brightness);
-      freeImage(&img);
-      img = copy;
-      break;
-    }
-    case 's': {
-      Image *copy = scale(img, width, height);
-      freeImage(&img);
-      img = copy;
-      break;
-    }
-    default: {
-      throw_warning(
-          "No filter or operator specified, see --help for more info.");
-      break;
-    }
+   
   }
 
-  int feedback = saveImage(filenames[0], img);
-
-  if (!feedback) {
-    char temp[559];
-    sprintf(temp, "pgmE%s", filenames[0]);
-    perror(temp);
-    exit(EXIT_FAILURE);
-  } else {
-    freeImage(&img);
+  if(verbose){
+    clock_t end = clock();
+    printf("took: %.4fs\n", (double) (end-begin) / CLOCKS_PER_SEC);
   }
+
 }
 
 

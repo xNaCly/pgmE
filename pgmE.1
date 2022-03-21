@@ -15,6 +15,7 @@ FILE
 .RB [ \-t ]
 .RB [ \-s ]
 .RB [ \-r ]
+.RB [ \-v ]
 .RB [ CMD_SPECIFIC_OPTIONS ]
 .P
 .B pgme
@@ -35,6 +36,9 @@ Source code: https://github.com/xnacly/pgmE
 
 PGM specification: http://netpbm.sourceforge.net/doc/pgm.html 
 .SH OPTIONS
+.TP
+.B \-v
+verbose output
 .TP
 .B \-m 
 median filter
@@ -81,6 +85,12 @@ apply the laplace operator to 'example.pgm'
 .RS
 .TP
 pgmE example.pgm -l
+.RE
+.TP 
+apply the laplace operator to all '.pgm' files in the current dir
+.RS
+.TP
+pgmE *.pgm -l
 .RE
 .TP
 rotate the image 87 degrees and fill the pixels which are not in the image with the brightness 15
