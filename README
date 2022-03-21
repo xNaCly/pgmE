@@ -2,7 +2,7 @@ pgmE - portable graymap Editor
 ==============================
 pgmE is an extremely fast, small and efficient editor which implements the pgm standard.
 
-The cs-project branch will contain the source code at the point of submitting the project.
+The cs-project branch contains the source code at the point of submitting the project.
 
 
 Getting Started
